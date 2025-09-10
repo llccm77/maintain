@@ -178,11 +178,6 @@ SIMPLEUI_CONFIG = {
                     'name': '宿舍管理',
                     'icon': 'fa fa-bed',
                     'url': '/admin/dormitory_repair/dormitory/'
-                },
-                {
-                    'name': '学生管理', 
-                    'icon': 'fa fa-user-graduate',
-                    'url': '/admin/dormitory_repair/student/'
                 }
             ]
         },

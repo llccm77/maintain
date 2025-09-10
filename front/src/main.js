@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 import env from '@/config/env'
 import { createPinia } from 'pinia'
+import { useAuthStore } from '@/stores'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -21,6 +22,10 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
+
+// 初始化认证状态
+const authStore = useAuthStore()
+authStore.initAuth()
 
 // 全局配置
 app.config.globalProperties.$env = env

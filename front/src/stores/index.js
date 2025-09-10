@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import api from '@/utils/api'
+import { authAPI, systemAPI, repairAPI } from '@/api'
 
 export const useAuthStore = defineStore('auth', () => {
   // 状态
@@ -16,7 +16,7 @@ export const useAuthStore = defineStore('auth', () => {
   const login = async (credentials) => {
     isLoading.value = true
     try {
-      const response = await api.auth.login(credentials)
+      const response = await authAPI.login(credentials)
       
       token.value = response.token
       user.value = response.user
@@ -35,7 +35,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const logout = async () => {
     try {
-      await api.auth.logout()
+      await authAPI.logout()
     } catch (error) {
       console.warn('登出请求失败，但继续清除本地数据', error)
     } finally {
@@ -51,7 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (!token.value) return null
     
     try {
-      const response = await api.auth.getCurrentUser()
+      const response = await authAPI.getCurrentUser()
       user.value = response.data
       return response.data
     } catch (error) {
@@ -97,7 +97,7 @@ export const useSystemStore = defineStore('system', () => {
     total_orders: 0,
     pending_orders: 0,
     completed_orders: 0,
-    total_students: 0,
+    total_users: 0,
     total_dormitories: 0
   })
   
@@ -113,7 +113,7 @@ export const useSystemStore = defineStore('system', () => {
   const fetchSystemInfo = async () => {
     isLoading.value = true
     try {
-      const response = await api.system.getSystemInfo()
+      const response = await systemAPI.getSystemInfo()
       statistics.value = response.statistics
       systemInfo.value = response.system
       return response
@@ -126,7 +126,7 @@ export const useSystemStore = defineStore('system', () => {
 
   const healthCheck = async () => {
     try {
-      const response = await api.system.healthCheck()
+      const response = await systemAPI.healthCheck()
       return response
     } catch (error) {
       throw error
@@ -160,7 +160,7 @@ export const useRepairStore = defineStore('repair', () => {
   const fetchOrders = async (params = {}) => {
     isLoading.value = true
     try {
-      const response = await api.repair.list({
+      const response = await repairAPI.list({
         page: pagination.value.page,
         page_size: pagination.value.pageSize,
         ...params
@@ -179,7 +179,7 @@ export const useRepairStore = defineStore('repair', () => {
 
   const createOrder = async (orderData) => {
     try {
-      const response = await api.repair.create(orderData)
+      const response = await repairAPI.create(orderData)
       // 重新获取列表
       await fetchOrders()
       return response
@@ -190,7 +190,7 @@ export const useRepairStore = defineStore('repair', () => {
 
   const updateOrder = async (id, orderData) => {
     try {
-      const response = await api.repair.update(id, orderData)
+      const response = await repairAPI.update(id, orderData)
       // 更新本地状态
       const index = orders.value.findIndex(order => order.id === id)
       if (index !== -1) {
@@ -204,7 +204,7 @@ export const useRepairStore = defineStore('repair', () => {
 
   const deleteOrder = async (id) => {
     try {
-      const response = await api.repair.delete(id)
+      const response = await repairAPI.delete(id)
       // 从本地状态中移除
       orders.value = orders.value.filter(order => order.id !== id)
       return response

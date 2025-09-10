@@ -1,40 +1,5 @@
 <template>
   <div class="modern-dashboard">
-    <!-- 顶部导航栏 -->
-    <div class="dashboard-topbar">
-      <div class="topbar-left">
-        <h1 class="system-title">
-          <el-icon><House /></el-icon>
-          智能维修管理平台
-        </h1>
-        <div class="breadcrumb">
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item>控制台</el-breadcrumb-item>
-            <el-breadcrumb-item>数据概览</el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
-      </div>
-      <div class="topbar-right">
-        <el-button type="primary" @click="refreshData" :loading="refreshing">
-          <el-icon><Refresh /></el-icon>
-          刷新数据
-        </el-button>
-        <el-dropdown @command="handleUserAction">
-          <span class="user-info">
-            <el-avatar :size="32" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-            <span>管理员</span>
-            <el-icon><ArrowDown /></el-icon>
-          </span>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item command="profile">个人资料</el-dropdown-item>
-              <el-dropdown-item command="settings">系统设置</el-dropdown-item>
-              <el-dropdown-item divided command="logout">退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-    </div>
 
     <!-- 数据概览卡片 -->
     <div class="overview-cards">
@@ -101,8 +66,8 @@
             <el-icon><User /></el-icon>
           </div>
           <div class="card-info">
-            <div class="card-title">在校学生</div>
-            <div class="card-value">{{ statistics.total_students || 0 }}</div>
+            <div class="card-title">系统用户</div>
+            <div class="card-value">{{ statistics.total_users || 0 }}</div>
             <div class="card-trend neutral">
               <el-icon><House /></el-icon>
               {{ statistics.total_dormitories || 0 }} 间宿舍
@@ -235,13 +200,13 @@
                 <div class="action-desc">查看所有工单</div>
               </div>
             </div>
-            <div class="quick-action-item" @click="navigateTo('/student')">
-              <div class="action-icon student">
+            <div class="quick-action-item" @click="navigateTo('/users')">
+              <div class="action-icon user">
                 <el-icon><UserFilled /></el-icon>
               </div>
               <div class="action-content">
-                <div class="action-title">学生管理</div>
-                <div class="action-desc">学生信息管理</div>
+                <div class="action-title">用户管理</div>
+                <div class="action-desc">系统用户管理</div>
               </div>
             </div>
             <div class="quick-action-item" @click="navigateTo('/dormitory')">
@@ -367,7 +332,7 @@ import {
   Lightning, Plus, List, UserFilled, Bell, Monitor, Refresh,
   ArrowDown, Warning, Check, Setting, Lock, Tools, QuestionFilled
 } from '@element-plus/icons-vue'
-import { systemAPI, repairAPI, dormitoryAPI, studentAPI, authAPI } from '@/api'
+import { systemAPI, repairAPI, dormitoryAPI, authAPI } from '@/api'
 import { APIConnectionTester } from '@/utils/apiTester'
 
 // 注册ECharts组件
@@ -393,7 +358,7 @@ const statistics = reactive({
   total_orders: 0,
   pending_orders: 0,
   completed_orders: 0,
-  total_students: 0,
+  total_users: 0,
   total_dormitories: 0
 })
 
@@ -407,7 +372,6 @@ const apiStatus = reactive({
   system: { connected: false, error: null },
   auth: { connected: false, error: null },
   dormitory: { connected: false, error: null },
-  student: { connected: false, error: null },
   repair: { connected: false, error: null }
 })
 
@@ -604,7 +568,6 @@ const getApiDisplayName = (api) => {
     system: '系统管理',
     auth: '认证模块',
     dormitory: '宿舍管理',
-    student: '学生管理',
     repair: '工单管理'
   }
   return nameMap[api] || api
@@ -616,7 +579,6 @@ const getApiIconClass = (api) => {
     system: 'Setting',
     auth: 'Lock',
     dormitory: 'House',
-    student: 'User',
     repair: 'Tools'
   }
   return iconMap[api] || 'QuestionFilled'
@@ -666,19 +628,6 @@ const changeTrendType = (type) => {
   // 更新趋势图数据
 }
 
-const handleUserAction = (command) => {
-  switch (command) {
-    case 'profile':
-      ElMessage.info('个人资料')
-      break
-    case 'settings':
-      ElMessage.info('系统设置')
-      break
-    case 'logout':
-      router.push('/login')
-      break
-  }
-}
 
 // 生命周期
 onMounted(() => {
@@ -696,57 +645,6 @@ onMounted(() => {
   background: #f8fafc;
 }
 
-/* 顶部导航栏 */
-.dashboard-topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 24px;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-}
-
-.system-title {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  font-size: 20px;
-  font-weight: 600;
-  color: #1f2937;
-}
-
-.breadcrumb {
-  color: #6b7280;
-  font-size: 14px;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 8px 12px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-}
-
-.user-info:hover {
-  background-color: #f3f4f6;
-}
 
 /* 数据概览卡片 */
 .overview-cards {
@@ -952,7 +850,7 @@ onMounted(() => {
 
 .action-icon.create { background: linear-gradient(135deg, #10b981, #059669); }
 .action-icon.manage { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-.action-icon.student { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.action-icon.user { background: linear-gradient(135deg, #f59e0b, #d97706); }
 .action-icon.dorm { background: linear-gradient(135deg, #8b5cf6, #7c3aed); }
 
 .action-content {
@@ -1177,17 +1075,6 @@ onMounted(() => {
 }
 
 @media (max-width: 768px) {
-  .dashboard-topbar {
-    flex-direction: column;
-    gap: 16px;
-    align-items: flex-start;
-  }
-  
-  .topbar-left {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
   
   .overview-cards {
     grid-template-columns: 1fr;
@@ -1232,54 +1119,7 @@ onMounted(() => {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* 顶部导航栏样式 */
-.dashboard-topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background: #f0f2f5;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
 
-.topbar-left {
-  display: flex;
-  align-items: center;
-}
-
-.system-title {
-  font-size: 24px;
-  font-weight: bold;
-  color: #333;
-  margin-right: 20px;
-}
-
-.breadcrumb {
-  font-size: 14px;
-  color: #666;
-}
-
-.topbar-right {
-  display: flex;
-  align-items: center;
-}
-
-.el-button {
-  margin-right: 10px;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-
-.user-info span {
-  margin-left: 5px;
-  font-size: 14px;
-  color: #333;
-}
 
 /* 数据概览卡片样式 */
 .overview-cards {
@@ -1528,9 +1368,6 @@ onMounted(() => {
   background: #3498db;
 }
 
-.action-icon.student {
-  background: #f39c12;
-}
 
 .action-icon.dorm {
   background: #2ecc71;

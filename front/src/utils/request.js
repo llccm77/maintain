@@ -9,18 +9,15 @@ const api = axios.create({
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
-  // 支持跨域请求
-  withCredentials: false
+  // 支持跨域请求，启用cookies以支持Django session认证
+  withCredentials: true
 })
 
 // 请求拦截器 - 前后端分离架构
 api.interceptors.request.use(
   (config) => {
-    // 添加认证token
-    const token = localStorage.getItem('access_token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+    // Django使用session认证，不需要添加Authorization头
+    // session会通过cookies自动传递
     
     // 开发环境下的请求日志
     if (import.meta.env.DEV && import.meta.env.VITE_LOG_API_REQUESTS === 'true') {

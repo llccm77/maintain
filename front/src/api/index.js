@@ -7,7 +7,6 @@
 // 导入各个业务模块的API
 import { authAPI } from './auth'
 import { dormitoryAPI } from './dormitory'
-import { studentAPI } from './student'
 import { repairAPI } from './repair'
 import { systemAPI } from './system'
 
@@ -15,7 +14,6 @@ import { systemAPI } from './system'
 export {
   authAPI,
   dormitoryAPI,
-  studentAPI,
   repairAPI,
   systemAPI
 }
@@ -24,7 +22,6 @@ export {
 export default {
   auth: authAPI,
   dormitory: dormitoryAPI,
-  student: studentAPI,
   repair: repairAPI,
   system: systemAPI
 }

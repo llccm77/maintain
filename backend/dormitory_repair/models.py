@@ -19,23 +19,6 @@ class Dormitory(models.Model):
         return f"{self.building_name}-{self.room_number}"
 
 
-class Student(models.Model):
-    """学生模型"""
-    user = models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='用户账号')
-    student_id = models.CharField('学号', max_length=20, unique=True)
-    name = models.CharField('姓名', max_length=50)
-    phone = models.CharField('联系电话', max_length=11,
-                           validators=[RegexValidator(r'^1[3-9]\d{9}$', '请输入有效的手机号码')])
-    dormitory = models.ForeignKey(Dormitory, on_delete=models.SET_NULL, 
-                                null=True, blank=True, verbose_name='宿舍')
-    
-    class Meta:
-        verbose_name = '学生'
-        verbose_name_plural = '学生管理'
-        ordering = ['student_id']
-    
-    def __str__(self):
-        return f"{self.name}({self.student_id})"
 
 
 class RepairOrder(models.Model):
@@ -63,7 +46,8 @@ class RepairOrder(models.Model):
     ]
     
     order_number = models.CharField('工单号', max_length=20, unique=True, blank=True)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name='报修学生')
+    # 报修用户 - 直接使用Django用户系统
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='报修用户')
     dormitory = models.ForeignKey(Dormitory, on_delete=models.CASCADE, verbose_name='宿舍')
     fault_type = models.CharField('故障类型', max_length=20, choices=FAULT_TYPE_CHOICES)
     title = models.CharField('故障标题', max_length=100)
@@ -73,6 +57,7 @@ class RepairOrder(models.Model):
     
     # 时间记录
     created_at = models.DateTimeField('创建时间', auto_now_add=True)
+    updated_at = models.DateTimeField('更新时间', auto_now=True)
     completed_at = models.DateTimeField('完成时间', null=True, blank=True)
     
     # 维修员和维修说明
@@ -100,3 +85,6 @@ class RepairOrder(models.Model):
             now = datetime.datetime.now()
             self.order_number = f"R{now.strftime('%Y%m%d%H%M%S')}"
         super().save(*args, **kwargs)
+
+
+# RepairWorker模型已删除 - 维修员直接使用Django用户系统

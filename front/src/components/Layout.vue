@@ -47,11 +47,6 @@
             <template #title>工单管理</template>
           </el-menu-item>
 
-          <!-- 学生管理 -->
-          <el-menu-item index="/student">
-            <el-icon><UserFilled /></el-icon>
-            <template #title>学生管理</template>
-          </el-menu-item>
 
           <!-- 宿舍管理 -->
           <el-menu-item index="/dormitory">
@@ -236,7 +231,6 @@ const breadcrumbs = computed(() => {
   const routeMap = {
     'dashboard': '仪表盘',
     'repair': '工单列表',
-    'student': '学生列表',
     'dormitory': '宿舍列表',
     'settings': '系统设置',
     'users': '用户管理'

@@ -13,7 +13,7 @@
         <input
           v-model="searchForm.keyword"
           type="text"
-          placeholder="搜索工单号、标题或学生姓名..."
+          placeholder="搜索工单号、标题或用户姓名..."
           class="search-input"
           @keyup.enter="handleSearch"
         />
@@ -165,7 +165,7 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
-import { repairAPI, studentAPI, dormitoryAPI } from '@/api'
+import { repairAPI, dormitoryAPI } from '@/api'
 
 // 响应式数据
 const loading = ref(false)

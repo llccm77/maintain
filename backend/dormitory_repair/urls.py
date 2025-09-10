@@ -20,9 +20,7 @@ urlpatterns = [
     path('repair-orders/', views.api_repair_orders, name='api_repair_orders'),
     path('repair-orders/<int:order_id>/', views.api_repair_order_detail, name='api_repair_order_detail'),
     
-    # 学生管理API
-    path('students/', views.api_students, name='api_students'),
-    path('students/<int:student_id>/', views.api_student_detail, name='api_student_detail'),
+    # 学生管理API已移除 - 现在直接使用Django用户系统
     
     # 宿舍管理API
     path('dormitories/', views.api_dormitories, name='api_dormitories'),

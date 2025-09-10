@@ -5,7 +5,7 @@ from django.views.decorators.http import require_http_methods
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.db.models import Q
-from .models import Dormitory, Student, RepairOrder
+from .models import Dormitory, RepairOrder
 import json
 
 
@@ -51,16 +51,16 @@ def api_system_info(request):
     total_orders = RepairOrder.objects.count()
     pending_orders = RepairOrder.objects.filter(status='pending').count()
     completed_orders = RepairOrder.objects.filter(status='completed').count()
-    total_students = Student.objects.count()
     total_dormitories = Dormitory.objects.count()
+    total_users = User.objects.count()
     
     return JsonResponse({
         'statistics': {
             'total_orders': total_orders,
             'pending_orders': pending_orders,
             'completed_orders': completed_orders,
-            'total_students': total_students,
-            'total_dormitories': total_dormitories
+            'total_dormitories': total_dormitories,
+            'total_users': total_users
         },
         'system': {
             'name': '宿舍报修管理系统',
@@ -78,7 +78,7 @@ def api_system_info(request):
 @require_http_methods(["POST"])
 def api_login(request):
     """
-    用户登录API - 前后端分离登录接口
+    用户登录API - 使用Django标准认证
     """
     try:
         # 解析JSON请求数据
@@ -224,7 +224,7 @@ def _get_repair_orders_list(request):
         
         # 获取所有工单
         queryset = RepairOrder.objects.select_related(
-            'student', 'dormitory'
+            'user', 'dormitory'
         ).order_by('-created_at')
         
         # 应用筛选
@@ -232,7 +232,9 @@ def _get_repair_orders_list(request):
             queryset = queryset.filter(
                 Q(order_number__icontains=search) |
                 Q(title__icontains=search) |
-                Q(student__name__icontains=search)
+                Q(user__first_name__icontains=search) |
+                Q(user__last_name__icontains=search) |
+                Q(user__username__icontains=search)
             )
         
         if status:
@@ -260,8 +262,8 @@ def _get_repair_orders_list(request):
                 'status': order.status,
                 'priority': order.priority,
                 'fault_type': order.fault_type,
-                'student_name': order.student.name,
-                'student_id': order.student.id,
+                'student_name': f"{order.user.first_name} {order.user.last_name}".strip() or order.user.username,
+                'student_id': order.user.id,
                 'dormitory_name': f"{order.dormitory.building_name}-{order.dormitory.room_number}",
                 'dormitory_id': order.dormitory.id,
                 'created_at': order.created_at.isoformat(),
@@ -288,8 +290,8 @@ def _create_repair_order(request):
     try:
         data = json.loads(request.body)
         
-        # 获取学生和宿舍
-        student = Student.objects.get(id=data['student_id'])
+        # 获取用户和宿舍
+        user = User.objects.get(id=data['user_id'])
         dormitory = Dormitory.objects.get(id=data['dormitory_id'])
         
         # 创建工单
@@ -298,7 +300,7 @@ def _create_repair_order(request):
             description=data['description'],
             fault_type=data.get('fault_type', 'other'),
             priority=data.get('priority', 'medium'),
-            student=student,
+            user=user,
             dormitory=dormitory
         )
         
@@ -312,8 +314,8 @@ def _create_repair_order(request):
             }
         }, status=201)
         
-    except Student.DoesNotExist:
-        return JsonResponse({'error': '学生不存在'}, status=404)
+    except User.DoesNotExist:
+        return JsonResponse({'error': '用户不存在'}, status=404)
     except Dormitory.DoesNotExist:
         return JsonResponse({'error': '宿舍不存在'}, status=404)
     except Exception as e:
@@ -328,7 +330,7 @@ def api_repair_order_detail(request, order_id):
     工单详情API - 支持GET(详情)、PUT/PATCH(更新)、DELETE(删除)
     """
     try:
-        order = RepairOrder.objects.select_related('student', 'dormitory').get(id=order_id)
+        order = RepairOrder.objects.select_related('user', 'dormitory').get(id=order_id)
         
         if request.method == 'GET':
             return JsonResponse({
@@ -340,9 +342,10 @@ def api_repair_order_detail(request, order_id):
                 'priority': order.priority,
                 'fault_type': order.fault_type,
                 'student': {
-                    'id': order.student.id,
-                    'name': order.student.name,
-                    'phone': order.student.phone
+                    'id': order.user.id,
+                    'name': f"{order.user.first_name} {order.user.last_name}".strip() or order.user.username,
+                    'username': order.user.username,
+                    'email': order.user.email
                 },
                 'dormitory': {
                     'id': order.dormitory.id,
@@ -392,205 +395,8 @@ def api_repair_order_detail(request, order_id):
 
 
 # ========================
-# 学生管理API
+# 学生管理API已移除 - 现在直接使用Django用户系统
 # ========================
-
-@csrf_exempt
-def api_students(request):
-    """
-    学生管理API - 支持GET(列表)和POST(创建)
-    """
-    if request.method == 'GET':
-        return _get_students_list(request)
-    elif request.method == 'POST':
-        return _create_student(request)
-    else:
-        return JsonResponse({'error': '不支持的请求方法'}, status=405)
-
-
-def _get_students_list(request):
-    """
-    获取学生列表
-    """
-    try:
-        # 获取查询参数
-        page = int(request.GET.get('page', 1))
-        page_size = int(request.GET.get('page_size', 12))
-        search = request.GET.get('search', '').strip()
-        building = request.GET.get('building', '').strip()
-        has_dormitory = request.GET.get('has_dormitory', '').strip()
-        
-        # 获取所有学生
-        queryset = Student.objects.select_related('dormitory').order_by('student_id')
-        
-        # 应用筛选
-        if search:
-            queryset = queryset.filter(
-                Q(name__icontains=search) |
-                Q(student_id__icontains=search) |
-                Q(phone__icontains=search)
-            )
-        
-        if building:
-            queryset = queryset.filter(dormitory__building_name=building)
-            
-        if has_dormitory == 'true':
-            queryset = queryset.filter(dormitory__isnull=False)
-        elif has_dormitory == 'false':
-            queryset = queryset.filter(dormitory__isnull=True)
-        
-        total_count = queryset.count()
-        start_index = (page - 1) * page_size
-        end_index = start_index + page_size
-        page_students = queryset[start_index:end_index]
-        
-        # 构造返回数据
-        results = []
-        for student in page_students:
-            # 获取报修统计
-            repair_orders = RepairOrder.objects.filter(student=student)
-            repair_summary = {
-                'total': repair_orders.count(),
-                'pending': repair_orders.filter(status='pending').count()
-            }
-            
-            student_data = {
-                'id': student.id,
-                'student_id': student.student_id,
-                'name': student.name,
-                'phone': student.phone,
-                'dormitory': None,
-                'repair_summary': repair_summary
-            }
-            
-            if student.dormitory:
-                student_data['dormitory'] = {
-                    'id': student.dormitory.id,
-                    'building_name': student.dormitory.building_name,
-                    'room_number': student.dormitory.room_number
-                }
-            
-            results.append(student_data)
-        
-        return JsonResponse({
-            'count': total_count,
-            'next': page + 1 if end_index < total_count else None,
-            'previous': page - 1 if page > 1 else None,
-            'results': results
-        })
-        
-    except Exception as e:
-        return JsonResponse({
-            'error': f'获取学生列表失败: {str(e)}'
-        }, status=500)
-
-
-def _create_student(request):
-    """
-    创建学生
-    """
-    try:
-        data = json.loads(request.body)
-        
-        # 检查学号是否已存在
-        if Student.objects.filter(student_id=data['student_id']).exists():
-            return JsonResponse({'error': '学号已存在'}, status=400)
-        
-        # 创建学生
-        student = Student.objects.create(
-            student_id=data['student_id'],
-            name=data['name'],
-            phone=data['phone']
-        )
-        
-        # 如果指定了宿舍，则分配宿舍
-        if data.get('dormitory_id'):
-            try:
-                dormitory = Dormitory.objects.get(id=data['dormitory_id'])
-                student.dormitory = dormitory
-                student.save()
-            except Dormitory.DoesNotExist:
-                pass  # 忽略不存在的宿舍
-        
-        return JsonResponse({
-            'message': '学生创建成功',
-            'data': {
-                'id': student.id,
-                'student_id': student.student_id,
-                'name': student.name
-            }
-        }, status=201)
-        
-    except Exception as e:
-        return JsonResponse({
-            'error': f'创建学生失败: {str(e)}'
-        }, status=500)
-
-
-@csrf_exempt
-def api_student_detail(request, student_id):
-    """
-    学生详情API - 支持GET(详情)、PUT/PATCH(更新)、DELETE(删除)
-    """
-    try:
-        student = Student.objects.select_related('dormitory').get(id=student_id)
-        
-        if request.method == 'GET':
-            student_data = {
-                'id': student.id,
-                'student_id': student.student_id,
-                'name': student.name,
-                'phone': student.phone,
-                'dormitory': None
-            }
-            
-            if student.dormitory:
-                student_data['dormitory'] = {
-                    'id': student.dormitory.id,
-                    'building_name': student.dormitory.building_name,
-                    'room_number': student.dormitory.room_number
-                }
-            
-            return JsonResponse(student_data)
-            
-        elif request.method in ['PUT', 'PATCH']:
-            data = json.loads(request.body)
-            
-            # 更新字段
-            if 'name' in data:
-                student.name = data['name']
-            if 'phone' in data:
-                student.phone = data['phone']
-            if 'dormitory_id' in data:
-                if data['dormitory_id']:
-                    try:
-                        dormitory = Dormitory.objects.get(id=data['dormitory_id'])
-                        student.dormitory = dormitory
-                    except Dormitory.DoesNotExist:
-                        return JsonResponse({'error': '宿舍不存在'}, status=404)
-                else:
-                    student.dormitory = None
-                    
-            student.save()
-            
-            return JsonResponse({
-                'message': '学生信息更新成功',
-                'data': {
-                    'id': student.id,
-                    'name': student.name
-                }
-            })
-            
-        elif request.method == 'DELETE':
-            student.delete()
-            return JsonResponse({'message': '学生删除成功'})
-            
-    except Student.DoesNotExist:
-        return JsonResponse({'error': '学生不存在'}, status=404)
-    except Exception as e:
-        return JsonResponse({
-            'error': f'操作失败: {str(e)}'
-        }, status=500)
 
 
 # ========================
@@ -646,8 +452,7 @@ def _get_dormitories_list(request):
         # 构造返回数据
         results = []
         for dormitory in page_dormitories:
-            # 统计入住学生数和报修次数
-            student_count = Student.objects.filter(dormitory=dormitory).count()
+            # 统计报修次数（移除学生统计，因为不再有学生-宿舍关联）
             repair_count = RepairOrder.objects.filter(dormitory=dormitory).count()
             
             results.append({
@@ -655,7 +460,6 @@ def _get_dormitories_list(request):
                 'building_name': dormitory.building_name,
                 'room_number': dormitory.room_number,
                 'floor': dormitory.floor,
-                'student_count': student_count,
                 'repair_count': repair_count
             })
         
@@ -717,21 +521,24 @@ def api_dormitory_detail(request, dormitory_id):
         dormitory = Dormitory.objects.get(id=dormitory_id)
         
         if request.method == 'GET':
-            # 获取入住学生列表
-            students = Student.objects.filter(dormitory=dormitory)
-            student_list = [{
-                'id': s.id,
-                'name': s.name,
-                'student_id': s.student_id
-            } for s in students]
+            # 获取该宿舍的报修记录
+            repair_orders = RepairOrder.objects.filter(dormitory=dormitory).select_related('user')
+            repair_list = [{
+                'id': order.id,
+                'order_number': order.order_number,
+                'title': order.title,
+                'status': order.status,
+                'student_name': f"{order.user.first_name} {order.user.last_name}".strip() or order.user.username,
+                'created_at': order.created_at.isoformat()
+            } for order in repair_orders[:10]]  # 只显示最近10条
             
             return JsonResponse({
                 'id': dormitory.id,
                 'building_name': dormitory.building_name,
                 'room_number': dormitory.room_number,
                 'floor': dormitory.floor,
-                'students': student_list,
-                'student_count': len(student_list)
+                'recent_repairs': repair_list,
+                'repair_count': repair_orders.count()
             })
             
         elif request.method in ['PUT', 'PATCH']:
@@ -757,9 +564,9 @@ def api_dormitory_detail(request, dormitory_id):
             })
             
         elif request.method == 'DELETE':
-            # 检查是否有学生入住
-            if Student.objects.filter(dormitory=dormitory).exists():
-                return JsonResponse({'error': '宿舍内有学生，无法删除'}, status=400)
+            # 检查是否有未完成的报修工单
+            if RepairOrder.objects.filter(dormitory=dormitory, status__in=['pending', 'processing']).exists():
+                return JsonResponse({'error': '宿舍有未完成的报修工单，无法删除'}, status=400)
             
             dormitory.delete()
             return JsonResponse({'message': '宿舍删除成功'})

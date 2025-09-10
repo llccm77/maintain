@@ -1,4 +1,4 @@
-import { authAPI, dormitoryAPI, studentAPI, repairAPI, systemAPI } from '@/api'
+import { authAPI, dormitoryAPI, repairAPI, systemAPI } from '@/api'
 
 /**
  * API连接测试工具
@@ -9,7 +9,6 @@ export class APIConnectionTester {
     this.results = {
       auth: { success: false, error: null },
       dormitory: { success: false, error: null },
-      student: { success: false, error: null },
       repair: { success: false, error: null },
       system: { success: false, error: null }
     }
@@ -66,20 +65,8 @@ export class APIConnectionTester {
   }
 
   /**
-   * 测试学生管理API
+   * 学生管理API已移除 - 现在使用Django标准用户系统
    */
-  async testStudentAPI() {
-    try {
-      const response = await studentAPI.getStudentList({ page: 1, page_size: 5 })
-      console.log('✅ 学生管理API测试成功:', response)
-      this.results.student.success = true
-      return true
-    } catch (error) {
-      console.error('❌ 学生管理API测试失败:', error)
-      this.results.student.error = error.message
-      return false
-    }
-  }
 
   /**
    * 测试报修工单API
@@ -107,7 +94,6 @@ export class APIConnectionTester {
       { name: '系统健康检查', test: () => this.testSystemHealth() },
       { name: '认证API', test: () => this.testAuthAPI() },
       { name: '宿舍管理API', test: () => this.testDormitoryAPI() },
-      { name: '学生管理API', test: () => this.testStudentAPI() },
       { name: '报修工单API', test: () => this.testRepairAPI() }
     ]
 

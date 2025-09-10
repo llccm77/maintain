@@ -5,7 +5,6 @@ import Login from '@/views/Login.vue'
 import Layout from '@/components/Layout.vue'
 import Dashboard from '@/views/Dashboard.vue'
 import DormitoryManagement from '@/views/DormitoryManagement.vue'
-import StudentManagement from '@/views/StudentManagement.vue'
 import RepairManagement from '@/views/RepairManagement.vue'
 
 // 路由配置
@@ -44,15 +43,6 @@ const routes = [
         meta: { 
           requiresAuth: true,
           title: '宿舍管理'
-        }
-      },
-      {
-        path: 'student',
-        name: 'StudentManagement',
-        component: StudentManagement,
-        meta: { 
-          requiresAuth: true,
-          title: '学生管理'
         }
       },
       {
@@ -97,7 +87,7 @@ const router = createRouter({
 })
 
 // 路由守卫 - 前后端分离架构
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   // 设置页面标题
   if (to.meta.title) {
     document.title = `${to.meta.title} - 宿舍维修管理系统`
@@ -105,13 +95,29 @@ router.beforeEach((to, from, next) => {
   
   // 检查是否需要登录
   const requiresAuth = to.meta.requiresAuth
-  const token = localStorage.getItem('access_token') // 使用标准的access_token
+  const token = localStorage.getItem('token')
+  const savedUser = localStorage.getItem('user')
   
-  if (requiresAuth && !token) {
-    // 需要登录但未登录，跳转到登录页
-    console.log('未找到访问令牌，跳转到登录页')
-    next('/login')
-  } else if (to.path === '/login' && token) {
+  if (requiresAuth) {
+    if (!token || !savedUser) {
+      // 需要登录但未登录，跳转到登录页
+      console.log('未找到访问令牌或用户信息，跳转到登录页')
+      next('/login')
+      return
+    }
+    
+    // 验证token有效性（可选：调用后端验证）
+    try {
+      // 如果有token和用户信息，允许访问
+      next()
+    } catch (error) {
+      console.log('token验证失败，跳转到登录页')
+      // 清除无效的认证信息
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      next('/login')
+    }
+  } else if (to.path === '/login' && token && savedUser) {
     // 已登录但访问登录页，跳转到仪表盘
     console.log('已登录，跳转到仪表盘')
     next('/dashboard')
