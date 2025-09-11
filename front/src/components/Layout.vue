@@ -199,12 +199,12 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 import { useAuthStore } from '@/stores'
 import {
   House, Monitor, Tools, UserFilled, Setting,
   Expand, Fold, Menu, Search, Bell, ArrowDown, SwitchButton, Close,
-  Warning, Check, InfoFilled
+  Warning, Check, InfoFilled, User
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -334,11 +334,50 @@ const handleUserCommand = (command) => {
 
 const handleLogout = async () => {
   try {
-    await authStore.logout()
-    ElMessage.success('退出登录成功')
-    router.push('/login')
+    // 显示确认对话框
+    await ElMessageBox.confirm(
+      '确定要退出登录吗？退出后需要重新登录。',
+      '退出确认',
+      {
+        confirmButtonText: '确定退出',
+        cancelButtonText: '取消',
+        type: 'warning',
+        confirmButtonClass: 'el-button--danger'
+      }
+    )
+    
+    // 显示加载状态
+    const loadingInstance = ElLoading.service({
+      lock: true,
+      text: '正在退出登录...',
+      background: 'rgba(0, 0, 0, 0.7)'
+    })
+    
+    try {
+      // 调用退出登录API
+      await authStore.logout()
+      
+      // 清除路由守卫可能的缓存
+      router.replace('/login')
+      
+      ElMessage.success({
+        message: '退出登录成功',
+        duration: 2000
+      })
+    } catch (error) {
+      console.error('退出登录失败:', error)
+      // 即使API调用失败，也要清除本地状态
+      authStore.logout()
+      router.replace('/login')
+      ElMessage.warning('退出登录完成（网络异常）')
+    } finally {
+      loadingInstance.close()
+    }
   } catch (error) {
-    ElMessage.error('退出登录失败')
+    // 用户取消退出
+    if (error === 'cancel') {
+      ElMessage.info('已取消退出')
+    }
   }
 }
 

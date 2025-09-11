@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { ElMessage } from 'element-plus'
 
 // 导入页面组件
 import Login from '@/views/Login.vue'
@@ -98,23 +99,36 @@ router.beforeEach(async (to, from, next) => {
   const token = localStorage.getItem('token')
   const savedUser = localStorage.getItem('user')
   
+  console.log('路由守卫:', {
+    path: to.path,
+    requiresAuth,
+    hasToken: !!token,
+    hasUser: !!savedUser
+  })
+  
   if (requiresAuth) {
     if (!token || !savedUser) {
       // 需要登录但未登录，跳转到登录页
       console.log('未找到访问令牌或用户信息，跳转到登录页')
+      ElMessage.warning('请先登录')
       next('/login')
       return
     }
     
-    // 验证token有效性（可选：调用后端验证）
+    // 验证token有效性（这里可以添加token过期检查）
     try {
+      const user = JSON.parse(savedUser)
+      if (!user || !token) {
+        throw new Error('无效的用户信息')
+      }
       // 如果有token和用户信息，允许访问
       next()
     } catch (error) {
-      console.log('token验证失败，跳转到登录页')
+      console.log('用户信息验证失败，跳转到登录页')
       // 清除无效的认证信息
       localStorage.removeItem('token')
       localStorage.removeItem('user')
+      ElMessage.warning('登录信息已失效，请重新登录')
       next('/login')
     }
   } else if (to.path === '/login' && token && savedUser) {

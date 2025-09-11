@@ -4,6 +4,10 @@ import { authAPI, dormitoryAPI, repairAPI, systemAPI } from '@/api'
  * API连接测试工具
  * 用于验证所有API模块是否正确连接到Django后端
  */
+
+// 导入API模块
+import { systemAPI, authAPI, dormitoryAPI, repairAPI } from '@/api'
+
 export class APIConnectionTester {
   constructor() {
     this.results = {

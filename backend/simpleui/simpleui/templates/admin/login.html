@@ -22,21 +22,10 @@
     {% include 'admin/includes/css-part.html' %}
 
     {% block css %}
-        <link rel="stylesheet" href="{% static 'admin/simpleui-x/css/login.css' %}?_=2.1">
+        <link rel="stylesheet" href="{% static 'admin/simpleui-x/css/login.css' %}?_=3.0">
     {% endblock %}
     {% block bg %}
-        <style type="text/css">
-            .bg {
-                background: #f0f2f5;
-                background-image: url('{% static 'admin/simpleui-x/img/bg.svg' %}');
-                min-height: 100%;
-                background-repeat: no-repeat;
-                background-position: 50%;
-                background-size: 100%;
-                padding: 20px 0;
-                position: relative;
-            }
-        </style>
+        <!-- 背景样式由CSS文件处理 -->
     {% endblock %}
 
     {% block head %}
@@ -47,21 +36,66 @@
 {% block left %}
 {% endblock %}
 {% block main %}
-    <div class="login-decorator">
-    <div class="login-main">
-    {% block logo %}
-        <div class="logo">
-            {% if "SIMPLEUI_LOGO"|get_config %}
-                <img src="{{ "SIMPLEUI_LOGO"|get_config |safe }}">
-            {% else %}
-                <img src="{% static 'admin/simpleui-x/img/logo.png' %}">
-            {% endif %}
+    <!-- 布局切换按钮 -->
+    <div class="layout-toggle">
+        <button onclick="toggleLayout()" title="切换布局模式">
+            <i class="fas fa-expand-arrows-alt"></i>
+        </button>
+    </div>
+    
+    <div class="login-decorator" id="loginDecorator">
+        <!-- 侧边装饰信息 -->
+        <div class="login-side-info">
+            <div class="welcome-text">
+                <h2>欢迎使用</h2>
+                <h3>{{ site_header|default:"宿舍维修管理系统" }}</h3>
+                <p>高效 · 便捷 · 智能</p>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <i class="fas fa-tools"></i>
+                        <span>在线报修</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-chart-line"></i>
+                        <span>数据统计</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>移动友好</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>安全可靠</span>
+                    </div>
+                </div>
+            </div>
+            <div class="decorative-circles">
+                <div class="circle circle-1"></div>
+                <div class="circle circle-2"></div>
+                <div class="circle circle-3"></div>
+            </div>
         </div>
-    {% endblock %}
+        
+        <!-- 登录表单 -->
+        <div class="login-form-container">
+            <div class="login-main">
+                {% block logo %}
+                    <div class="logo">
+                        {% if "SIMPLEUI_LOGO"|get_config %}
+                            <img src="{{ "SIMPLEUI_LOGO"|get_config |safe }}">
+                        {% else %}
+                            <img src="{% static 'admin/simpleui-x/img/logo.png' %}">
+                        {% endif %}
+                        <div class="logo-text">管理后台</div>
+                    </div>
+                {% endblock %}
 
-    {% block header %}
-        <div class="header">{{ site_header }}</div>
-    {% endblock %}
+                {% block header %}
+                    <div class="header">
+                        <div class="header-text">{{ site_header|default:"宿舍维修管理系统" }}</div>
+                        <div class="sub-header">请登录您的管理账户</div>
+                    </div>
+                {% endblock %}
 
     {% block errors %}
         {% if form.non_field_errors %}
@@ -82,39 +116,94 @@
             </p>
         {% endif %}
     {% endblock %}
-    {% block form %}
-        <form class="simpleui-form" action="{{ app_path }}" method="post" id="login-form">
-            {% csrf_token %}
-            <div class="simpleui-input-inline">
-                <el-input prefix-icon="fas fa-user" v-model="username" name="username"
-                          placeholder="{% trans 'username' %}" autofocus></el-input>
-            </div>
-            <div class="simpleui-input-inline">
-                <el-input prefix-icon="fas fa-lock" type="password" v-model="password" name="password"
-                          @keyup.enter.native="login()"
-                          placeholder="{% trans 'password' %}" show-password></el-input>
-            </div>
-            {% url 'admin_password_reset' as password_reset_url %}
-              {% if password_reset_url %}
+                {% block form %}
+                    <form class="simpleui-form" action="{{ app_path }}" method="post" id="login-form">
+                        {% csrf_token %}
+                        
+                        <div class="input-group">
+                            <div class="simpleui-input-inline">
+                                <el-input prefix-icon="fas fa-user" v-model="username" name="username"
+                                          placeholder="{% trans 'username' %}" autofocus></el-input>
+                            </div>
+                            <div class="simpleui-input-inline">
+                                <el-input prefix-icon="fas fa-lock" type="password" v-model="password" name="password"
+                                          @keyup.enter.native="login()"
+                                          placeholder="{% trans 'password' %}" show-password></el-input>
+                            </div>
+                        </div>
 
-             <div class="password-reset-link">
-                <a class="forgot-password" href="{{ password_reset_url }}">{% trans 'Forgotten your password or username?' %}</a>
-              </div>
-              {% endif %}
-            <div class="simpleui-input-inline login-btn">
-                <el-button :icon="loading?'el-icon-loading':''" @click="login()"
-                           type="primary">{% trans 'Log in' %}</el-button>
-            </div>
+                        <div class="login-options">
+                            <div class="remember-me">
+                                <label>
+                                    <input type="checkbox" v-model="rememberMe" style="margin-right: 8px;">
+                                    记住登录状态
+                                </label>
+                            </div>
+                            {% url 'admin_password_reset' as password_reset_url %}
+                            {% if password_reset_url %}
+                                <div class="password-reset-link">
+                                    <a class="forgot-password" href="{{ password_reset_url }}">
+                                        <i class="fas fa-question-circle"></i>
+                                        {% trans 'Forgotten your password or username?' %}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
 
-            <input type="hidden" name="next" value="{{ next }}"/>
-        </form>
-    {% endblock %}
+                        <div class="simpleui-input-inline login-btn">
+                            <el-button :icon="loading?'el-icon-loading':'fas fa-sign-in-alt'" @click="login()"
+                                       type="primary" :class="{loading: loading}">
+                                <span v-if="!loading">{% trans 'Log in' %}</span>
+                                <span v-else>登录中...</span>
+                            </el-button>
+                        </div>
+
+                        <input type="hidden" name="next" value="{{ next }}"/>
+                    </form>
+                {% endblock %}
+                
+                <!-- 额外信息 -->
+                <div class="login-footer">
+                    <div class="system-info">
+                        <p><i class="fas fa-info-circle"></i> 系统版本 v2.0</p>
+                        <p><i class="fas fa-clock"></i> 当前时间: <span id="current-time"></span></p>
+                    </div>
+                    <div class="help-links">
+                        <a href="#" class="help-link">
+                            <i class="fas fa-question-circle"></i>
+                            使用帮助
+                        </a>
+                        <a href="#" class="help-link">
+                            <i class="fas fa-phone"></i>
+                            技术支持
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 {% endblock %}
 {% include 'admin/includes/js-part.html' %}
 {% block login_js %}
-<script type="text/javascript" src="{% static 'admin/simpleui-x/js/login.js' %}?_=3.3"></script>
+<script type="text/javascript">
+// 立即初始化Vue实例，避免rememberMe未定义错误
+if (typeof Vue !== 'undefined') {
+    window.loginApp = new Vue({
+        el: '.login-main',
+        data: function() {
+            return {
+                username: '',
+                password: '',
+                loading: false,
+                rememberMe: false,
+                showPasswordStrength: false,
+                passwordStrength: 0
+            };
+        }
+    });
+}
+</script>
+<script type="text/javascript" src="{% static 'admin/simpleui-x/js/login.js' %}?_=4.2"></script>
 {% endblock %}
 
 {% block  particles %}
@@ -137,12 +226,12 @@
                   margin-top: 10px;
                   color: #3a8ee6;
                   text-decoration: none;
-                  &:hover,
-                  &:active,
-                  &:focus {
-                    color: lighten($teal, 7);
-                  }
-                }
+            }
+            .forgot-password:hover,
+            .forgot-password:active,
+            .forgot-password:focus {
+                color: #5fb3ee;
+            }
         </style>
         <!-- particles.js container -->
         <div id="particles-js"></div>

@@ -147,8 +147,8 @@ SIMPLEUI_HOME_ICON = 'fa fa-home'
 SIMPLEUI_HOME_QUICK = True
 SIMPLEUI_HOME_ACTION = True
 
-# 自定义logo
-SIMPLEUI_LOGO = 'https://avatars2.githubusercontent.com/u/13655483?s=60&v=4'
+# 自定义logo - 使用项目中的logo.png文件
+SIMPLEUI_LOGO = '/static/admin/simpleui-x/img/logo.png'
 
 # 是否收起菜单
 SIMPLEUI_DEFAULT_ICON = True
@@ -157,8 +157,14 @@ SIMPLEUI_DEFAULT_ICON = True
 LOGIN_REDIRECT_URL = '/admin/'
 LOGOUT_REDIRECT_URL = '/admin/login/'
 
+# 登录URL配置
+LOGIN_URL = '/admin/login/'
+
 # 设置管理后台为默认首页
 SIMPLEUI_INDEX = '/admin/'
+
+# 确保登录成功后跳转到管理后台主页而不是登录页
+SIMPLEUI_LOGIN_REDIRECT = '/admin/'
 
 # 隐藏右侧SimpleUI广告链接和使用分析
 SIMPLEUI_HOME_INFO = False
