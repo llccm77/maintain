@@ -1,10 +1,18 @@
 <template>
   <div class="dormitory-management">
     <div class="page-header">
-      <h1>宿舍管理</h1>
-      <button @click="showAddDialog = true" class="add-btn">
-        ➕ 新增宿舍
-      </button>
+      <div class="header-content">
+        <div class="title-section">
+          <StatusIcons type="house" :size="48" class="header-icon" />
+          <div class="title-text">
+            <h1>我的小窝们</h1>
+            <p class="subtitle">每一个房间都是温馨的小家</p>
+          </div>
+        </div>
+        <button @click="showAddDialog = true" class="add-btn">
+          🏠 添加我的新小窝
+        </button>
+      </div>
     </div>
 
     <!-- 搜索和筛选区域 -->
@@ -13,11 +21,11 @@
         <input
           v-model="searchForm.keyword"
           type="text"
-          placeholder="搜索楼栋名称或房间号..."
+          placeholder="搜索我的小窝楼栋或房间号..."
           class="search-input"
           @keyup.enter="handleSearch"
         />
-        <button @click="handleSearch" class="search-btn">搜索</button>
+        <button @click="handleSearch" class="search-btn">🔍 寻找小窝</button>
       </div>
       
       <div class="filter-group">
@@ -53,25 +61,28 @@
         @click="viewDormitoryDetail(dormitory)"
       >
         <div class="card-header">
-          <h3>{{ dormitory.building_name }}-{{ dormitory.room_number }}</h3>
-          <span class="floor-badge">第{{ dormitory.floor }}楼</span>
+          <StatusIcons type="house" :size="32" class="house-icon" />
+          <div class="room-info">
+            <h3>{{ dormitory.building_name }}-{{ dormitory.room_number }}</h3>
+            <span class="floor-badge">第{{ dormitory.floor }}楼</span>
+          </div>
         </div>
         
         <div class="card-content">
           <div class="info-row">
-            <span class="label">入住情况:</span>
+            <span class="label">🏠 入住情况:</span>
             <span class="student-count" :class="getOccupancyClass(dormitory.student_count)">
               {{ dormitory.student_count || 0 }}/4 人
             </span>
           </div>
           
           <div class="info-row">
-            <span class="label">报修次数:</span>
+            <span class="label">🔧 报修记录:</span>
             <span class="repair-count">{{ dormitory.repair_count || 0 }} 次</span>
           </div>
           
           <div class="info-row">
-            <span class="label">状态:</span>
+            <span class="label">✨ 小窝状态:</span>
             <span class="status" :class="getDormitoryStatusClass(dormitory)">
               {{ getDormitoryStatus(dormitory) }}
             </span>
@@ -80,10 +91,10 @@
         
         <div class="card-actions">
           <button @click.stop="editDormitory(dormitory)" class="edit-btn">
-            ✏️ 编辑
+            ✏️ 管理小窝
           </button>
           <button @click.stop="deleteDormitory(dormitory)" class="delete-btn">
-            🗑️ 删除
+            🗑️ 移除
           </button>
         </div>
       </div>
@@ -170,6 +181,7 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { dormitoryAPI } from '@/api'
+import StatusIcons from '@/components/StatusIcons.vue'
 
 // 响应式数据
 const loading = ref(false)
@@ -363,219 +375,351 @@ onMounted(() => {
   margin: 0 auto;
 }
 
+/* 页面头部样式 */
 .page-header {
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 50%, #E6E6FA 100%);
+  color: #5A5A5A;
+  padding: 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 32px rgba(255, 182, 193, 0.3);
+}
+
+.header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
+  width: 100%;
 }
 
-.page-header h1 {
-  color: #333;
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-icon {
+  color: #FF69B4;
+  filter: drop-shadow(0 2px 4px rgba(255, 105, 180, 0.3));
+}
+
+.title-text h1 {
   margin: 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #4A4A4A;
+}
+
+.subtitle {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: #8A8A8A;
+  font-weight: 400;
 }
 
 .add-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #FF69B4 0%, #FFB6C1 100%);
   color: white;
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.5);
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 25px;
   cursor: pointer;
+  font-size: 16px;
   font-weight: 500;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
 }
 
 .add-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
 }
 
 /* 搜索筛选样式 */
 .search-filter {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+  background: linear-gradient(135deg, #F0F8FF 0%, #E6E6FA 50%, #FFF0F5 100%);
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(230, 230, 250, 0.4);
+  margin-bottom: 24px;
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
   align-items: center;
+  border: 1px solid rgba(255, 182, 193, 0.2);
 }
 
 .search-group {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
   min-width: 250px;
 }
 
 .search-input {
   flex: 1;
-  padding: 10px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border: 2px solid rgba(255, 182, 193, 0.3);
+  border-radius: 12px;
   font-size: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #FF69B4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+  background: white;
 }
 
 .search-btn {
-  background: #667eea;
+  background: linear-gradient(135deg, #FF69B4 0%, #FFB6C1 100%);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(255, 105, 180, 0.3);
+}
+
+.search-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
 }
 
 .filter-group {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .filter-group select {
-  padding: 10px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border: 2px solid rgba(255, 182, 193, 0.3);
+  border-radius: 12px;
   font-size: 14px;
+  background: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #FF69B4;
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
 }
 
 /* 宿舍卡片网格 */
 .dormitory-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
   margin-bottom: 30px;
 }
 
 .loading, .no-data {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 40px;
-  color: #666;
+  padding: 60px 20px;
+  color: #8A8A8A;
+  font-size: 16px;
+  background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%);
+  border-radius: 16px;
+  border: 2px dashed rgba(255, 182, 193, 0.3);
 }
 
 .dormitory-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(255, 182, 193, 0.2);
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 182, 193, 0.1);
 }
 
 .dormitory-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(255, 182, 193, 0.3);
+  border-color: rgba(255, 105, 180, 0.2);
 }
 
 .card-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 15px 20px;
+  background: linear-gradient(135deg, #FFB6C1 0%, #FFC0CB 50%, #E6E6FA 100%);
+  color: #4A4A4A;
+  padding: 20px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.card-header h3 {
-  margin: 0;
+.house-icon {
+  color: #FF69B4;
+  filter: drop-shadow(0 2px 4px rgba(255, 105, 180, 0.3));
+}
+
+.room-info {
+  flex: 1;
+}
+
+.room-info h3 {
+  margin: 0 0 4px 0;
   font-size: 18px;
+  font-weight: 600;
+  color: #4A4A4A;
 }
 
 .floor-badge {
-  background: rgba(255,255,255,0.2);
-  padding: 4px 8px;
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  color: #666;
+  padding: 4px 12px;
+  border-radius: 12px;
   font-size: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(255, 182, 193, 0.2);
 }
 
 .card-content {
-  padding: 20px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .info-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.05) 0%, rgba(230, 230, 250, 0.05) 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 182, 193, 0.1);
+  transition: all 0.3s ease;
 }
 
 .info-row:last-child {
   margin-bottom: 0;
 }
 
+.info-row:hover {
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.1) 0%, rgba(230, 230, 250, 0.1) 100%);
+  transform: translateX(2px);
+}
+
 .label {
   color: #666;
   font-size: 14px;
+  font-weight: 500;
 }
 
 .student-count {
-  font-weight: 500;
-  padding: 3px 8px;
-  border-radius: 12px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 16px;
   font-size: 13px;
+  border: 1px solid;
 }
 
-.student-count.empty { background: #f8f9fa; color: #6c757d; }
-.student-count.normal { background: #d4edda; color: #155724; }
-.student-count.full { background: #fff3cd; color: #856404; }
-.student-count.overcrowded { background: #f8d7da; color: #721c24; }
+.student-count.empty { 
+  background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%); 
+  color: #6C757D; 
+  border-color: #DEE2E6;
+}
+.student-count.normal { 
+  background: linear-gradient(135deg, #D1ECF1 0%, #BEE5EB 100%); 
+  color: #0C5460; 
+  border-color: #B8DAFF;
+}
+.student-count.full { 
+  background: linear-gradient(135deg, #FFF3CD 0%, #FFEAA7 100%); 
+  color: #856404; 
+  border-color: #FFEAA7;
+}
+.student-count.overcrowded { 
+  background: linear-gradient(135deg, #F8D7DA 0%, #F5C6CB 100%); 
+  color: #721C24; 
+  border-color: #F5C6CB;
+}
 
 .repair-count {
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #4A4A4A;
+  padding: 4px 8px;
+  background: rgba(255, 182, 193, 0.1);
+  border-radius: 8px;
 }
 
 .status {
-  padding: 3px 8px;
-  border-radius: 12px;
+  padding: 6px 12px;
+  border-radius: 16px;
   font-size: 13px;
-  font-weight: 500;
+  font-weight: 600;
+  border: 1px solid;
 }
 
-.status-normal { background: #d4edda; color: #155724; }
-.status-empty { background: #f8f9fa; color: #6c757d; }
-.status-overcrowded { background: #f8d7da; color: #721c24; }
-.status-repair { background: #fff3cd; color: #856404; }
+.status-normal { 
+  background: linear-gradient(135deg, #D1ECF1 0%, #BEE5EB 100%); 
+  color: #0C5460; 
+  border-color: #B8DAFF;
+}
+.status-empty { 
+  background: linear-gradient(135deg, #F8F9FA 0%, #E9ECEF 100%); 
+  color: #6C757D; 
+  border-color: #DEE2E6;
+}
+.status-overcrowded { 
+  background: linear-gradient(135deg, #F8D7DA 0%, #F5C6CB 100%); 
+  color: #721C24; 
+  border-color: #F5C6CB;
+}
+.status-repair { 
+  background: linear-gradient(135deg, #FFF3CD 0%, #FFEAA7 100%); 
+  color: #856404; 
+  border-color: #FFEAA7;
+}
 
 .card-actions {
-  padding: 15px 20px;
-  background: #f8f9fa;
+  padding: 20px 24px;
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.05) 0%, rgba(230, 230, 250, 0.05) 100%);
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 182, 193, 0.1);
 }
 
 .edit-btn, .delete-btn {
   flex: 1;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 6px;
+  padding: 10px 16px;
+  border: 2px solid;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 13px;
-  transition: background-color 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
 }
 
 .edit-btn {
-  background: #e3f2fd;
-  color: #1976d2;
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+  color: #1976D2;
+  border-color: #90CAF9;
 }
 
 .edit-btn:hover {
-  background: #bbdefb;
+  background: linear-gradient(135deg, #BBDEFB 0%, #90CAF9 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.2);
 }
 
 .delete-btn {
-  background: #ffebee;
-  color: #d32f2f;
+  background: linear-gradient(135deg, #FFEBEE 0%, #FFCDD2 100%);
+  color: #D32F2F;
+  border-color: #FFAB91;
 }
 
 .delete-btn:hover {
-  background: #ffcdd2;
+  background: linear-gradient(135deg, #FFCDD2 0%, #FFAB91 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.2);
 }
 
 /* 分页样式 */
@@ -585,30 +729,45 @@ onMounted(() => {
   align-items: center;
   gap: 20px;
   margin-top: 30px;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.05) 0%, rgba(230, 230, 250, 0.05) 100%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 182, 193, 0.1);
 }
 
 .page-btn {
-  background: #667eea;
+  background: linear-gradient(135deg, #FF69B4 0%, #FFB6C1 100%);
   color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  padding: 12px 20px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.2s;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(255, 105, 180, 0.3);
 }
 
 .page-btn:hover:not(:disabled) {
-  background: #5a6fd8;
+  background: linear-gradient(135deg, #FF1493 0%, #FF69B4 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(255, 105, 180, 0.4);
 }
 
 .page-btn:disabled {
-  background: #ccc;
+  background: linear-gradient(135deg, #E9ECEF 0%, #DEE2E6 100%);
+  color: #6C757D;
+  border-color: #DEE2E6;
   cursor: not-allowed;
+  box-shadow: none;
 }
 
 .page-info {
   color: #666;
   font-weight: 500;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 182, 193, 0.2);
 }
 
 /* 对话框样式 */

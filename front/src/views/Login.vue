@@ -1,26 +1,43 @@
 <template>
   <div class="login-container">
-    <!-- 登录表单卡片 -->
+    <!-- 背景装饰元素 -->
+    <div class="background-decorations">
+      <div class="floating-element element-1">🏠</div>
+      <div class="floating-element element-2">🔧</div>
+      <div class="floating-element element-3">💡</div>
+      <div class="floating-element element-4">🛠️</div>
+      <div class="floating-element element-5">🏡</div>
+    </div>
+    
     <div class="login-card">
-      <!-- 系统Logo和标题 -->
       <div class="login-header">
-        <div class="system-logo">
-          <div class="logo-container">
-            <div class="logo-bg">
-              <div class="logo-icon-main">🏠</div>
-            </div>
-          </div>
+        <!-- 手绘风格的宿舍图标 -->
+        <div class="dorm-icon">
+          <svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+            <!-- 宿舍楼主体 -->
+            <rect x="15" y="35" width="50" height="35" fill="#FFE5CC" stroke="#FF9A8B" stroke-width="2" rx="3"/>
+            <!-- 屋顶 -->
+            <polygon points="10,35 40,15 70,35" fill="#FF9A8B" stroke="#FF6B6B" stroke-width="2"/>
+            <!-- 窗户 -->
+            <rect x="22" y="42" width="8" height="8" fill="#87CEEB" stroke="#4A90E2" stroke-width="1" rx="1"/>
+            <rect x="36" y="42" width="8" height="8" fill="#87CEEB" stroke="#4A90E2" stroke-width="1" rx="1"/>
+            <rect x="50" y="42" width="8" height="8" fill="#87CEEB" stroke="#4A90E2" stroke-width="1" rx="1"/>
+            <rect x="22" y="55" width="8" height="8" fill="#87CEEB" stroke="#4A90E2" stroke-width="1" rx="1"/>
+            <rect x="50" y="55" width="8" height="8" fill="#87CEEB" stroke="#4A90E2" stroke-width="1" rx="1"/>
+            <!-- 门 -->
+            <rect x="36" y="55" width="8" height="15" fill="#DEB887" stroke="#CD853F" stroke-width="1" rx="1"/>
+            <circle cx="42" cy="62" r="1" fill="#CD853F"/>
+            <!-- 烟囱 -->
+            <rect x="55" y="20" width="4" height="15" fill="#FF9A8B" stroke="#FF6B6B" stroke-width="1"/>
+            <!-- 爱心装饰 -->
+            <path d="M25 25 C25 22, 30 22, 30 25 C30 22, 35 22, 35 25 C35 28, 30 32, 30 32 C30 32, 25 28, 25 25 Z" fill="#FFB6C1"/>
+          </svg>
         </div>
-        <h1 class="system-title">宿舍维修管理系统</h1>
-        <p class="system-subtitle">University Dormitory Maintenance System</p>
-        <div class="title-decoration">
-          <div class="decoration-line"></div>
-          <div class="decoration-dot"></div>
-          <div class="decoration-line"></div>
-        </div>
+        <h1 class="system-title">宿舍小管家</h1>
+        <p class="system-subtitle">让宿舍生活更美好 ✨</p>
+        <p class="welcome-message">嗨！欢迎回到温馨的小窝～</p>
       </div>
 
-      <!-- 登录表单 -->
       <el-form
         ref="loginFormRef"
         :model="loginForm"
@@ -29,33 +46,54 @@
         @submit.prevent="handleLogin"
       >
         <el-form-item prop="username">
-          <el-input
-            v-model="loginForm.username"
-            size="large"
-            placeholder="请输入用户名"
-            prefix-icon="User"
-            clearable
-            @keyup.enter="handleLogin"
-          />
+          <div class="input-wrapper">
+            <div class="input-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <!-- 手绘风格的用户图标 -->
+                <circle cx="10" cy="7" r="3" fill="none" stroke="#A8E6CF" stroke-width="2" stroke-linecap="round"/>
+                <path d="M4 18c0-4 2.5-6 6-6s6 2 6 6" fill="none" stroke="#A8E6CF" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <el-input
+              v-model="loginForm.username"
+              size="large"
+              placeholder="输入你的学号或手机号呀～"
+              clearable
+              @keyup.enter="handleLogin"
+            />
+          </div>
         </el-form-item>
 
         <el-form-item prop="password">
-          <el-input
-            v-model="loginForm.password"
-            type="password"
-            size="large"
-            placeholder="请输入密码"
-            prefix-icon="Lock"
-            show-password
-            clearable
-            @keyup.enter="handleLogin"
-          />
+          <div class="input-wrapper">
+            <div class="input-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <!-- 手绘风格的锁图标 -->
+                <rect x="6" y="9" width="8" height="7" fill="none" stroke="#FFD3A5" stroke-width="2" rx="1" stroke-linecap="round"/>
+                <path d="M8 9V6a2 2 0 0 1 4 0v3" fill="none" stroke="#FFD3A5" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="10" cy="13" r="1" fill="#FFD3A5"/>
+              </svg>
+            </div>
+            <el-input
+              v-model="loginForm.password"
+              type="password"
+              size="large"
+              placeholder="悄悄告诉我密码～"
+              show-password
+              clearable
+              @keyup.enter="handleLogin"
+            />
+          </div>
         </el-form-item>
 
         <el-form-item>
           <div class="remember-forgot">
-            <el-checkbox v-model="loginForm.remember">记住我</el-checkbox>
-            <el-link type="primary" :underline="false">忘记密码？</el-link>
+            <el-checkbox v-model="loginForm.remember">
+              <span class="checkbox-text">下次自动登录 💝</span>
+            </el-checkbox>
+            <el-link type="primary" :underline="false" class="forgot-link">
+              <span>忘记密码了？🤔</span>
+            </el-link>
           </div>
         </el-form-item>
 
@@ -68,48 +106,37 @@
             @click="handleLogin"
           >
             <template v-if="!loading">
-              <el-icon><Right /></el-icon>
-              登录
+              <span class="button-content">
+                <svg width="16" height="16" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" class="button-icon">
+                  <path d="M8 1l6 7H9v7H7V8H2l6-7z" fill="currentColor" stroke="currentColor" stroke-width="0.5" stroke-linejoin="round"/>
+                </svg>
+                进入我的小窝 🏠
+              </span>
             </template>
             <template v-else>
-              登录中...
+              <span class="loading-text">正在为你开门中... ✨</span>
             </template>
           </el-button>
         </el-form-item>
       </el-form>
 
-      <!-- 错误提示 -->
-      <el-alert
-        v-if="error"
-        :title="error"
-        type="error"
-        center
-        show-icon
-        :closable="false"
-      />
-
-      <!-- 页脚信息 -->
+      <div v-if="error" class="error-message">
+        <div class="error-icon">😅</div>
+        <p class="error-text">{{ getErrorMessage(error) }}</p>
+      </div>
+      
+      <!-- 底部温馨提示 -->
       <div class="login-footer">
-        <div class="quick-access">
-          <div class="access-item">
-            <div class="access-icon">🛠️</div>
-            <span>智能派单</span>
+        <div class="tips">
+          <div class="tip-item">
+            <span class="tip-icon">💡</span>
+            <span class="tip-text">遇到问题？联系宿管阿姨哦～</span>
           </div>
-          <div class="access-item">
-            <div class="access-icon">⏰</div>
-            <span>实时追踪</span>
-          </div>
-          <div class="access-item">
-            <div class="access-icon">⭐</div>
-            <span>服务评价</span>
+          <div class="tip-item">
+            <span class="tip-icon">🌟</span>
+            <span class="tip-text">让我们一起创造美好的宿舍生活</span>
           </div>
         </div>
-        <p class="copyright">
-          © 2025 University Dormitory Management System v1.0.0
-        </p>
-        <p class="powered-by">
-          Powered by Smart Campus Technology
-        </p>
       </div>
     </div>
   </div>
@@ -120,64 +147,63 @@ import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useAuthStore } from '@/stores'
-import { House, User, Lock, Right } from '@element-plus/icons-vue'
+import { User, Lock, Right } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
 
-// 表单引用
 const loginFormRef = ref()
-
-// 加载状态
 const loading = ref(false)
 const error = ref('')
 
-// 登录表单数据
 const loginForm = reactive({
   username: '',
   password: '',
   remember: false
 })
 
-// 表单验证规则
 const loginRules = {
   username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 3, max: 20, message: '用户名长度在 3 到 20 个字符', trigger: 'blur' }
+    { required: true, message: '别忘了告诉我你是谁呀～', trigger: 'blur' },
+    { min: 3, max: 20, message: '用户名要在 3 到 20 个字符之间哦～', trigger: 'blur' }
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, message: '密码长度不能少于 6 个字符', trigger: 'blur' }
+    { required: true, message: '密码不能为空呢～', trigger: 'blur' },
+    { min: 6, message: '密码至少要 6 个字符，安全第一！', trigger: 'blur' }
   ]
 }
 
-// 处理登录
+const getErrorMessage = (error) => {
+  const errorMessages = {
+    '用户名或密码错误': '哎呀，用户名或密码好像不对呢～再试试？',
+    '网络连接失败': '网络好像有点小脾气，稍后再试试吧～',
+    '服务器错误': '服务器小哥哥在休息，请稍后再来～',
+    '登录失败': '登录遇到了小问题，不要着急哦～'
+  }
+  return errorMessages[error] || '出了点小状况，但没关系，我们一起解决～'
+}
+
 const handleLogin = async () => {
   if (!loginFormRef.value) return
   
   try {
-    // 表单验证
     await loginFormRef.value.validate()
     
     loading.value = true
     error.value = ''
     
-    // 调用登录API
     await authStore.login({
       username: loginForm.username,
       password: loginForm.password
     })
     
-    // 记住用户选项
     if (loginForm.remember) {
       localStorage.setItem('remember_user', loginForm.username)
     } else {
       localStorage.removeItem('remember_user')
     }
     
-    ElMessage.success('登录成功！')
-    
-    // 跳转到仪表盘
+    ElMessage.success('欢迎回家！🏠')
     router.push('/dashboard')
     
   } catch (err) {
@@ -195,14 +221,11 @@ const handleLogin = async () => {
   }
 }
 
-// 组件挂载后的初始化
 onMounted(() => {
-  // 如果已经登录，直接跳转到仪表盘
   if (authStore.isAuthenticated) {
     router.push('/dashboard')
   }
   
-  // 记住的用户名
   const rememberedUser = localStorage.getItem('remember_user')
   if (rememberedUser) {
     loginForm.username = rememberedUser
@@ -212,428 +235,216 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* 导入可爱字体 */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+
 .login-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: url('@/assets/images/fdf455c9b0aa5ca55656024e88b7008f.jpg') center 60%/cover no-repeat;
+  background: linear-gradient(135deg, #FFE5CC 0%, #FFD3A5 25%, #FFC3A0 50%, #FF9A8B 75%, #A8E6CF 100%);
+  padding: 20px;
+  font-family: 'Noto Sans SC', sans-serif;
   position: relative;
   overflow: hidden;
-  padding: 20px;
 }
 
-.login-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.1);
-  z-index: 1;
-}
-
-/* 校园背景装饰 */
-.campus-background {
+/* 背景装饰元素 */
+.background-decorations {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 2;
+  z-index: 1;
 }
 
-/* 校园建筑轮廓 */
-.building-silhouette {
+.floating-element {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 200px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
-  opacity: 0.1;
+  font-size: 2rem;
+  opacity: 0.3;
+  animation: float 6s ease-in-out infinite;
 }
 
-.building {
-  background: rgba(255, 255, 255, 0.8);
-  position: relative;
-}
-
-.building-1 {
-  width: 80px;
-  height: 120px;
-  border-radius: 8px 8px 0 0;
-}
-
-.building-2 {
-  width: 60px;
-  height: 100px;
-  border-radius: 4px 4px 0 0;
-}
-
-.building-3 {
-  width: 90px;
-  height: 140px;
-  border-radius: 12px 12px 0 0;
-}
-
-.building-4 {
-  width: 70px;
-  height: 110px;
-  border-radius: 6px 6px 0 0;
-}
-
-.building-5 {
-  width: 85px;
-  height: 130px;
-  border-radius: 10px 10px 0 0;
-}
-
-/* 漂浮学术元素 */
-.floating-elements {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.academic-icon {
-  position: absolute;
-  font-size: 24px;
-  opacity: 0.05;
-  animation: academicFloat 8s ease-in-out infinite;
-}
-
-.book-icon {
-  top: 15%;
+.element-1 {
+  top: 10%;
   left: 10%;
   animation-delay: 0s;
 }
 
-.graduation-cap {
-  top: 25%;
+.element-2 {
+  top: 20%;
   right: 15%;
-  animation-delay: 2s;
-}
-
-.lightbulb {
-  top: 60%;
-  left: 20%;
-  animation-delay: 4s;
-}
-
-.pencil {
-  top: 70%;
-  right: 25%;
-  animation-delay: 6s;
-}
-
-.atom {
-  top: 40%;
-  left: 60%;
   animation-delay: 1s;
 }
 
-@keyframes academicFloat {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-15px) rotate(5deg);
-  }
+.element-3 {
+  bottom: 30%;
+  left: 8%;
+  animation-delay: 2s;
 }
 
-/* 几何装饰 */
-.geometric-shapes {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.shape {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.05);
-  animation: shapeFloat 10s ease-in-out infinite;
-}
-
-.hexagon {
-  width: 60px;
-  height: 60px;
-  clip-path: polygon(30% 0%, 70% 0%, 100% 50%, 70% 100%, 30% 100%, 0% 50%);
-  top: 20%;
-  right: 10%;
-  animation-delay: 0s;
-}
-
-.triangle {
-  width: 0;
-  height: 0;
-  border-left: 25px solid transparent;
-  border-right: 25px solid transparent;
-  border-bottom: 43px solid rgba(255, 255, 255, 0.05);
-  background: transparent;
-  top: 80%;
-  left: 15%;
+.element-4 {
+  bottom: 15%;
+  right: 20%;
   animation-delay: 3s;
 }
 
-.circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+.element-5 {
   top: 50%;
-  right: 30%;
-  animation-delay: 5s;
+  left: 5%;
+  animation-delay: 4s;
 }
 
-@keyframes shapeFloat {
+@keyframes float {
   0%, 100% {
     transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-20px) rotate(180deg);
+    transform: translateY(-20px) rotate(5deg);
   }
 }
 
-/* 左侧校园信息面板 */
-.campus-info-panel {
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 350px;
-  height: 100vh;
-  background: rgba(44, 62, 80, 0.95);
-  backdrop-filter: blur(10px);
-  padding: 40px 30px;
-  color: white;
-  z-index: 4;
-  transform: translateX(-100%);
-  transition: transform 0.6s ease;
-}
-
-.login-container:hover .campus-info-panel {
-  transform: translateX(0);
-}
-
-.university-logo {
-  text-align: center;
-  margin-bottom: 40px;
-  padding-bottom: 30px;
-  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-}
-
-.logo-circle {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #3498db, #9b59b6);
-  margin: 0 auto 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.logo-icon {
-  font-size: 32px;
-}
-
-.university-name {
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  background: linear-gradient(135deg, #3498db, #9b59b6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.university-motto {
-  font-size: 14px;
-  opacity: 0.8;
-  font-style: italic;
-}
-
-.campus-features {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.feature-card {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
-
-.feature-card:hover {
-  background: rgba(255, 255, 255, 0.1);
-  transform: translateY(-2px);
-}
-
-.feature-icon {
-  font-size: 24px;
-  margin-bottom: 10px;
-}
-
-.feature-card h3 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 5px;
-  color: #3498db;
-}
-
-.feature-card p {
-  font-size: 12px;
-  opacity: 0.8;
-  line-height: 1.4;
-}
-
-/* 登录卡片 */
 .login-card {
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(15px);
   border-radius: 24px;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-  padding: 50px 40px;
+  padding: 48px;
+  box-shadow: 0 20px 60px rgba(255, 154, 139, 0.2), 0 8px 32px rgba(168, 230, 207, 0.15);
   width: 100%;
   max-width: 480px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 211, 165, 0.3);
   position: relative;
-  z-index: 3;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  margin: 0 auto;
+  z-index: 2;
+  animation: cardSlideIn 0.8s ease-out;
 }
 
-/* 登录头部 */
+@keyframes cardSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .login-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
 
-.system-logo {
-  margin-bottom: 20px;
+.dorm-icon {
+  margin-bottom: 16px;
+  animation: iconBounce 2s ease-in-out infinite;
 }
 
-.logo-container {
-  display: inline-block;
-  position: relative;
-}
-
-.logo-bg {
-  width: 80px;
-  height: 80px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.logo-bg::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transform: rotate(45deg);
-  animation: logoShine 3s ease-in-out infinite;
-}
-
-@keyframes logoShine {
-  0% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+@keyframes iconBounce {
+  0%, 100% {
+    transform: translateY(0);
   }
   50% {
-    transform: translateX(100%) translateY(100%) rotate(45deg);
+    transform: translateY(-5px);
   }
-  100% {
-    transform: translateX(-100%) translateY(-100%) rotate(45deg);
-  }
-}
-
-.logo-icon-main {
-  font-size: 36px;
-  position: relative;
-  z-index: 1;
 }
 
 .system-title {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
-  color: #2c3e50;
+  color: #FF6B6B;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.5px;
+  text-shadow: 2px 2px 4px rgba(255, 107, 107, 0.1);
 }
 
 .system-subtitle {
-  font-size: 14px;
-  color: #7f8c8d;
-  font-weight: 400;
-  margin-bottom: 20px;
-  letter-spacing: 1px;
+  font-size: 16px;
+  color: #FF9A8B;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
-.title-decoration {
+.welcome-message {
+  font-size: 14px;
+  color: #A8E6CF;
+  margin-bottom: 0;
+  font-weight: 400;
+}
+
+.login-form {
+  margin-bottom: 24px;
+  width: 100%;
+  padding: 0 24px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login-form .el-form-item:last-child {
+  margin-bottom: 0;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-top: 15px;
-}
-
-.decoration-line {
-  width: 30px;
-  height: 2px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  border-radius: 1px;
-}
-
-.decoration-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #667eea;
-}
-
-/* 登录表单 */
-.login-form {
-  margin-bottom: 30px;
-}
-
-.login-form .el-form-item {
-  margin-bottom: 24px;
-}
-
-.login-form :deep(.el-input__wrapper) {
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  border: 2px solid transparent;
-  background: rgba(248, 249, 250, 0.8);
+  width: 20px;
+  height: 20px;
   transition: all 0.3s ease;
 }
 
-.login-form :deep(.el-input__wrapper:hover) {
-  border-color: #667eea;
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+.input-wrapper :deep(.el-input__wrapper) {
+  padding-left: 50px;
+  padding-right: 24px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-radius: 20px;
+  border: 2px solid #FFE5CC;
+  background: rgba(255, 229, 204, 0.3);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 229, 204, 0.2);
+  min-height: 56px;
+  width: 100%;
 }
 
-.login-form :deep(.el-input__wrapper.is-focus) {
-  border-color: #667eea;
-  box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+.input-wrapper :deep(.el-input__wrapper:hover) {
+  border-color: #FFD3A5;
+  background: rgba(255, 211, 165, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 211, 165, 0.3);
+}
+
+.input-wrapper :deep(.el-input__wrapper.is-focus) {
+  border-color: #FF9A8B;
+  background: rgba(255, 154, 139, 0.2);
+  box-shadow: 0 0 0 4px rgba(255, 154, 139, 0.1);
+}
+
+.input-wrapper :deep(.el-input__inner) {
+  color: #FF6B6B;
+  font-weight: 500;
+  padding: 0;
+  height: auto;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.input-wrapper :deep(.el-input__inner::placeholder) {
+  color: #FFB6C1;
+  font-weight: 400;
 }
 
 .remember-forgot {
@@ -641,164 +452,239 @@ onMounted(() => {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin: 20px 0;
+}
+
+.checkbox-text {
+  color: #FF9A8B;
+  font-weight: 500;
   font-size: 14px;
+}
+
+.forgot-link {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.forgot-link :deep(.el-link__inner) {
+  color: #A8E6CF !important;
 }
 
 .login-button {
   width: 100%;
-  height: 50px;
+  height: 52px;
   font-size: 16px;
   font-weight: 600;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  background: linear-gradient(135deg, #FF9A8B 0%, #A8E6CF 100%);
   border: none;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.login-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.login-button:hover::before {
-  left: 100%;
+  box-shadow: 0 8px 24px rgba(255, 154, 139, 0.3);
 }
 
 .login-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(255, 154, 139, 0.4);
+  background: linear-gradient(135deg, #FF8A80 0%, #98E4D6 100%);
 }
 
-.login-button:active {
-  transform: translateY(0);
-}
-
-/* 登录页脚 */
-.login-footer {
-  text-align: center;
-  border-top: 2px solid rgba(102, 126, 234, 0.1);
-  padding-top: 25px;
-  margin-top: 20px;
-}
-
-.quick-access {
+.button-content {
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: center;
+  gap: 8px;
 }
 
-.access-item {
+.button-icon {
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+.loading-text {
+  animation: textShimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes textShimmer {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.error-message {
+  background: rgba(255, 182, 193, 0.2);
+  border: 2px solid #FFB6C1;
+  border-radius: 16px;
+  padding: 16px;
+  margin: 20px 0;
+  text-align: center;
+  animation: errorShake 0.5s ease-in-out;
+}
+
+@keyframes errorShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.error-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.error-text {
+  color: #FF6B6B;
+  font-weight: 500;
+  margin: 0;
+}
+
+.login-footer {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 2px solid rgba(255, 229, 204, 0.5);
+}
+
+.tips {
   display: flex;
   flex-direction: column;
+  gap: 12px;
+}
+
+.tip-item {
+  display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
   font-size: 13px;
-  color: #7f8c8d;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
+  color: #FF9A8B;
+  font-weight: 400;
 }
 
-.access-item:hover {
-  color: #667eea;
-  background: rgba(102, 126, 234, 0.05);
-  transform: translateY(-2px);
+.tip-icon {
+  font-size: 16px;
 }
 
-.access-icon {
-  font-size: 18px;
-  filter: grayscale(0.3);
-  transition: filter 0.3s ease;
-}
-
-.access-item:hover .access-icon {
-  filter: grayscale(0);
-}
-
-.copyright {
-  font-size: 12px;
-  color: #95a5a6;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-
-.powered-by {
-  font-size: 11px;
-  color: #bdc3c7;
-  font-style: italic;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .login-container {
-    padding: 15px;
-  }
-  
-  .login-card {
-    padding: 35px 25px;
-    border-radius: 20px;
-    max-width: 100%;
-  }
-  
-  .system-title {
-    font-size: 26px;
-  }
+.tip-text {
+  text-align: center;
 }
 
 @media (max-width: 480px) {
   .login-card {
-    padding: 25px 20px;
-    border-radius: 16px;
+    padding: 24px;
+    margin: 10px;
   }
   
   .system-title {
-    font-size: 22px;
-  }
-  
-  .quick-access {
-    flex-direction: column;
-    gap: 12px;
-  }
-  
-  .access-item {
-    flex-direction: row;
-    gap: 10px;
-    width: 100%;
-    justify-content: center;
-  }
-}
-
-/* 深色主题适配 */
-@media (prefers-color-scheme: dark) {
-  .login-card {
-    background: rgba(44, 62, 80, 0.95);
-    color: #ecf0f1;
-  }
-  
-  .system-title {
-    color: #ecf0f1;
+    font-size: 24px;
   }
   
   .system-subtitle {
-    color: #bdc3c7;
+    font-size: 14px;
   }
   
-  .copyright {
-    color: #7f8c8d;
+  .welcome-message {
+    font-size: 12px;
   }
   
-  .powered-by {
-    color: #95a5a6;
+  .floating-element {
+    font-size: 1.5rem;
   }
+  
+  .tips {
+    gap: 8px;
+  }
+  
+  .tip-item {
+    font-size: 12px;
+  }
+}
+
+/* Element Plus 组件样式覆盖 */
+:deep(.el-checkbox__label) {
+  color: #FF9A8B !important;
+  font-weight: 500;
+}
+
+:deep(.el-checkbox__input.is-checked .el-checkbox__inner) {
+  background-color: #A8E6CF !important;
+  border-color: #A8E6CF !important;
+}
+
+:deep(.el-checkbox__input.is-checked + .el-checkbox__label) {
+  color: #A8E6CF !important;
+}
+
+:deep(.el-form-item__error) {
+  color: #E74C3C !important;
+  font-weight: 600;
+  font-size: 13px;
+  background: rgba(231, 76, 60, 0.1);
+  border: 1px solid rgba(231, 76, 60, 0.2);
+  padding: 8px 16px;
+  border-radius: 12px;
+  margin-top: 8px;
+  margin-left: 0;
+  margin-right: 0;
+  box-shadow: 0 2px 4px rgba(231, 76, 60, 0.1);
+  position: static;
+  display: block;
+  text-align: left;
+  width: 100%;
+}
+
+:deep(.el-form-item__error):before {
+  content: '⚠️ ';
+  margin-right: 4px;
+}
+
+/* 确保错误提示显示在正确位置 */
+:deep(.el-form-item__content) {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(.el-form-item.is-error) {
+  margin-bottom: 32px;
+}
+
+/* 确保表单项有足够的间距 */
+:deep(.el-form-item) {
+  margin-bottom: 28px;
+}
+
+:deep(.el-form-item:first-child) {
+  margin-top: 8px;
+}
+
+/* 优化输入框在错误状态下的样式 */
+:deep(.el-form-item.is-error .el-input__wrapper) {
+  border-color: #E74C3C !important;
+  box-shadow: 0 0 0 1px rgba(231, 76, 60, 0.2) !important;
+}
+
+:deep(.el-form-item.is-error .el-input__wrapper):hover {
+  border-color: #E74C3C !important;
+}
+
+:deep(.el-form-item.is-error .el-input__wrapper.is-focus) {
+  border-color: #E74C3C !important;
+  box-shadow: 0 0 0 1px rgba(231, 76, 60, 0.3) !important;
 }
 </style>

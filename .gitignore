@@ -80,6 +80,18 @@ coverage.xml
 # 文档
 docs/_build/
 
+# 敏感文件和会话数据
+cookies.txt
+*.session
+*.cookie
+
+# Django敏感配置文件
+local_settings.py
+.env.local
+.env.production
+settings_local.py
+settings_production.py
+
 # 其他
 *.bak
 *.tmp

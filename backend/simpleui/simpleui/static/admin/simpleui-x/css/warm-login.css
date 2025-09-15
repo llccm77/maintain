@@ -1,0 +1,865 @@
+/* 宿舍维修管理系统 - 温暖轻拟物风格登录页面 */
+
+/* 引入阿里巴巴矢量图标库 */
+@import url('//at.alicdn.com/t/c/font_4701548_2y8m9sbwm18.css');
+
+/* 基础样式重置 */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* 温暖的渐变背景 */
+.bg {
+    background: linear-gradient(135deg, 
+        #FFF8E1 0%,     /* 柔和鹅黄 */
+        #FFE0B2 25%,    /* 暖橘色 */
+        #E8F5E8 50%,    /* 浅绿色 */
+        #F3E5F5 75%,    /* 淡紫色 */
+        #FFF3E0 100%);  /* 米白色 */
+    background-size: 400% 400%;
+    animation: gentleGradient 15s ease infinite;
+    position: relative;
+    min-height: 100vh;
+}
+
+/* 柔和的背景动画 */
+@keyframes gentleGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 温暖的装饰元素 */
+.bg::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(255, 183, 77, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(129, 199, 132, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(255, 138, 101, 0.1) 0%, transparent 50%);
+    animation: floatDecor 20s ease-in-out infinite;
+    z-index: 1;
+}
+
+@keyframes floatDecor {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(2deg); }
+}
+
+/* 人文关怀标语 */
+.humanistic-quote {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(93, 64, 55, 0.7);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    animation: fadeInDown 1.5s ease-out;
+    z-index: 3;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* 生活场景装饰元素 */
+.life-decorations {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.life-icon {
+    position: absolute;
+    color: rgba(255, 138, 101, 0.4);
+    animation: gentleFloat 8s ease-in-out infinite;
+}
+
+.life-icon:nth-child(1) {
+    top: 15%;
+    left: 8%;
+    font-size: 20px;
+    animation-delay: 0s;
+}
+
+.life-icon:nth-child(2) {
+    top: 25%;
+    right: 12%;
+    font-size: 18px;
+    animation-delay: 2s;
+}
+
+.life-icon:nth-child(3) {
+    top: 60%;
+    left: 5%;
+    font-size: 22px;
+    animation-delay: 4s;
+}
+
+.life-icon:nth-child(4) {
+    top: 75%;
+    right: 8%;
+    font-size: 16px;
+    animation-delay: 6s;
+}
+
+.life-icon:nth-child(5) {
+    top: 45%;
+    left: 15%;
+    font-size: 19px;
+    animation-delay: 1s;
+}
+
+.life-icon:nth-child(6) {
+    top: 35%;
+    right: 25%;
+    font-size: 17px;
+    animation-delay: 3s;
+}
+
+@keyframes gentleFloat {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-15px) rotate(5deg);
+        opacity: 0.6;
+    }
+}
+
+/* 主容器布局 */
+.login-decorator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    gap: 80px;
+    position: relative;
+    z-index: 2;
+}
+
+/* 左侧欢迎区域 */
+.login-side-info {
+    flex: 1;
+    max-width: 500px;
+    position: relative;
+    animation: slideInLeft 0.8s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.welcome-text {
+    color: #5D4037; /* 温暖的棕色 */
+    text-align: left;
+}
+
+.welcome-text h2 {
+    font-size: 42px;
+    font-weight: 600;
+    margin: 0 0 15px 0;
+    color: #FF8A65; /* 暖橘色 */
+    text-shadow: 0 2px 8px rgba(255, 138, 101, 0.3);
+}
+
+.welcome-text h3 {
+    font-size: 28px;
+    font-weight: 500;
+    margin: 0 0 20px 0;
+    color: #6D4C41; /* 深棕色 */
+}
+
+.welcome-text p {
+    font-size: 18px;
+    margin: 0 0 30px 0;
+    color: #8D6E63; /* 中性棕色 */
+    letter-spacing: 1px;
+    font-weight: 400;
+}
+
+/* 人文关怀卡片 */
+.care-message {
+    margin: 25px 0 35px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 138, 101, 0.2);
+    box-shadow: 0 4px 20px rgba(255, 138, 101, 0.1);
+}
+
+.care-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+    color: #6D4C41;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.care-item .iconfont {
+    font-size: 18px;
+    color: #FF8A65;
+    width: 20px;
+    text-align: center;
+}
+
+.care-item:first-child {
+    margin-top: 0;
+}
+
+.care-item:last-child {
+    margin-bottom: 0;
+}
+
+/* 特色功能卡片 */
+.feature-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 138, 101, 0.2);
+    box-shadow: 
+        0 4px 20px rgba(255, 138, 101, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 
+        0 8px 25px rgba(255, 138, 101, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.feature-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 138, 101, 0.05) 0%, 
+        transparent 50%, 
+        rgba(129, 199, 132, 0.05) 100%);
+    z-index: 0;
+}
+
+.feature-item > * {
+    position: relative;
+    z-index: 1;
+}
+
+.feature-item .iconfont {
+    font-size: 24px;
+    color: #FF8A65;
+    width: 32px;
+    text-align: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.feature-item:hover .iconfont {
+    transform: scale(1.1);
+    color: #FF7043;
+}
+
+.feature-item div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.feature-item span {
+    font-size: 16px;
+    color: #5D4037;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.feature-item small {
+    font-size: 13px;
+    color: #8D6E63;
+    font-weight: 400;
+    line-height: 1.3;
+    opacity: 0.9;
+}
+
+/* 装饰插画 */
+.decorative-illustration {
+    position: absolute;
+    top: -50px;
+    right: -100px;
+    width: 350px;
+    height: 350px;
+    opacity: 0.15;
+    animation: float 8s ease-in-out infinite;
+    z-index: 0;
+}
+
+@keyframes float {
+    0%, 100% { 
+        transform: translateY(0px) rotate(0deg); 
+    }
+    50% { 
+        transform: translateY(-15px) rotate(2deg); 
+    }
+}
+
+/* 右侧登录表单区域 */
+.login-form-container {
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 10;
+    animation: slideInRight 0.8s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* 登录卡片 - 轻拟物风格 */
+.login-main {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    box-shadow: 
+        0 8px 32px rgba(255, 138, 101, 0.15),
+        0 2px 8px rgba(0, 0, 0, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(255, 138, 101, 0.2);
+    max-width: 400px;
+    width: 100%;
+    padding: 40px 35px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.login-main:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(255, 138, 101, 0.2),
+        0 4px 12px rgba(0, 0, 0, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+/* 温暖的内部光晕 */
+.login-main::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, 
+        rgba(255, 138, 101, 0.03) 0%, 
+        transparent 50%, 
+        rgba(129, 199, 132, 0.03) 100%);
+    border-radius: 24px;
+    z-index: 0;
+}
+
+.login-main > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Logo样式 */
+.logo {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.logo-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 15px;
+    background: linear-gradient(135deg, #FFB74D, #FF8A65);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 6px 20px rgba(255, 138, 101, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.logo:hover .logo-icon {
+    transform: scale(1.05);
+    box-shadow: 
+        0 8px 25px rgba(255, 138, 101, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.logo-icon .iconfont {
+    font-size: 40px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.logo-text {
+    font-size: 16px;
+    color: #6D4C41;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* 标题样式 */
+.header {
+    text-align: center;
+    margin: 0 auto 30px auto;
+}
+
+.header-text {
+    font-size: 26px;
+    color: #5D4037;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.sub-header {
+    font-size: 14px;
+    color: #8D6E63;
+    font-weight: 400;
+    margin-top: 10px;
+}
+
+/* 欢迎注释 */
+.welcome-note {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 8px 15px;
+    background: rgba(255, 138, 101, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 138, 101, 0.2);
+}
+
+.welcome-note .iconfont {
+    font-size: 14px;
+    color: #FF8A65;
+}
+
+.welcome-note span {
+    font-size: 13px;
+    color: #6D4C41;
+    font-weight: 400;
+}
+
+/* 输入框样式 - 轻拟物设计 */
+.simpleui-input-inline {
+    margin: 18px 0;
+}
+
+.simpleui-input-inline .el-input__inner {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid rgba(255, 138, 101, 0.2);
+    border-radius: 14px;
+    height: 48px;
+    padding: 0 20px 0 45px;
+    font-size: 15px;
+    color: #5D4037;
+    transition: all 0.3s ease;
+    box-shadow: 
+        inset 0 2px 4px rgba(255, 138, 101, 0.1),
+        0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.simpleui-input-inline .el-input__inner:focus {
+    border-color: #FF8A65;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 
+        inset 0 2px 4px rgba(255, 138, 101, 0.15),
+        0 0 0 3px rgba(255, 138, 101, 0.1),
+        0 2px 8px rgba(255, 138, 101, 0.2);
+    transform: translateY(-1px);
+}
+
+.simpleui-input-inline .el-input__inner::placeholder {
+    color: #BCAAA4;
+    font-weight: 400;
+}
+
+.simpleui-input-inline .el-input__prefix {
+    left: 16px;
+    color: #FF8A65;
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+.simpleui-input-inline .el-input.is-focus .el-input__prefix {
+    color: #FF7043;
+    transform: scale(1.1);
+}
+
+/* 登录按钮 - 温暖的拟物按钮 */
+.login-btn {
+    margin-top: 25px;
+}
+
+.login-btn button {
+    width: 100%;
+    height: 48px;
+    background: linear-gradient(135deg, #FFB74D 0%, #FF8A65 100%);
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 
+        0 4px 15px rgba(255, 138, 101, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+}
+
+.login-btn button:hover {
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 20px rgba(255, 138, 101, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    background: linear-gradient(135deg, #FFA726 0%, #FF7043 100%);
+}
+
+.login-btn button:active {
+    transform: translateY(0px);
+    box-shadow: 
+        0 2px 8px rgba(255, 138, 101, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* 按钮光效 */
+.login-btn button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent);
+    transition: left 0.5s;
+}
+
+.login-btn button:hover::before {
+    left: 100%;
+}
+
+/* 记住登录选项 */
+.login-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.remember-me label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #6D4C41;
+    cursor: pointer;
+    font-weight: 400;
+}
+
+.remember-me input[type="checkbox"] {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #BCAAA4;
+    border-radius: 6px;
+    margin-right: 8px;
+    position: relative;
+    transition: all 0.3s ease;
+    background: white;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.remember-me input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, #FFB74D, #FF8A65);
+    border-color: #FF8A65;
+    box-shadow: 
+        inset 0 1px 2px rgba(0, 0, 0, 0.1),
+        0 0 0 2px rgba(255, 138, 101, 0.2);
+}
+
+.remember-me input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* 忘记密码链接 */
+.forgot-password {
+    color: #FF8A65;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.3s ease;
+    font-weight: 400;
+}
+
+.forgot-password:hover {
+    color: #FF7043;
+    text-decoration: underline;
+}
+
+/* 页脚信息 */
+.login-footer {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 138, 101, 0.2);
+}
+
+/* 温暖问候 */
+.warm-message {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.warm-message p {
+    margin: 0;
+    font-size: 14px;
+    color: #FF8A65;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    animation: warmPulse 3s ease-in-out infinite;
+}
+
+@keyframes warmPulse {
+    0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+}
+
+.warm-message .iconfont {
+    font-size: 16px;
+    color: #FFB74D;
+}
+
+.system-info p {
+    margin: 6px 0;
+    font-size: 12px;
+    color: #8D6E63;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.system-info .iconfont {
+    font-size: 12px;
+    color: #FF8A65;
+}
+
+.help-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+}
+
+.help-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #FF8A65;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-weight: 400;
+    border: 1px solid transparent;
+}
+
+.help-link:hover {
+    background: rgba(255, 138, 101, 0.1);
+    color: #FF7043;
+    border-color: rgba(255, 138, 101, 0.3);
+    transform: translateY(-1px);
+}
+
+.help-link .iconfont {
+    font-size: 12px;
+}
+
+/* 错误提示样式 */
+.error-alert {
+    background: rgba(244, 67, 54, 0.1);
+    color: #D32F2F;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    border-left: 4px solid #F44336;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+    .login-decorator {
+        flex-direction: column;
+        gap: 40px;
+        padding: 20px;
+    }
+    
+    .login-side-info {
+        text-align: center;
+        order: 2;
+        max-width: 100%;
+    }
+    
+    .login-form-container {
+        order: 1;
+        width: 100%;
+        max-width: 400px;
+    }
+    
+    .decorative-illustration {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .login-side-info {
+        display: none;
+    }
+    
+    .feature-list {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+        margin: 20px auto 0;
+    }
+    
+    .welcome-text h2 {
+        font-size: 32px;
+    }
+    
+    .welcome-text h3 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-main {
+        margin: 10px;
+        padding: 30px 25px;
+    }
+    
+    .header-text {
+        font-size: 22px;
+    }
+    
+    .simpleui-input-inline .el-input__inner {
+        height: 44px;
+        font-size: 14px;
+    }
+    
+    .login-btn button {
+        height: 44px;
+        font-size: 15px;
+    }
+    
+    .login-options {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* 加载状态 */
+.login-btn button.loading {
+    animation: pulse 1.5s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: translateY(-2px) scale(1);
+    }
+    50% {
+        transform: translateY(-2px) scale(1.02);
+    }
+}
+
+/* 布局切换按钮隐藏 */
+.layout-toggle {
+    display: none;
+}

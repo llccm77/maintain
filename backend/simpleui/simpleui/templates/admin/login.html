@@ -22,7 +22,7 @@
     {% include 'admin/includes/css-part.html' %}
 
     {% block css %}
-        <link rel="stylesheet" href="{% static 'admin/simpleui-x/css/login.css' %}?_=3.0">
+        <link rel="stylesheet" href="{% static 'admin/simpleui-x/css/warm-login.css' %}?_=1.0">
     {% endblock %}
     {% block bg %}
         <!-- 背景样式由CSS文件处理 -->
@@ -33,87 +33,172 @@
     {% endblock %}
 </head>
 <body class="bg">
+    <!-- 人文关怀标语 -->
+    <div class="humanistic-quote">
+        "让每一次服务，都温暖如家"
+    </div>
+    
+    <!-- 生活场景装饰元素 -->
+    <div class="life-decorations">
+        <i class="life-icon iconfont icon-kafei"></i>        <!-- 咖啡杯 -->
+        <i class="life-icon iconfont icon-shu"></i>          <!-- 书本 -->
+        <i class="life-icon iconfont icon-zhiwu"></i>       <!-- 植物 -->
+        <i class="life-icon iconfont icon-yinyue"></i>      <!-- 音乐 -->
+        <i class="life-icon iconfont icon-taiyangsan"></i>  <!-- 太阳伞 -->
+        <i class="life-icon iconfont icon-xin"></i>         <!-- 爱心 -->
+    </div>
 {% block left %}
 {% endblock %}
 {% block main %}
-    <!-- 布局切换按钮 -->
-    <div class="layout-toggle">
-        <button onclick="toggleLayout()" title="切换布局模式">
-            <i class="fas fa-expand-arrows-alt"></i>
-        </button>
-    </div>
-    
     <div class="login-decorator" id="loginDecorator">
-        <!-- 侧边装饰信息 -->
+        <!-- 左侧欢迎信息 -->
         <div class="login-side-info">
+            <!-- 装饰插画 -->
+            <div class="decorative-illustration">
+                <!-- 温暖的宿舍维修主题插画 -->
+                <svg viewBox="0 0 350 350" xmlns="http://www.w3.org/2000/svg">
+                    <!-- 宿舍楼 -->
+                    <rect x="50" y="120" width="180" height="120" rx="8" fill="#FFE0B2" stroke="#FF8A65" stroke-width="2"/>
+                    <rect x="50" y="120" width="180" height="20" rx="8" fill="#FF8A65"/>
+                    <!-- 窗户 -->
+                    <rect x="70" y="150" width="25" height="25" rx="4" fill="#FFCC02" stroke="#FF8A65" stroke-width="1"/>
+                    <rect x="110" y="150" width="25" height="25" rx="4" fill="#FFCC02" stroke="#FF8A65" stroke-width="1"/>
+                    <rect x="150" y="150" width="25" height="25" rx="4" fill="#FFCC02" stroke="#FF8A65" stroke-width="1"/>
+                    <rect x="190" y="150" width="25" height="25" rx="4" fill="#FFCC02" stroke="#FF8A65" stroke-width="1"/>
+                    <!-- 门 -->
+                    <rect x="125" y="200" width="20" height="40" rx="10" fill="#8D6E63"/>
+                    <circle cx="140" cy="220" r="2" fill="#FFB74D"/>
+                    <!-- 维修工具 -->
+                    <path d="M260 180 L280 160 L285 165 L265 185 Z" fill="#81C784" stroke="#4CAF50" stroke-width="2"/>
+                    <circle cx="270" cy="200" r="8" fill="#FF8A65"/>
+                    <!-- 云朵 -->
+                    <ellipse cx="80" cy="70" rx="18" ry="12" fill="white" opacity="0.8"/>
+                    <ellipse cx="250" cy="60" rx="22" ry="15" fill="white" opacity="0.8"/>
+                </svg>
+            </div>
+            
             <div class="welcome-text">
-                <h2>欢迎使用</h2>
+                <h2>欢迎回家</h2>
                 <h3>{{ site_header|default:"宿舍维修管理系统" }}</h3>
-                <p>高效 · 便捷 · 智能</p>
+                <p>用心服务 · 温暖相伴 · 贴心守护</p>
+                
+                <!-- 人文关怀卡片 -->
+                <div class="care-message">
+                    <div class="care-item">
+                        <i class="iconfont icon-xin"></i>
+                        <span>每一份报修，我们都会用心对待</span>
+                    </div>
+                    <div class="care-item">
+                        <i class="iconfont icon-jiayou"></i>
+                        <span>您的生活舒适，就是我们的目标</span>
+                    </div>
+                </div>
+                
+                <!-- 温暖服务展示 -->
                 <div class="feature-list">
                     <div class="feature-item">
-                        <i class="fas fa-tools"></i>
-                        <span>在线报修</span>
+                        <i class="iconfont icon-xiulibaoxiu"></i> <!-- 维修服务 -->
+                        <div>
+                            <span>在线报修</span>
+                            <small>随时随地，轻松报修</small>
+                        </div>
                     </div>
                     <div class="feature-item">
-                        <i class="fas fa-chart-line"></i>
-                        <span>数据统计</span>
+                        <i class="iconfont icon-tongji1"></i> <!-- 数据统计 -->
+                        <div>
+                            <span>贴心管理</span>
+                            <small>数据透明，一目了然</small>
+                        </div>
                     </div>
                     <div class="feature-item">
-                        <i class="fas fa-mobile-alt"></i>
-                        <span>移动友好</span>
+                        <i class="iconfont icon-shoujiduankou"></i> <!-- 手机端 -->
+                        <div>
+                            <span>移动便捷</span>
+                            <small>多终端支持，无限便捷</small>
+                        </div>
                     </div>
                     <div class="feature-item">
-                        <i class="fas fa-shield-alt"></i>
-                        <span>安全可靠</span>
+                        <i class="iconfont icon-anquanbaozhang"></i> <!-- 安全保障 -->
+                        <div>
+                            <span>安全可靠</span>
+                            <small>隐私保护，安全第一</small>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="decorative-circles">
-                <div class="circle circle-1"></div>
-                <div class="circle circle-2"></div>
-                <div class="circle circle-3"></div>
-            </div>
         </div>
         
-        <!-- 登录表单 -->
+        <!-- 右侧登录表单 -->
         <div class="login-form-container">
             <div class="login-main">
                 {% block logo %}
                     <div class="logo">
-                        {% if "SIMPLEUI_LOGO"|get_config %}
-                            <img src="{{ "SIMPLEUI_LOGO"|get_config |safe }}">
-                        {% else %}
-                            <img src="{% static 'admin/simpleui-x/img/logo.png' %}">
-                        {% endif %}
+                        <div class="logo-avatar">
+                            <!-- 温暖的头像设计 -->
+                            <div class="avatar-container">
+                                <div class="avatar-bg">
+                                    <!-- 可爱的管理员头像 -->
+                                    <svg width="50" height="50" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg">
+                                        <!-- 脸部 -->
+                                        <circle cx="25" cy="25" r="20" fill="#FFDBCB" stroke="#FF8A65" stroke-width="2"/>
+                                        <!-- 眼睛 -->
+                                        <circle cx="19" cy="22" r="2" fill="#5D4037"/>
+                                        <circle cx="31" cy="22" r="2" fill="#5D4037"/>
+                                        <!-- 眼睛高光 -->
+                                        <circle cx="19.5" cy="21.5" r="0.8" fill="white"/>
+                                        <circle cx="31.5" cy="21.5" r="0.8" fill="white"/>
+                                        <!-- 鼻子 -->
+                                        <ellipse cx="25" cy="26" rx="1" ry="1.5" fill="#FFAB91"/>
+                                        <!-- 嘴巴 -->
+                                        <path d="M21 30 Q25 33 29 30" stroke="#FF7043" stroke-width="2" fill="none" stroke-linecap="round"/>
+                                        <!-- 脸颊红晕 -->
+                                        <circle cx="15" cy="28" r="3" fill="#FFAB91" opacity="0.6"/>
+                                        <circle cx="35" cy="28" r="3" fill="#FFAB91" opacity="0.6"/>
+                                        <!-- 帽子/头发 -->
+                                        <path d="M8 20 Q25 5 42 20 Q35 15 25 15 Q15 15 8 20" fill="#6D4C41"/>
+                                        <!-- 工作帽 -->
+                                        <rect x="20" y="8" width="10" height="6" rx="3" fill="#FF8A65"/>
+                                        <circle cx="25" cy="8" r="2" fill="white"/>
+                                    </svg>
+                                </div>
+                                <!-- 在线状态指示器 -->
+                                <div class="online-indicator">
+                                    <i class="iconfont icon-yuandian"></i>
+                                </div>
+                            </div>
+                        </div>
                         <div class="logo-text">管理后台</div>
+                        <div class="admin-role">系统管理员</div>
                     </div>
                 {% endblock %}
 
                 {% block header %}
                     <div class="header">
                         <div class="header-text">{{ site_header|default:"宿舍维修管理系统" }}</div>
-                        <div class="sub-header">请登录您的管理账户</div>
+                        <div class="sub-header">欢迎回家，请登录您的管理账户</div>
+                        <div class="welcome-note">
+                            <i class="iconfont icon-xin"></i>
+                            <span>每一次登录，都是一次新的开始</span>
+                        </div>
                     </div>
                 {% endblock %}
 
     {% block errors %}
         {% if form.non_field_errors %}
             {% for error in form.non_field_errors %}
-                <el-alert
-                        title="{{ error }}"
-                        type="error">
-                </el-alert>
+                <div class="error-alert">
+                    <i class="iconfont icon-jinggao"></i> {{ error }}
+                </div>
             {% endfor %}
         {% endif %}
         {% if form.errors and not form.non_field_errors %}
-            <p class="errornote">
+            <div class="error-alert">
                 {% if form.errors.items|length == 1 %}
-                    <el-alert title="{% trans "Please correct the error below." %}" type="error"></el-alert>
+                    <i class="iconfont icon-jinggao"></i> {% trans "Please correct the error below." %}
                 {% else %}
-                    <el-alert title="{% trans "Please correct the errors below." %}" type="error"></el-alert>
+                    <i class="iconfont icon-jinggao"></i> {% trans "Please correct the errors below." %}
                 {% endif %}
-            </p>
+            </div>
         {% endif %}
     {% endblock %}
                 {% block form %}
@@ -122,11 +207,11 @@
                         
                         <div class="input-group">
                             <div class="simpleui-input-inline">
-                                <el-input prefix-icon="fas fa-user" v-model="username" name="username"
+                                <el-input prefix-icon="iconfont icon-yonghu" v-model="username" name="username"
                                           placeholder="{% trans 'username' %}" autofocus></el-input>
                             </div>
                             <div class="simpleui-input-inline">
-                                <el-input prefix-icon="fas fa-lock" type="password" v-model="password" name="password"
+                                <el-input prefix-icon="iconfont icon-mima" type="password" v-model="password" name="password"
                                           @keyup.enter.native="login()"
                                           placeholder="{% trans 'password' %}" show-password></el-input>
                             </div>
@@ -143,7 +228,7 @@
                             {% if password_reset_url %}
                                 <div class="password-reset-link">
                                     <a class="forgot-password" href="{{ password_reset_url }}">
-                                        <i class="fas fa-question-circle"></i>
+                                        <i class="iconfont icon-bangzhu"></i>
                                         {% trans 'Forgotten your password or username?' %}
                                     </a>
                                 </div>
@@ -151,7 +236,7 @@
                         </div>
 
                         <div class="simpleui-input-inline login-btn">
-                            <el-button :icon="loading?'el-icon-loading':'fas fa-sign-in-alt'" @click="login()"
+                            <el-button :icon="loading?'el-icon-loading':'iconfont icon-denglu'" @click="login()"
                                        type="primary" :class="{loading: loading}">
                                 <span v-if="!loading">{% trans 'Log in' %}</span>
                                 <span v-else>登录中...</span>
@@ -162,20 +247,27 @@
                     </form>
                 {% endblock %}
                 
-                <!-- 额外信息 -->
+                <!-- 温暖的页脚信息 -->
                 <div class="login-footer">
+                    <div class="warm-message">
+                        <p><i class="iconfont icon-taiyang"></i> 今天也要加油呀！</p>
+                    </div>
                     <div class="system-info">
-                        <p><i class="fas fa-info-circle"></i> 系统版本 v2.0</p>
-                        <p><i class="fas fa-clock"></i> 当前时间: <span id="current-time"></span></p>
+                        <p><i class="iconfont icon-xinxi"></i> 系统版本 v2.0</p>
+                        <p><i class="iconfont icon-shijian"></i> 当前时间: <span id="current-time"></span></p>
                     </div>
                     <div class="help-links">
                         <a href="#" class="help-link">
-                            <i class="fas fa-question-circle"></i>
+                            <i class="iconfont icon-bangzhu"></i>
                             使用帮助
                         </a>
                         <a href="#" class="help-link">
-                            <i class="fas fa-phone"></i>
-                            技术支持
+                            <i class="iconfont icon-kefu"></i>
+                            在线客服
+                        </a>
+                        <a href="#" class="help-link">
+                            <i class="iconfont icon-dianhua"></i>
+                            紧急热线
                         </a>
                     </div>
                 </div>
@@ -186,7 +278,7 @@
 {% include 'admin/includes/js-part.html' %}
 {% block login_js %}
 <script type="text/javascript">
-// 立即初始化Vue实例，避免rememberMe未定义错误
+// Vue实例初始化
 if (typeof Vue !== 'undefined') {
     window.loginApp = new Vue({
         el: '.login-main',
@@ -195,15 +287,44 @@ if (typeof Vue !== 'undefined') {
                 username: '',
                 password: '',
                 loading: false,
-                rememberMe: false,
-                showPasswordStrength: false,
-                passwordStrength: 0
+                rememberMe: false
             };
+        },
+        methods: {
+            login: function() {
+                if (!this.username || !this.password) {
+                    if (this.$message) {
+                        this.$message.error('请输入用户名和密码');
+                    }
+                    return;
+                }
+                this.loading = true;
+                document.getElementById('login-form').submit();
+            },
+            updateTime: function() {
+                const now = new Date();
+                const timeStr = now.toLocaleString('zh-CN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                const timeElement = document.getElementById('current-time');
+                if (timeElement) {
+                    timeElement.textContent = timeStr;
+                }
+            }
+        },
+        mounted: function() {
+            // 更新时间显示
+            this.updateTime();
+            setInterval(this.updateTime, 1000);
         }
     });
 }
 </script>
-<script type="text/javascript" src="{% static 'admin/simpleui-x/js/login.js' %}?_=4.2"></script>
 {% endblock %}
 
 {% block  particles %}

@@ -35,38 +35,38 @@
           class="sidebar-menu"
           @select="handleMenuSelect"
         >
-          <!-- 仪表盘 -->
+          <!-- 我的小管家仪表盘 -->
           <el-menu-item index="/dashboard">
-            <el-icon><Monitor /></el-icon>
-            <template #title>数据仪表盘</template>
+            <SidebarIcons type="computer" :size="20" />
+            <template #title>我的小管家仪表盘</template>
           </el-menu-item>
 
-          <!-- 工单管理 -->
+          <!-- 小管家的任务板 -->
           <el-menu-item index="/repair">
-            <el-icon><Tools /></el-icon>
-            <template #title>工单管理</template>
+            <SidebarIcons type="worker" :size="20" />
+            <template #title>小管家的任务板</template>
           </el-menu-item>
 
 
-          <!-- 宿舍管理 -->
+          <!-- 我的小窝们 -->
           <el-menu-item index="/dormitory">
-            <el-icon><House /></el-icon>
-            <template #title>宿舍管理</template>
+            <SidebarIcons type="house" :size="20" />
+            <template #title>我的小窝们</template>
           </el-menu-item>
 
-          <!-- 系统管理 -->
+          <!-- 小管家设置 -->
           <el-sub-menu index="system">
             <template #title>
-              <el-icon><Setting /></el-icon>
-              <span>系统管理</span>
+              <SidebarIcons type="gear" :size="20" />
+              <span>小管家设置</span>
             </template>
             <el-menu-item index="/settings">
               <el-icon><Tools /></el-icon>
-              <template #title>系统设置</template>
+              <template #title>小管家配置</template>
             </el-menu-item>
             <el-menu-item index="/users">
               <el-icon><UserFilled /></el-icon>
-              <template #title>用户管理</template>
+              <template #title>管家团队</template>
             </el-menu-item>
           </el-sub-menu>
         </el-menu>
@@ -74,10 +74,12 @@
 
       <div class="sidebar-footer">
         <div class="user-profile" @click="showUserMenu = !showUserMenu">
-          <el-avatar :size="isCollapsed ? 32 : 40" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
+          <div class="user-avatar">
+            <SidebarIcons type="admin" :size="isCollapsed ? 32 : 40" />
+          </div>
           <div v-if="!isCollapsed" class="user-info">
-            <div class="user-name">管理员</div>
-            <div class="user-role">超级管理员</div>
+            <div class="user-name">宿舍总管家</div>
+            <div class="user-role">权限最高的小管家</div>
           </div>
         </div>
       </div>
@@ -206,6 +208,7 @@ import {
   Expand, Fold, Menu, Search, Bell, ArrowDown, SwitchButton, Close,
   Warning, Check, InfoFilled, User
 } from '@element-plus/icons-vue'
+import SidebarIcons from './SidebarIcons.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -392,6 +395,15 @@ onUnmounted(() => {
 })
 </script>
 
+<script>
+export default {
+  name: 'Layout',
+  components: {
+    SidebarIcons
+  }
+}
+</script>
+
 <style scoped>
 /* 应用布局 */
 .app-layout {
@@ -403,15 +415,17 @@ onUnmounted(() => {
 /* 侧边栏 */
 .sidebar {
   width: 260px;
-  background: white;
-  border-right: 1px solid #e5e7eb;
+  background: linear-gradient(135deg, #F5F5DC 0%, #F0E68C 50%, #DDD8C0 100%);
+  border-right: 1px solid rgba(139, 69, 19, 0.1);
   display: flex;
   flex-direction: column;
   position: fixed;
-  height: 100vh;
+  height: calc(100vh - 16px);
   z-index: 1000;
   transition: all 0.3s ease;
-  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  box-shadow: 4px 0 20px rgba(139, 69, 19, 0.12), 0 0 40px rgba(139, 69, 19, 0.06);
+  border-radius: 0 25px 25px 0;
+  margin: 8px 0;
 }
 
 .sidebar-collapsed {
@@ -427,9 +441,12 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 20px 24px;
+  border-bottom: 1px solid #E8E5DD;
   min-height: 64px;
+  background: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  border-radius: 0 20px 0 0;
 }
 
 .logo {
@@ -476,20 +493,24 @@ onUnmounted(() => {
 }
 
 .sidebar-menu .el-menu-item {
-  height: 44px;
-  line-height: 44px;
-  color: #6b7280;
+  height: 52px;
+  line-height: 52px;
+  color: #8B7355;
   transition: all 0.3s ease;
+  font-weight: 500;
+  padding: 0 16px;
 }
 
 .sidebar-menu .el-menu-item:hover {
-  background-color: #f8faff;
-  color: #409eff;
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.2), rgba(240, 230, 140, 0.2));
+  color: #8B4513;
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
 }
 
 .sidebar-menu .el-menu-item.is-active {
-  background: linear-gradient(135deg, #409eff, #6c5ce7);
-  color: white;
+  background: linear-gradient(135deg, #FFB6C1, #FFE4E1, #F0E68C);
+  color: #8B4513;
   position: relative;
 }
 
@@ -519,15 +540,27 @@ onUnmounted(() => {
   color: #409eff;
 }
 
+.sidebar-menu .el-sub-menu .el-menu-item {
+  padding-left: 48px !important;
+  background: rgba(139, 69, 19, 0.03);
+  margin: 3px 12px;
+  border-radius: 10px;
+  height: 44px;
+  line-height: 44px;
+}
+
 .sidebar-menu .el-menu-item .el-icon {
   width: 20px;
-  margin-right: 12px;
+  margin-right: 16px;
 }
 
 /* 侧边栏底部 */
 .sidebar-footer {
-  padding: 16px;
-  border-top: 1px solid #f3f4f6;
+  padding: 20px;
+  border-top: 1px solid #E8E5DD;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 0 0 20px 0;
 }
 
 .user-profile {
@@ -535,13 +568,30 @@ onUnmounted(() => {
   align-items: center;
   gap: 12px;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
+  padding: 12px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFB6C1, #87CEEB);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.15);
+  transition: all 0.3s ease;
 }
 
 .user-profile:hover {
-  background-color: #f3f4f6;
+  background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(240, 230, 140, 0.3));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 182, 193, 0.2);
 }
 
 .user-info {
@@ -551,14 +601,14 @@ onUnmounted(() => {
 
 .user-name {
   font-weight: 600;
-  color: #1f2937;
+  color: #8B4513;
   font-size: 14px;
   line-height: 1.2;
 }
 
 .user-role {
   font-size: 12px;
-  color: #6b7280;
+  color: #A0826D;
   line-height: 1.2;
 }
 

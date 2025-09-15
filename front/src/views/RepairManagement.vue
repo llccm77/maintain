@@ -1,10 +1,18 @@
 <template>
   <div class="repair-management">
     <div class="page-header">
-      <h1>报修工单管理</h1>
-      <button @click="showAddDialog = true" class="add-btn">
-        ➕ 新增工单
-      </button>
+      <div class="header-content">
+        <div class="title-section">
+          <StatusIcons type="admin" :size="48" class="header-icon" />
+          <div class="title-text">
+            <h1>小管家的任务板</h1>
+            <p class="subtitle">今天又有哪些小伙伴需要帮助呢？</p>
+          </div>
+        </div>
+        <button @click="showAddDialog = true" class="add-btn">
+          ✨ 添加新任务
+        </button>
+      </div>
     </div>
 
     <!-- 搜索和筛选区域 -->
@@ -13,11 +21,11 @@
         <input
           v-model="searchForm.keyword"
           type="text"
-          placeholder="搜索工单号、标题或用户姓名..."
+          placeholder="搜索报修单号或宿舍号..."
           class="search-input"
           @keyup.enter="handleSearch"
         />
-        <button @click="handleSearch" class="search-btn">搜索</button>
+        <button @click="handleSearch" class="search-btn">🔍 查找任务</button>
       </div>
       
       <div class="filter-group">
@@ -48,37 +56,41 @@
       </div>
     </div>
 
-    <!-- 工单统计卡片 -->
+    <!-- 任务统计卡片 -->
     <div class="stats-cards">
-      <div class="stat-card">
-        <div class="stat-icon">📋</div>
+      <div class="stat-card total">
+        <StatusIcons type="envelope" :size="32" class="stat-icon" />
         <div class="stat-info">
           <h3>{{ statistics.total || 0 }}</h3>
-          <p>总工单数</p>
+          <p>总任务数</p>
+          <span class="stat-desc">小管家收到的所有任务</span>
         </div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-icon">⏰</div>
+      <div class="stat-card pending">
+        <StatusIcons type="envelope" :size="32" class="stat-icon" />
         <div class="stat-info">
           <h3>{{ statistics.pending || 0 }}</h3>
-          <p>待处理</p>
+          <p>正在等待分配</p>
+          <span class="stat-desc">需要小管家关注的新任务</span>
         </div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-icon">🔧</div>
+      <div class="stat-card processing">
+        <StatusIcons type="worker" :size="32" class="stat-icon" />
         <div class="stat-info">
           <h3>{{ statistics.processing || 0 }}</h3>
-          <p>维修中</p>
+          <p>正在进行中</p>
+          <span class="stat-desc">小管家正在努力解决</span>
         </div>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-icon">✅</div>
+      <div class="stat-card completed">
+        <StatusIcons type="completed" :size="32" class="stat-icon" />
         <div class="stat-info">
           <h3>{{ statistics.completed || 0 }}</h3>
-          <p>已完成</p>
+          <p>今日已解决</p>
+          <span class="stat-desc">小管家的成就感满满</span>
         </div>
       </div>
     </div>
@@ -97,10 +109,17 @@
           <!-- 工单头部 -->
           <div class="card-header">
             <div class="order-info">
-              <h3>{{ repair.order_number }}</h3>
-              <span class="priority-badge" :class="getPriorityClass(repair.priority)">
-                {{ getPriorityText(repair.priority) }}
-              </span>
+              <StatusIcons 
+                :type="getStatusIconType(repair.status)" 
+                :size="32" 
+                class="status-icon" 
+              />
+              <div class="order-details">
+                <h3>{{ repair.order_number }}</h3>
+                <span class="priority-badge" :class="getPriorityClass(repair.priority)">
+                  {{ getPriorityText(repair.priority) }}
+                </span>
+              </div>
             </div>
             <div class="status-badge" :class="getStatusClass(repair.status)">
               {{ getStatusText(repair.status) }}
@@ -139,11 +158,13 @@
           
           <!-- 操作按钮 -->
           <div class="card-actions">
-            <button @click.stop="editRepair(repair)" class="edit-btn">✏️ 编辑</button>
+            <button @click.stop="viewRepairDetail(repair)" class="detail-btn">
+              👀 查看详情
+            </button>
             <button @click.stop="updateStatus(repair)" class="status-btn">
               {{ getStatusActionText(repair.status) }}
             </button>
-            <button @click.stop="deleteRepair(repair)" class="delete-btn">🗑️ 删除</button>
+            <button @click.stop="editRepair(repair)" class="edit-btn">✏️ 编辑任务</button>
           </div>
         </div>
       </div>
@@ -166,6 +187,7 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 import { repairAPI, dormitoryAPI } from '@/api'
+import StatusIcons from '@/components/StatusIcons.vue'
 
 // 响应式数据
 const loading = ref(false)
@@ -313,12 +335,23 @@ const getStatusClass = (status) => {
 
 const getStatusText = (status) => {
   const statusMap = {
-    'pending': '待处理',
-    'processing': '维修中',
-    'completed': '已完成',
+    'pending': '等待分配',
+    'processing': '进行中',
+    'completed': '已解决',
     'cancelled': '已取消'
   }
-  return statusMap[status] || '待处理'
+  return statusMap[status] || '未知状态'
+}
+
+// 获取状态图标类型
+const getStatusIconType = (status) => {
+  const iconMap = {
+    pending: 'envelope',
+    processing: 'worker',
+    completed: 'completed',
+    cancelled: 'cancelled'
+  }
+  return iconMap[status] || 'envelope'
 }
 
 const getFaultTypeClass = (faultType) => {
@@ -366,85 +399,139 @@ onMounted(() => {
   margin: 0 auto;
 }
 
+/* 页面头部样式 */
 .page-header {
+  background: linear-gradient(135deg, #FFE5CC 0%, #FFD1DC 50%, #E6E6FA 100%);
+  color: #333;
+  padding: 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(255, 182, 193, 0.3);
+}
+
+.header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
 }
 
-.page-header h1 {
-  color: #333;
+.title-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.header-icon {
+  filter: drop-shadow(0 2px 8px rgba(74, 144, 226, 0.3));
+}
+
+.title-text h1 {
+  margin: 0 0 5px 0;
+  font-size: 28px;
+  font-weight: 600;
+  color: #4A5568;
+  font-family: 'Microsoft YaHei', sans-serif;
+}
+
+.subtitle {
   margin: 0;
+  font-size: 14px;
+  color: #718096;
+  font-weight: 400;
 }
 
 .add-btn {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #FF9A8B 0%, #A8E6CF 100%);
   color: white;
   border: none;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 25px;
   cursor: pointer;
   font-weight: 500;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 154, 139, 0.3);
 }
 
 .add-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 154, 139, 0.4);
 }
 
 /* 搜索筛选样式 */
 .search-filter {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  margin-bottom: 20px;
+  background: linear-gradient(135deg, #F8F9FA 0%, #FFF8E1 100%);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(255, 182, 193, 0.15);
+  margin-bottom: 25px;
   display: flex;
   gap: 20px;
   flex-wrap: wrap;
   align-items: center;
+  border: 1px solid rgba(255, 182, 193, 0.1);
 }
 
 .search-group {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
-  min-width: 250px;
+  min-width: 280px;
 }
 
 .search-input {
   flex: 1;
-  padding: 10px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border: 2px solid #E2E8F0;
+  border-radius: 15px;
   font-size: 14px;
+  background: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #FF9A8B;
+  box-shadow: 0 0 0 3px rgba(255, 154, 139, 0.1);
 }
 
 .search-btn {
-  background: #667eea;
+  background: linear-gradient(135deg, #FF9A8B 0%, #A8E6CF 100%);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
+  padding: 12px 20px;
+  border-radius: 15px;
   cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(255, 154, 139, 0.3);
+}
+
+.search-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 154, 139, 0.4);
 }
 
 .filter-group {
   display: flex;
-  gap: 10px;
+  gap: 12px;
 }
 
 .filter-group select {
-  padding: 10px;
-  border: 2px solid #e1e5e9;
-  border-radius: 8px;
+  padding: 12px 16px;
+  border: 2px solid #E2E8F0;
+  border-radius: 15px;
   font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-group select:focus {
+  outline: none;
+  border-color: #FF9A8B;
+  box-shadow: 0 0 0 3px rgba(255, 154, 139, 0.1);
 }
 
 /* 统计卡片样式 */
@@ -456,42 +543,69 @@ onMounted(() => {
 }
 
 .stat-card {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, #FFF8E1 0%, #F3E5F5 100%);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(255, 182, 193, 0.2);
   display: flex;
   align-items: center;
-  gap: 15px;
-  transition: transform 0.2s;
+  gap: 20px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 182, 193, 0.1);
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(255, 182, 193, 0.3);
+}
+
+.stat-card.total {
+  background: linear-gradient(135deg, #FFE5CC 0%, #FFF0E6 100%);
+}
+
+.stat-card.pending {
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFECB3 100%);
+}
+
+.stat-card.processing {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+}
+
+.stat-card.completed {
+  background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 100%);
 }
 
 .stat-icon {
-  width: 50px;
-  height: 50px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 12px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #FF9A8B 0%, #A8E6CF 100%);
+  border-radius: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 28px;
+  box-shadow: 0 4px 15px rgba(255, 154, 139, 0.3);
 }
 
 .stat-info h3 {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0 0 5px 0;
-  color: #333;
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+  color: #4A5568;
+  font-family: 'Microsoft YaHei', sans-serif;
 }
 
 .stat-info p {
-  margin: 0;
-  color: #666;
-  font-size: 14px;
+  margin: 0 0 5px 0;
+  color: #2D3748;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.stat-desc {
+  font-size: 12px;
+  color: #718096;
+  font-weight: 400;
 }
 
 /* 工单列表样式 */
@@ -501,47 +615,64 @@ onMounted(() => {
 
 .loading, .no-data {
   text-align: center;
-  padding: 40px;
-  color: #666;
+  padding: 50px;
+  color: #718096;
+  font-size: 16px;
+  background: linear-gradient(135deg, #F8F9FA 0%, #FFF8E1 100%);
+  border-radius: 20px;
+  border: 2px dashed #E2E8F0;
 }
 
 .repairs-list {
   display: grid;
-  gap: 20px;
+  gap: 25px;
 }
 
 .repair-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8F9FA 100%);
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(255, 182, 193, 0.15);
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 182, 193, 0.1);
 }
 
 .repair-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(255, 182, 193, 0.25);
 }
 
 .card-header {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-  padding: 15px 20px;
+  background: linear-gradient(135deg, #FFE5CC 0%, #FFF0E6 100%);
+  padding: 20px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid rgba(255, 182, 193, 0.1);
 }
 
 .order-info {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
 }
 
-.order-info h3 {
+.status-icon {
+  filter: drop-shadow(0 2px 8px rgba(255, 154, 139, 0.3));
+}
+
+.order-details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.order-details h3 {
   margin: 0;
-  color: #333;
-  font-size: 16px;
+  color: #4A5568;
+  font-size: 18px;
+  font-weight: 600;
 }
 
 .priority-badge {
@@ -569,45 +700,59 @@ onMounted(() => {
 .status-cancelled { background: #f8d7da; color: #721c24; }
 
 .card-content {
-  padding: 20px;
+  padding: 25px;
+  background: white;
 }
 
 .repair-title {
-  margin: 0 0 10px 0;
-  color: #333;
-  font-size: 16px;
+  margin: 0 0 12px 0;
+  color: #2D3748;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .repair-description {
-  margin: 0 0 15px 0;
-  color: #666;
-  font-size: 14px;
-  line-height: 1.4;
+  margin: 0 0 20px 0;
+  color: #4A5568;
+  font-size: 15px;
+  line-height: 1.5;
+  background: linear-gradient(135deg, #F7FAFC 0%, #EDF2F7 100%);
+  padding: 15px;
+  border-radius: 12px;
+  border-left: 4px solid #FF9A8B;
 }
 
 .repair-meta {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .meta-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #F7FAFC;
+}
+
+.meta-row:last-child {
+  border-bottom: none;
 }
 
 .label {
-  color: #666;
-  font-size: 13px;
+  color: #718096;
+  font-size: 14px;
   flex-shrink: 0;
+  font-weight: 500;
 }
 
 .value {
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #2D3748;
   text-align: right;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .fault-type {
@@ -622,48 +767,59 @@ onMounted(() => {
 .fault-other { background: #e2e3e5; color: #6c757d; }
 
 .card-actions {
-  padding: 15px 20px;
-  background: #f8f9fa;
+  padding: 20px 25px;
+  background: linear-gradient(135deg, #F8F9FA 0%, #FFF8E1 100%);
   display: flex;
-  gap: 10px;
+  gap: 15px;
+  border-top: 1px solid rgba(255, 182, 193, 0.1);
 }
 
-.edit-btn, .status-btn, .delete-btn {
+.detail-btn, .edit-btn, .status-btn {
   flex: 1;
-  padding: 8px 12px;
+  padding: 12px 16px;
   border: none;
-  border-radius: 6px;
+  border-radius: 15px;
   cursor: pointer;
-  font-size: 12px;
-  font-weight: 500;
-  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.detail-btn {
+  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
+  color: #1976D2;
+  border: 1px solid rgba(25, 118, 210, 0.2);
+}
+
+.detail-btn:hover {
+  background: linear-gradient(135deg, #BBDEFB 0%, #90CAF9 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
 }
 
 .edit-btn {
-  background: #e3f2fd;
-  color: #1976d2;
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFCC80 100%);
+  color: #F57C00;
+  border: 1px solid rgba(245, 124, 0, 0.2);
 }
 
 .edit-btn:hover {
-  background: #bbdefb;
+  background: linear-gradient(135deg, #FFCC80 0%, #FFB74D 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(245, 124, 0, 0.3);
 }
 
 .status-btn {
-  background: #f3e5f5;
-  color: #7b1fa2;
+  background: linear-gradient(135deg, #E8F5E8 0%, #A5D6A7 100%);
+  color: #388E3C;
+  border: 1px solid rgba(56, 142, 60, 0.2);
 }
 
 .status-btn:hover {
-  background: #e1bee7;
-}
-
-.delete-btn {
-  background: #ffebee;
-  color: #d32f2f;
-}
-
-.delete-btn:hover {
-  background: #ffcdd2;
+  background: linear-gradient(135deg, #A5D6A7 0%, #81C784 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(56, 142, 60, 0.3);
 }
 
 /* 分页样式 */

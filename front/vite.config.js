@@ -7,8 +7,17 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
-    vueDevTools(),
+    vue({
+      template: {
+        compilerOptions: {
+          // 禁用严格的HTML解析，避免误报
+          isCustomElement: (tag) => false,
+          whitespace: 'preserve'
+        }
+      }
+    }),
+    // 暂时禁用vueDevTools来避免inspector插件的解析错误
+    // vueDevTools(),
   ],
   resolve: {
     alias: {
