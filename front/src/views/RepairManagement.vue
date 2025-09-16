@@ -9,9 +9,17 @@
             <p class="subtitle">今天又有哪些小伙伴需要帮助呢？</p>
           </div>
         </div>
-        <button @click="showAddDialog = true" class="add-btn">
-          ✨ 添加新任务
-        </button>
+        <div class="header-actions">
+          <button @click="testDetailDialog" class="test-btn" style="margin-right: 10px; background: #409eff; color: white; border: none; padding: 8px 16px; border-radius: 4px;">
+            测试详情弹窗
+          </button>
+          <button @click="testStatusDialog" class="test-btn" style="margin-right: 10px; background: #67c23a; color: white; border: none; padding: 8px 16px; border-radius: 4px;">
+            测试状态弹窗
+          </button>
+          <button @click="goToCreateOrder" class="add-btn">
+            ✨ 添加新任务
+          </button>
+        </div>
       </div>
     </div>
 
@@ -180,14 +188,274 @@
         下一页
       </button>
     </div>
+
+    <!-- 工单详情弹窗 -->
+    <el-dialog 
+      v-model="detailDialogVisible" 
+      title="工单详情" 
+      width="800px"
+      :before-close="handleDetailClose"
+    >
+      <div v-if="currentRepair" class="repair-detail">
+        <!-- 工单基本信息 -->
+        <div class="detail-section">
+          <h3 class="section-title">📋 基本信息</h3>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <div class="info-item">
+                <label>工单号：</label>
+                <span class="order-number">{{ currentRepair.order_number }}</span>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="info-item">
+                <label>创建时间：</label>
+                <span>{{ formatDateTime(currentRepair.created_at) }}</span>
+              </div>
+            </el-col>
+          </el-row>
+          
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <div class="info-item">
+                <label>故障类型：</label>
+                <el-tag :type="getFaultTypeColor(currentRepair.fault_type)">
+                  {{ getFaultTypeText(currentRepair.fault_type) }}
+                </el-tag>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="info-item">
+                <label>优先级：</label>
+                <el-tag :type="getPriorityColor(currentRepair.priority)">
+                  {{ getPriorityText(currentRepair.priority) }}
+                </el-tag>
+              </div>
+            </el-col>
+          </el-row>
+          
+          <div class="info-item">
+            <label>故障标题：</label>
+            <span class="repair-title">{{ currentRepair.title }}</span>
+          </div>
+          
+          <div class="info-item">
+            <label>详细描述：</label>
+            <div class="repair-description">{{ currentRepair.description }}</div>
+          </div>
+        </div>
+
+        <!-- 报修人和宿舍信息 -->
+        <div class="detail-section">
+          <h3 class="section-title">👤 报修信息</h3>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <div class="info-item">
+                <label>报修人：</label>
+                <span>{{ currentRepair.user?.username || '未知' }}</span>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="info-item">
+                <label>宿舍：</label>
+                <span>{{ currentRepair.dormitory?.building_name }}-{{ currentRepair.dormitory?.room_number }}</span>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+
+        <!-- 维修信息 -->
+        <div class="detail-section">
+          <h3 class="section-title">🔧 维修信息</h3>
+          <el-row :gutter="20">
+            <el-col :span="12">
+              <div class="info-item">
+                <label>当前状态：</label>
+                <el-tag :type="getStatusColor(currentRepair.status)">
+                  {{ getStatusText(currentRepair.status) }}
+                </el-tag>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="info-item">
+                <label>维修员：</label>
+                <span>{{ currentRepair.repair_worker?.username || '未分配' }}</span>
+              </div>
+            </el-col>
+          </el-row>
+          
+          <div v-if="currentRepair.repair_notes" class="info-item">
+            <label>维修说明：</label>
+            <div class="repair-notes">{{ currentRepair.repair_notes }}</div>
+          </div>
+          
+          <div v-if="currentRepair.completed_at" class="info-item">
+            <label>完成时间：</label>
+            <span>{{ formatDateTime(currentRepair.completed_at) }}</span>
+          </div>
+        </div>
+
+        <!-- 评价信息 -->
+        <div v-if="currentRepair.rating" class="detail-section">
+          <h3 class="section-title">⭐ 评价信息</h3>
+          <div class="info-item">
+            <label>评分：</label>
+            <el-rate v-model="currentRepair.rating" disabled show-score />
+          </div>
+          <div v-if="currentRepair.comment" class="info-item">
+            <label>评价内容：</label>
+            <div class="repair-comment">{{ currentRepair.comment }}</div>
+          </div>
+        </div>
+      </div>
+      
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="detailDialogVisible = false">关闭</el-button>
+          <el-button type="primary" @click="editCurrentRepair">编辑工单</el-button>
+          <el-button 
+            v-if="currentRepair?.status === 'pending'" 
+            type="success" 
+            @click="startRepair"
+          >
+            开始维修
+          </el-button>
+          <el-button 
+            v-if="currentRepair?.status === 'processing'" 
+            type="warning" 
+            @click="completeRepair"
+          >
+            完成维修
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+    <!-- 编辑工单弹窗 -->
+    <el-dialog 
+      v-model="editDialogVisible" 
+      title="编辑工单" 
+      width="600px"
+      :before-close="handleEditClose"
+    >
+      <el-form 
+        v-if="editForm" 
+        ref="editFormRef" 
+        :model="editForm" 
+        :rules="editRules" 
+        label-width="100px"
+      >
+        <el-form-item label="故障标题" prop="title">
+          <el-input v-model="editForm.title" maxlength="100" show-word-limit />
+        </el-form-item>
+        
+        <el-form-item label="故障类型" prop="fault_type">
+          <el-select v-model="editForm.fault_type" style="width: 100%">
+            <el-option label="水电故障" value="water" />
+            <el-option label="家具损坏" value="furniture" />
+            <el-option label="门窗问题" value="door_window" />
+            <el-option label="网络故障" value="network" />
+            <el-option label="其他问题" value="other" />
+          </el-select>
+        </el-form-item>
+        
+        <el-form-item label="优先级" prop="priority">
+          <el-select v-model="editForm.priority" style="width: 100%">
+            <el-option label="低" value="low" />
+            <el-option label="中" value="medium" />
+            <el-option label="高" value="high" />
+            <el-option label="紧急" value="urgent" />
+          </el-select>
+        </el-form-item>
+        
+        <el-form-item label="详细描述" prop="description">
+          <el-input 
+            v-model="editForm.description" 
+            type="textarea" 
+            :rows="4" 
+            maxlength="500" 
+            show-word-limit 
+          />
+        </el-form-item>
+        
+        <el-form-item v-if="editForm.status !== 'pending'" label="维修说明">
+          <el-input 
+            v-model="editForm.repair_notes" 
+            type="textarea" 
+            :rows="3" 
+            placeholder="请输入维修说明..."
+          />
+        </el-form-item>
+      </el-form>
+      
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="editDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="saveEdit" :loading="editLoading">保存</el-button>
+        </div>
+      </template>
+    </el-dialog>
+
+    <!-- 状态更新弹窗 -->
+    <el-dialog 
+      v-model="statusDialogVisible" 
+      :title="getStatusDialogTitle()" 
+      width="500px"
+    >
+      <div v-if="statusForm">
+        <el-form :model="statusForm" label-width="100px">
+          <el-form-item label="当前状态">
+            <el-tag :type="getStatusColor(statusForm.currentStatus)">
+              {{ getStatusText(statusForm.currentStatus) }}
+            </el-tag>
+          </el-form-item>
+          
+          <el-form-item label="目标状态">
+            <el-select v-model="statusForm.newStatus" style="width: 100%">
+              <el-option 
+                v-for="status in getAvailableStatuses(statusForm.currentStatus)"
+                :key="status.value"
+                :label="status.label"
+                :value="status.value"
+              />
+            </el-select>
+          </el-form-item>
+          
+          <el-form-item v-if="statusForm.newStatus === 'processing'" label="维修员">
+            <el-select v-model="statusForm.repair_worker" placeholder="选择维修员" style="width: 100%">
+              <el-option label="当前用户" :value="currentUser?.id" />
+            </el-select>
+          </el-form-item>
+          
+          <el-form-item v-if="statusForm.newStatus !== 'pending'" label="备注说明">
+            <el-input 
+              v-model="statusForm.notes" 
+              type="textarea" 
+              :rows="3" 
+              placeholder="请输入状态更新说明..."
+            />
+          </el-form-item>
+        </el-form>
+      </div>
+      
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="statusDialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="confirmStatusUpdate" :loading="statusLoading">确认更新</el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, computed } from 'vue'
+import { ref, reactive, onMounted, computed, nextTick } from 'vue'
+import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { repairAPI, dormitoryAPI } from '@/api'
 import StatusIcons from '@/components/StatusIcons.vue'
+
+const router = useRouter()
 
 // 响应式数据
 const loading = ref(false)
@@ -195,6 +463,18 @@ const repairs = ref([])
 const currentPage = ref(1)
 const pageSize = ref(10)
 const totalCount = ref(0)
+
+// 弹窗相关数据
+const detailDialogVisible = ref(false)
+const editDialogVisible = ref(false)
+const statusDialogVisible = ref(false)
+const currentRepair = ref(null)
+const editForm = ref(null)
+const statusForm = ref(null)
+const editLoading = ref(false)
+const statusLoading = ref(false)
+const editFormRef = ref()
+const currentUser = ref(JSON.parse(localStorage.getItem('user') || '{}'))
 
 // 统计数据
 const statistics = reactive({
@@ -214,6 +494,43 @@ const searchForm = reactive({
 
 // 计算属性
 const totalPages = computed(() => Math.ceil(totalCount.value / pageSize.value))
+
+// 跳转到新建工单页面
+const goToCreateOrder = () => {
+  router.push('/repair/create')
+}
+
+// 测试函数
+const testDetailDialog = () => {
+  console.log('测试详情弹窗')
+  currentRepair.value = {
+    id: 1,
+    order_number: 'TEST001',
+    title: '测试工单',
+    description: '这是一个测试工单',
+    status: 'pending',
+    priority: 'medium',
+    fault_type: 'water',
+    created_at: new Date().toISOString(),
+    user: { username: '测试用户' },
+    dormitory: { name: '测试宿舍' }
+  }
+  detailDialogVisible.value = true
+  console.log('测试详情弹窗已设置为true')
+}
+
+const testStatusDialog = () => {
+  console.log('测试状态弹窗')
+  statusForm.value = {
+    id: 1,
+    currentStatus: 'pending',
+    newStatus: 'processing',
+    repair_worker: null,
+    notes: ''
+  }
+  statusDialogVisible.value = true
+  console.log('测试状态弹窗已设置为true')
+}
 
 // 获取工单列表
 const fetchRepairs = async () => {
@@ -272,16 +589,109 @@ const changePage = (page) => {
   }
 }
 
-const viewRepairDetail = (repair) => {
-  alert(`工单详情: ${repair.order_number} - ${repair.title}`)
+// 表单验证规则
+const editRules = {
+  title: [
+    { required: true, message: '请输入故障标题', trigger: 'blur' },
+    { min: 2, max: 100, message: '标题长度应在2-100个字符之间', trigger: 'blur' }
+  ],
+  fault_type: [
+    { required: true, message: '请选择故障类型', trigger: 'change' }
+  ],
+  priority: [
+    { required: true, message: '请选择优先级', trigger: 'change' }
+  ],
+  description: [
+    { required: true, message: '请输入详细描述', trigger: 'blur' },
+    { min: 10, max: 500, message: '描述长度应在10-500个字符之间', trigger: 'blur' }
+  ]
 }
 
-const editRepair = (repair) => {
-  alert(`编辑工单: ${repair.order_number}`)
+// 查看工单详情
+const viewRepairDetail = async (repair) => {
+  try {
+    console.log('查看工单详情:', repair)
+    console.log('调用API获取详情...')
+    
+    // 获取完整的工单详情
+    const response = await repairAPI.getRepairDetail(repair.id)
+    console.log('API响应:', response)
+    
+    currentRepair.value = response.data || response
+    console.log('设置currentRepair:', currentRepair.value)
+    
+    detailDialogVisible.value = true
+    console.log('设置detailDialogVisible为true:', detailDialogVisible.value)
+    
+    // 强制触发响应式更新
+    await nextTick()
+    console.log('详情弹窗应该已打开')
+  } catch (error) {
+    console.error('获取工单详情失败:', error)
+    ElMessage.error(`获取工单详情失败: ${error.message}`)
+  }
 }
 
-const updateStatus = (repair) => {
-  alert(`更新状态: ${repair.order_number}`)
+// 编辑工单
+const editRepair = async (repair) => {
+  try {
+    console.log('编辑工单:', repair)
+    // 获取完整的工单详情用于编辑
+    const response = await repairAPI.getRepairDetail(repair.id)
+    const repairData = response.data || response
+    
+    editForm.value = {
+      id: repairData.id,
+      title: repairData.title,
+      description: repairData.description,
+      fault_type: repairData.fault_type,
+      priority: repairData.priority,
+      status: repairData.status,
+      repair_notes: repairData.repair_notes || ''
+    }
+    
+    editDialogVisible.value = true
+    console.log('编辑弹窗已打开')
+  } catch (error) {
+    console.error('获取工单信息失败:', error)
+    ElMessage.error('获取工单信息失败')
+  }
+}
+
+// 更新工单状态
+const updateStatus = async (repair) => {
+  try {
+    console.log('更新工单状态:', repair)
+    
+    // 根据当前状态确定操作类型
+    const nextStatus = getNextStatus(repair.status)
+    console.log('下一个状态:', nextStatus)
+    
+    // 如果是已完成状态，不允许再次操作
+    if (repair.status === 'completed') {
+      ElMessage.info('工单已完成，无需再次操作')
+      return
+    }
+    
+    statusForm.value = {
+      id: repair.id,
+      currentStatus: repair.status,
+      newStatus: nextStatus,
+      repair_worker: repair.status === 'pending' ? currentUser.value.id : repair.repair_worker,
+      notes: ''
+    }
+    console.log('设置statusForm:', statusForm.value)
+    
+    statusDialogVisible.value = true
+    console.log('设置statusDialogVisible为true:', statusDialogVisible.value)
+    
+    // 强制触发响应式更新
+    await nextTick()
+    console.log('状态更新弹窗应该已打开')
+  } catch (error) {
+    console.error('打开状态更新弹窗失败:', error)
+    ElMessage.error('打开状态更新弹窗失败')
+  }
 }
 
 const deleteRepair = (repair) => {
@@ -385,6 +795,223 @@ const getStatusActionText = (status) => {
   }
   return actionMap[status] || '🔧 开始维修'
 }
+
+// 获取状态弹窗标题
+const getStatusDialogTitle = () => {
+  if (!statusForm.value) return '更新工单状态'
+  
+  const titleMap = {
+    'pending': '🔧 开始维修工单',
+    'processing': '✅ 完成维修工单',
+    'cancelled': '🔄 重新启动工单'
+  }
+  return titleMap[statusForm.value.currentStatus] || '更新工单状态'
+}
+
+// 获取下一个状态
+const getNextStatus = (currentStatus) => {
+  const statusFlow = {
+    'pending': 'processing',
+    'processing': 'completed',
+    'completed': 'completed',
+    'cancelled': 'pending'
+  }
+  return statusFlow[currentStatus] || 'processing'
+}
+
+// 获取可用的状态选项
+const getAvailableStatuses = (currentStatus) => {
+  const allStatuses = [
+    { value: 'pending', label: '待处理' },
+    { value: 'processing', label: '维修中' },
+    { value: 'completed', label: '已完成' },
+    { value: 'cancelled', label: '已取消' }
+  ]
+  
+  // 根据当前状态过滤可用状态
+  return allStatuses.filter(status => {
+    if (currentStatus === 'completed') {
+      return status.value === 'completed' // 已完成的工单不能改变状态
+    }
+    return true
+  })
+}
+
+// 格式化日期时间
+const formatDateTime = (dateString) => {
+  if (!dateString) return '未设置'
+  const date = new Date(dateString)
+  return date.toLocaleString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit'
+  })
+}
+
+// 获取故障类型颜色
+const getFaultTypeColor = (type) => {
+  const colorMap = {
+    'water': 'primary',
+    'furniture': 'success',
+    'door_window': 'warning',
+    'network': 'info',
+    'other': 'default'
+  }
+  return colorMap[type] || 'default'
+}
+
+// 获取状态颜色
+const getStatusColor = (status) => {
+  const colorMap = {
+    'pending': 'warning',
+    'processing': 'primary',
+    'completed': 'success',
+    'cancelled': 'danger'
+  }
+  return colorMap[status] || 'info'
+}
+
+
+// 获取优先级颜色
+const getPriorityColor = (priority) => {
+  const colorMap = {
+    'low': 'info',
+    'medium': 'warning',
+    'high': 'danger',
+    'urgent': 'danger'
+  }
+  return colorMap[priority] || 'info'
+}
+
+
+// 弹窗关闭处理
+const handleDetailClose = () => {
+  detailDialogVisible.value = false
+  currentRepair.value = null
+}
+
+const handleEditClose = () => {
+  editDialogVisible.value = false
+  editForm.value = null
+}
+
+// 从详情弹窗编辑工单
+const editCurrentRepair = () => {
+  if (currentRepair.value) {
+    detailDialogVisible.value = false
+    editRepair(currentRepair.value)
+  }
+}
+
+// 开始维修
+const startRepair = () => {
+  if (currentRepair.value) {
+    detailDialogVisible.value = false
+    statusForm.value = {
+      id: currentRepair.value.id,
+      currentStatus: currentRepair.value.status,
+      newStatus: 'processing',
+      repair_worker: currentUser.value.id,
+      notes: ''
+    }
+    statusDialogVisible.value = true
+  }
+}
+
+// 完成维修
+const completeRepair = () => {
+  if (currentRepair.value) {
+    detailDialogVisible.value = false
+    statusForm.value = {
+      id: currentRepair.value.id,
+      currentStatus: currentRepair.value.status,
+      newStatus: 'completed',
+      repair_worker: currentRepair.value.repair_worker?.id || currentUser.value.id,
+      notes: ''
+    }
+    statusDialogVisible.value = true
+  }
+}
+
+// 保存编辑
+const saveEdit = async () => {
+  if (!editFormRef.value) return
+  
+  try {
+    const valid = await editFormRef.value.validate()
+    if (!valid) return
+    
+    editLoading.value = true
+    
+    const updateData = {
+      title: editForm.value.title,
+      description: editForm.value.description,
+      fault_type: editForm.value.fault_type,
+      priority: editForm.value.priority
+    }
+    
+    // 如果有维修说明，也一起更新
+    if (editForm.value.repair_notes) {
+      updateData.repair_notes = editForm.value.repair_notes
+    }
+    
+    await repairAPI.updateRepair(editForm.value.id, updateData)
+    
+    ElMessage.success('工单更新成功')
+    editDialogVisible.value = false
+    editForm.value = null
+    
+    // 重新加载数据而不是刷新页面
+    await fetchRepairs()
+    
+  } catch (error) {
+    console.error('更新工单失败:', error)
+    ElMessage.error('更新工单失败')
+  } finally {
+    editLoading.value = false
+  }
+}
+
+// 确认状态更新
+const confirmStatusUpdate = async () => {
+  if (!statusForm.value) return
+  
+  try {
+    statusLoading.value = true
+    
+    const updateData = {
+      status: statusForm.value.newStatus
+    }
+    
+    // 如果是开始维修，设置维修员
+    if (statusForm.value.newStatus === 'processing' && statusForm.value.repair_worker) {
+      updateData.repair_worker = statusForm.value.repair_worker
+    }
+    
+    // 如果有备注说明，添加到维修说明中
+    if (statusForm.value.notes) {
+      updateData.repair_notes = statusForm.value.notes
+    }
+    
+    await repairAPI.updateRepair(statusForm.value.id, updateData)
+    
+    ElMessage.success('状态更新成功')
+    statusDialogVisible.value = false
+    statusForm.value = null
+    
+    // 重新加载数据而不是刷新页面
+    await fetchRepairs()
+    
+  } catch (error) {
+    console.error('状态更新失败:', error)
+    ElMessage.error('状态更新失败')
+  } finally {
+    statusLoading.value = false
+  }
+}
+
 
 // 组件挂载时加载数据
 onMounted(() => {
@@ -877,6 +1504,98 @@ onMounted(() => {
   
   .card-actions {
     flex-direction: column;
+  }
+}
+/* 弹窗样式 */
+.repair-detail {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.detail-section {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.detail-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #303133;
+  margin: 0 0 16px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.info-item {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.info-item label {
+  font-weight: 500;
+  color: #606266;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.order-number {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  background: #f5f7fa;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.repair-description,
+.repair-notes,
+.repair-comment {
+  background: #f5f7fa;
+  padding: 8px 12px;
+  border-radius: 4px;
+  line-height: 1.5;
+  color: #606266;
+  white-space: pre-wrap;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* 弹窗响应式 */
+@media (max-width: 768px) {
+  .el-dialog {
+    width: 95% !important;
+    margin: 5vh auto !important;
+  }
+  
+  .info-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .info-item label {
+    min-width: auto;
+  }
+  
+  .dialog-footer {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .dialog-footer .el-button {
+    width: 100%;
   }
 }
 </style>

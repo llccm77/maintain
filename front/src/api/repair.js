@@ -41,7 +41,7 @@ export const repairAPI = {
    * @param {Object} data - 工单数据
    * @param {string} data.title - 工单标题
    * @param {string} data.description - 问题描述
-   * @param {number} data.student_id - 报修学生ID
+   * @param {number} data.user_id - 报修用户ID
    * @param {number} data.dormitory_id - 宿舍ID
    * @param {string} [data.fault_type] - 故障类型，默认'other'
    * @param {string} [data.priority] - 优先级，默认'medium'

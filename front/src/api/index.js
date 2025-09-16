@@ -9,13 +9,15 @@ import { authAPI } from './auth'
 import { dormitoryAPI } from './dormitory'
 import { repairAPI } from './repair'
 import { systemAPI } from './system'
+import { userAPI } from './user'
 
 // 统一导出所有API模块，保持标准化命名
 export {
   authAPI,
   dormitoryAPI,
   repairAPI,
-  systemAPI
+  systemAPI,
+  userAPI
 }
 
 // 默认导出所有API模块的集合
@@ -23,5 +25,6 @@ export default {
   auth: authAPI,
   dormitory: dormitoryAPI,
   repair: repairAPI,
-  system: systemAPI
+  system: systemAPI,
+  user: userAPI
 }

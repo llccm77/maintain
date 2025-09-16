@@ -56,6 +56,15 @@ const routes = [
         }
       },
       {
+        path: 'repair/create',
+        name: 'CreateRepairOrder',
+        component: () => import('@/views/CreateRepairOrder.vue'),
+        meta: { 
+          requiresAuth: true,
+          title: '新建报修工单'
+        }
+      },
+      {
         path: 'settings',
         name: 'Settings',
         component: () => import('@/views/Settings.vue'),

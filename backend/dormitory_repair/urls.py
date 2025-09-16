@@ -16,6 +16,9 @@ urlpatterns = [
     path('auth/logout/', views.api_logout, name='api_logout'),
     path('auth/user/', views.api_current_user, name='api_current_user'),
     
+    # 用户管理API
+    path('users/', views.users_api, name='users_api'),
+    
     # 报修工单API
     path('repair-orders/', views.api_repair_orders, name='api_repair_orders'),
     path('repair-orders/<int:order_id>/', views.api_repair_order_detail, name='api_repair_order_detail'),

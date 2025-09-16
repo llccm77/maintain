@@ -192,6 +192,76 @@ def api_current_user(request):
         }, status=500)
 
 
+@csrf_exempt
+def users_api(request):
+    """
+    用户API - 支持GET(列表/搜索)
+    """
+    if request.method == 'GET':
+        return _get_users_list(request)
+    else:
+        return JsonResponse({'error': '不支持的请求方法'}, status=405)
+
+
+def _get_users_list(request):
+    """
+    获取用户列表/搜索用户
+    """
+    try:
+        # 获取查询参数
+        search = request.GET.get('search', '').strip()
+        page = int(request.GET.get('page', 1))
+        page_size = int(request.GET.get('page_size', 20))
+        
+        # 构建查询
+        users = User.objects.all()
+        
+        # 搜索过滤
+        if search:
+            users = users.filter(
+                Q(username__icontains=search) |
+                Q(first_name__icontains=search) |
+                Q(last_name__icontains=search) |
+                Q(email__icontains=search)
+            )
+        
+        # 排序
+        users = users.order_by('username')
+        
+        # 分页
+        total_count = users.count()
+        start_index = (page - 1) * page_size
+        end_index = start_index + page_size
+        users_page = users[start_index:end_index]
+        
+        # 构建响应数据
+        users_data = []
+        for user in users_page:
+            users_data.append({
+                'id': user.id,
+                'username': user.username,
+                'first_name': user.first_name or '',
+                'last_name': user.last_name or '',
+                'email': user.email or '',
+                'is_staff': user.is_staff,
+                'is_active': user.is_active,
+                'date_joined': user.date_joined.isoformat() if user.date_joined else None
+            })
+        
+        return JsonResponse({
+            'results': users_data,
+            'count': total_count,
+            'page': page,
+            'page_size': page_size,
+            'total_pages': (total_count + page_size - 1) // page_size
+        })
+        
+    except Exception as e:
+        return JsonResponse({
+            'error': f'获取用户列表失败: {str(e)}'
+        }, status=500)
+
+
 # ========================
 # 报修工单相关API
 # ========================
