@@ -2379,6 +2379,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 24px;
+  align-items: stretch;
 }
 
 @media (max-width: 768px) {
@@ -2393,6 +2394,9 @@ export default {
   padding: 20px;
   border: 1px solid #e9ecef;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
 }
 
 .announcement-panel:hover {
@@ -2453,7 +2457,10 @@ export default {
 }
 
 .panel-content {
-  min-height: 200px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 300px;
 }
 
 .empty-announcements,
@@ -2462,7 +2469,8 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 200px;
+  flex: 1;
+  min-height: 250px;
   color: #95a5a6;
 }
 
@@ -2476,16 +2484,20 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1;
 }
 
 .announcement-item {
-  padding: 16px;
+  padding: 12px 16px;
   background: white;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease;
   border: 1px solid #e9ecef;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 80px;
 }
 
 .announcement-item:hover {
@@ -2514,14 +2526,15 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  flex-shrink: 0;
 }
 
 .announcement-title {
   font-weight: 600;
   color: #2c3e50;
-  font-size: 0.95rem;
-  line-height: 1.4;
+  font-size: 0.9rem;
+  line-height: 1.3;
   flex: 1;
   margin-right: 12px;
 }
@@ -2539,29 +2552,31 @@ export default {
 }
 
 .announcement-summary {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #7f8c8d;
   line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  flex: 1;
 }
 
 /* 活动卡片样式 */
 .activities-carousel {
-  overflow-x: auto;
-  padding-bottom: 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .activity-cards {
-  display: flex;
-  gap: 16px;
-  min-width: min-content;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  flex: 1;
 }
 
 .activity-card {
-  flex: 0 0 280px;
   background: white;
   border-radius: 12px;
   overflow: hidden;
@@ -2569,6 +2584,9 @@ export default {
   transition: all 0.3s ease;
   border: 1px solid #e9ecef;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  min-height: 120px;
 }
 
 .activity-card:hover {
@@ -2578,12 +2596,13 @@ export default {
 }
 
 .activity-image {
-  height: 120px;
+  height: 60px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .activity-type-badge {
@@ -2614,24 +2633,28 @@ export default {
 }
 
 .activity-content {
-  padding: 16px;
+  padding: 12px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .activity-title {
   font-weight: 600;
   color: #2c3e50;
-  margin-bottom: 12px;
-  font-size: 0.95rem;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
   line-height: 1.3;
+  flex-shrink: 0;
 }
 
 .activity-time,
 .activity-location {
   display: flex;
   align-items: center;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #7f8c8d;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .activity-time .el-icon,
