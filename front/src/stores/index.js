@@ -227,3 +227,10 @@ export const useRepairStore = defineStore('repair', () => {
     deleteOrder
   }
 })
+
+// 默认导出所有store
+export default {
+  useAuthStore,
+  useSystemStore,
+  useRepairStore
+}

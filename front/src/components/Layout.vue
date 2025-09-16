@@ -1,160 +1,13 @@
 <template>
   <div class="app-layout">
-    <!-- 侧边栏 -->
-    <div 
-      class="sidebar" 
-      :class="{ 'sidebar-collapsed': isCollapsed, 'sidebar-mobile-open': isMobileMenuOpen }"
-    >
-      <div class="sidebar-header">
-        <div class="logo" @click="navigateTo('/dashboard')">
-          <el-icon v-if="!isCollapsed" size="24" color="#409eff">
-            <House />
-          </el-icon>
-          <el-icon v-else size="20" color="#409eff">
-            <House />
-          </el-icon>
-          <transition name="fade">
-            <span v-if="!isCollapsed" class="logo-text">智能维修</span>
-          </transition>
-        </div>
-        <el-button 
-          v-if="!isMobile" 
-          @click="toggleSidebar" 
-          class="collapse-btn"
-          :icon="isCollapsed ? Expand : Fold"
-          circle
-          size="small"
-        />
-      </div>
-
-      <div class="sidebar-content">
-        <el-menu
-          :default-active="currentRoute"
-          :collapse="isCollapsed"
-          :unique-opened="true"
-          class="sidebar-menu"
-          @select="handleMenuSelect"
-        >
-          <!-- 我的小管家仪表盘 -->
-          <el-menu-item index="/dashboard">
-            <SidebarIcons type="computer" :size="20" />
-            <template #title>我的小管家仪表盘</template>
-          </el-menu-item>
-
-          <!-- 小管家的任务板 -->
-          <el-menu-item index="/repair">
-            <SidebarIcons type="worker" :size="20" />
-            <template #title>小管家的任务板</template>
-          </el-menu-item>
-
-
-          <!-- 我的小窝们 -->
-          <el-menu-item index="/dormitory">
-            <SidebarIcons type="house" :size="20" />
-            <template #title>我的小窝们</template>
-          </el-menu-item>
-
-          <!-- 小管家设置 -->
-          <el-sub-menu index="system">
-            <template #title>
-              <SidebarIcons type="gear" :size="20" />
-              <span>小管家设置</span>
-            </template>
-            <el-menu-item index="/settings">
-              <el-icon><Tools /></el-icon>
-              <template #title>小管家配置</template>
-            </el-menu-item>
-            <el-menu-item index="/users">
-              <el-icon><UserFilled /></el-icon>
-              <template #title>管家团队</template>
-            </el-menu-item>
-          </el-sub-menu>
-        </el-menu>
-      </div>
-
-      <div class="sidebar-footer">
-        <div class="user-profile" @click="showUserMenu = !showUserMenu">
-          <div class="user-avatar">
-            <SidebarIcons type="admin" :size="isCollapsed ? 32 : 40" />
-          </div>
-          <div v-if="!isCollapsed" class="user-info">
-            <div class="user-name">宿舍总管家</div>
-            <div class="user-role">权限最高的小管家</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <!-- 顶部导航栏 -->
+    <TopNavbar />
+    
+    <!-- 侧边导航栏 -->
+    <SideNavbar />
+    
     <!-- 主内容区域 -->
-    <div class="main-content" :class="{ 'main-collapsed': isCollapsed }">
-      <!-- 顶部导航栏 -->
-      <div class="top-navbar">
-        <div class="navbar-left">
-          <el-button 
-            v-if="isMobile" 
-            @click="toggleMobileMenu" 
-            class="mobile-menu-btn"
-            :icon="Menu"
-            circle
-            size="small"
-          />
-          <el-breadcrumb separator="/" class="breadcrumb">
-            <el-breadcrumb-item v-for="item in breadcrumbs" :key="item.path" :to="item.path">
-              {{ item.title }}
-            </el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
-
-        <div class="navbar-right">
-          <!-- 搜索框 -->
-          <div class="search-box">
-            <el-input
-              v-model="searchQuery"
-              placeholder="搜索工单、学生..."
-              prefix-icon="Search"
-              size="small"
-              class="search-input"
-              @keyup.enter="handleSearch"
-            />
-          </div>
-
-          <!-- 通知中心 -->
-          <el-badge :value="notificationCount" class="notification-badge">
-            <el-button 
-              @click="showNotifications = !showNotifications"
-              :icon="Bell" 
-              circle 
-              size="small"
-            />
-          </el-badge>
-
-          <!-- 用户菜单 -->
-          <el-dropdown @command="handleUserCommand" trigger="click">
-            <div class="user-dropdown">
-              <el-avatar size="32" src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
-              <span class="username">管理员</span>
-              <el-icon><ArrowDown /></el-icon>
-            </div>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item command="profile">
-                  <el-icon><User /></el-icon>
-                  个人资料
-                </el-dropdown-item>
-                <el-dropdown-item command="settings">
-                  <el-icon><Setting /></el-icon>
-                  系统设置
-                </el-dropdown-item>
-                <el-dropdown-item divided command="logout">
-                  <el-icon><SwitchButton /></el-icon>
-                  退出登录
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
-        </div>
-      </div>
-
+    <div class="main-content">
       <!-- 页面内容 -->
       <div class="page-content">
         <router-view v-slot="{ Component }">
@@ -204,76 +57,41 @@ import { useRouter, useRoute } from 'vue-router'
 import { ElMessage, ElMessageBox, ElLoading } from 'element-plus'
 import { useAuthStore } from '@/stores'
 import {
-  House, Monitor, Tools, UserFilled, Setting,
-  Expand, Fold, Menu, Search, Bell, ArrowDown, SwitchButton, Close,
-  Warning, Check, InfoFilled, User
+  Close, Warning, Check, InfoFilled
 } from '@element-plus/icons-vue'
-import SidebarIcons from './SidebarIcons.vue'
+import TopNavbar from './TopNavbar.vue'
+import SideNavbar from './SideNavbar.vue'
 
 const router = useRouter()
 const route = useRoute()
 const authStore = useAuthStore()
 
 // 响应式状态
-const isCollapsed = ref(false)
 const isMobile = ref(false)
 const isMobileMenuOpen = ref(false)
-const showUserMenu = ref(false)
 const showNotifications = ref(false)
-const searchQuery = ref('')
-const notificationCount = ref(3)
-
-// 当前路由
-const currentRoute = computed(() => route.path)
-
-// 面包屑导航
-const breadcrumbs = computed(() => {
-  const pathSegments = route.path.split('/').filter(Boolean)
-  const breadcrumbItems = [{ title: '首页', path: '/dashboard' }]
-  
-  const routeMap = {
-    'dashboard': '仪表盘',
-    'repair': '工单列表',
-    'dormitory': '宿舍列表',
-    'settings': '系统设置',
-    'users': '用户管理'
-  }
-  
-  let currentPath = ''
-  pathSegments.forEach(segment => {
-    currentPath += '/' + segment
-    if (routeMap[segment]) {
-      breadcrumbItems.push({
-        title: routeMap[segment],
-        path: currentPath
-      })
-    }
-  })
-  
-  return breadcrumbItems
-})
 
 // 通知数据
 const notifications = ref([
   {
     id: 1,
     type: 'warning',
-    title: '新的报修工单',
-    description: 'A栋-101宿舍水龙头漏水，需要尽快处理',
+    title: '紧急维修',
+    description: '宿舍楼A栋201房间水管爆裂',
     time: '5分钟前'
   },
   {
     id: 2,
     type: 'success',
-    title: '工单已完成',
-    description: 'B栋-205宿舍灯泡更换已完成',
+    title: '维修完成',
+    description: '宿舍楼B栋301房间电路维修已完成',
     time: '1小时前'
   },
   {
     id: 3,
     type: 'info',
-    title: '系统更新',
-    description: '系统将在今晚进行维护更新',
+    title: '系统通知',
+    description: '系统将于今晚23:00进行维护',
     time: '2小时前'
   }
 ])
@@ -282,57 +100,13 @@ const notifications = ref([
 const checkMobile = () => {
   isMobile.value = window.innerWidth < 768
   if (isMobile.value) {
-    isCollapsed.value = true
     isMobileMenuOpen.value = false
   }
 }
 
 // 方法
-const toggleSidebar = () => {
-  isCollapsed.value = !isCollapsed.value
-}
-
-const toggleMobileMenu = () => {
-  isMobileMenuOpen.value = !isMobileMenuOpen.value
-}
-
 const closeMobileMenu = () => {
   isMobileMenuOpen.value = false
-}
-
-const navigateTo = (path) => {
-  router.push(path)
-  if (isMobile.value) {
-    closeMobileMenu()
-  }
-}
-
-const handleMenuSelect = (index) => {
-  router.push(index)
-  if (isMobile.value) {
-    closeMobileMenu()
-  }
-}
-
-const handleSearch = () => {
-  if (searchQuery.value.trim()) {
-    ElMessage.info(`搜索: ${searchQuery.value}`)
-    // 实现搜索逻辑
-  }
-}
-
-const handleUserCommand = (command) => {
-  switch (command) {
-    case 'profile':
-      ElMessage.info('个人资料')
-      break
-    case 'settings':
-      router.push('/settings')
-      break
-    case 'logout':
-      handleLogout()
-      break
-  }
 }
 
 const handleLogout = async () => {
@@ -395,308 +169,23 @@ onUnmounted(() => {
 })
 </script>
 
-<script>
-export default {
-  name: 'Layout',
-  components: {
-    SidebarIcons
-  }
-}
-</script>
+
 
 <style scoped>
 /* 应用布局 */
 .app-layout {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: #f8fafc;
-}
-
-/* 侧边栏 */
-.sidebar {
-  width: 260px;
-  background: linear-gradient(135deg, #F5F5DC 0%, #F0E68C 50%, #DDD8C0 100%);
-  border-right: 1px solid rgba(139, 69, 19, 0.1);
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  height: calc(100vh - 16px);
-  z-index: 1000;
-  transition: all 0.3s ease;
-  box-shadow: 4px 0 20px rgba(139, 69, 19, 0.12), 0 0 40px rgba(139, 69, 19, 0.06);
-  border-radius: 0 25px 25px 0;
-  margin: 8px 0;
-}
-
-.sidebar-collapsed {
-  width: 64px;
-}
-
-.sidebar-mobile-open {
-  transform: translateX(0);
-}
-
-/* 侧边栏头部 */
-.sidebar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px 24px;
-  border-bottom: 1px solid #E8E5DD;
-  min-height: 64px;
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  border-radius: 0 20px 0 0;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 18px;
-  color: #1f2937;
-  transition: all 0.3s ease;
-}
-
-.logo:hover {
-  color: #409eff;
-}
-
-.logo-text {
-  white-space: nowrap;
-}
-
-.collapse-btn {
-  border: none;
-  background: #f3f4f6;
-}
-
-/* 侧边栏内容 */
-.sidebar-content {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.sidebar-menu {
-  border: none;
-  background: transparent;
-}
-
-.sidebar-menu .el-menu-item,
-.sidebar-menu .el-sub-menu {
-  margin: 4px 12px;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.sidebar-menu .el-menu-item {
-  height: 52px;
-  line-height: 52px;
-  color: #8B7355;
-  transition: all 0.3s ease;
-  font-weight: 500;
-  padding: 0 16px;
-}
-
-.sidebar-menu .el-menu-item:hover {
-  background: linear-gradient(135deg, rgba(255, 182, 193, 0.2), rgba(240, 230, 140, 0.2));
-  color: #8B4513;
-  transform: translateX(4px);
-  box-shadow: 0 4px 12px rgba(255, 182, 193, 0.3);
-}
-
-.sidebar-menu .el-menu-item.is-active {
-  background: linear-gradient(135deg, #FFB6C1, #FFE4E1, #F0E68C);
-  color: #8B4513;
-  position: relative;
-}
-
-.sidebar-menu .el-menu-item.is-active::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 3px;
-  height: 20px;
-  background: white;
-  border-radius: 0 2px 2px 0;
-}
-
-.sidebar-menu .el-sub-menu__title {
-  height: 44px;
-  line-height: 44px;
-  color: #6b7280;
-  border-radius: 8px;
-  margin: 0;
-  transition: all 0.3s ease;
-}
-
-.sidebar-menu .el-sub-menu__title:hover {
-  background-color: #f8faff;
-  color: #409eff;
-}
-
-.sidebar-menu .el-sub-menu .el-menu-item {
-  padding-left: 48px !important;
-  background: rgba(139, 69, 19, 0.03);
-  margin: 3px 12px;
-  border-radius: 10px;
-  height: 44px;
-  line-height: 44px;
-}
-
-.sidebar-menu .el-menu-item .el-icon {
-  width: 20px;
-  margin-right: 16px;
-}
-
-/* 侧边栏底部 */
-.sidebar-footer {
-  padding: 20px;
-  border-top: 1px solid #E8E5DD;
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  border-radius: 0 0 20px 0;
-}
-
-.user-profile {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  padding: 12px;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.user-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #FFB6C1, #87CEEB);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 16px;
-  flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.15);
-  transition: all 0.3s ease;
-}
-
-.user-profile:hover {
-  background: linear-gradient(135deg, rgba(255, 182, 193, 0.3), rgba(240, 230, 140, 0.3));
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 182, 193, 0.2);
-}
-
-.user-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.user-name {
-  font-weight: 600;
-  color: #8B4513;
-  font-size: 14px;
-  line-height: 1.2;
-}
-
-.user-role {
-  font-size: 12px;
-  color: #A0826D;
-  line-height: 1.2;
 }
 
 /* 主内容区域 */
 .main-content {
   flex: 1;
-  margin-left: 260px;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  margin-top: 64px; /* 顶部导航栏高度 */
+  margin-left: 240px; /* 侧边栏宽度 */
   transition: margin-left 0.3s ease;
-}
-
-.main-collapsed {
-  margin-left: 64px;
-}
-
-/* 顶部导航栏 */
-.top-navbar {
-  height: 64px;
-  background: white;
-  border-bottom: 1px solid #e5e7eb;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.navbar-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.mobile-menu-btn {
-  border: none;
-  background: #f3f4f6;
-}
-
-.breadcrumb {
-  font-size: 14px;
-}
-
-.navbar-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.search-box {
-  position: relative;
-}
-
-.search-input {
-  width: 240px;
-  transition: width 0.3s ease;
-}
-
-.search-input:focus-within {
-  width: 280px;
-}
-
-.notification-badge {
-  cursor: pointer;
-}
-
-.user-dropdown {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 6px;
-  transition: background-color 0.3s ease;
-}
-
-.user-dropdown:hover {
-  background-color: #f3f4f6;
-}
-
-.username {
-  font-size: 14px;
-  color: #1f2937;
-  font-weight: 500;
 }
 
 /* 页面内容 */
@@ -704,6 +193,7 @@ export default {
   flex: 1;
   overflow-y: auto;
   background-color: #f8fafc;
+  padding: 24px;
 }
 
 /* 移动端遮罩 */

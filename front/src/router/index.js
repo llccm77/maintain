@@ -2,11 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
 // 导入页面组件
-import Login from '@/views/Login.vue'
+import Login from '@/views/auth/Login.vue'
 import Layout from '@/components/Layout.vue'
-import Dashboard from '@/views/Dashboard.vue'
-import DormitoryManagement from '@/views/DormitoryManagement.vue'
-import RepairManagement from '@/views/RepairManagement.vue'
+import Dashboard from '@/views/system/Dashboard.vue'
+import DormitoryManagement from '@/views/dormitory/DormitoryManagement.vue'
+import RepairManagement from '@/views/repair/RepairManagement.vue'
+import RepairRecords from '@/views/repair/RepairRecords.vue'
+import WorkOrderStatus from '@/views/repair/WorkOrderStatus.vue'
 
 // 路由配置
 const routes = [
@@ -58,16 +60,34 @@ const routes = [
       {
         path: 'repair/create',
         name: 'CreateRepairOrder',
-        component: () => import('@/views/CreateRepairOrder.vue'),
+        component: () => import('@/views/repair/CreateRepairOrder.vue'),
         meta: { 
           requiresAuth: true,
           title: '新建报修工单'
         }
       },
       {
+        path: 'repair/records',
+        name: 'RepairRecords',
+        component: RepairRecords,
+        meta: { 
+          requiresAuth: true,
+          title: '报修记录'
+        }
+      },
+      {
+        path: 'repair/status',
+        name: 'WorkOrderStatus',
+        component: WorkOrderStatus,
+        meta: { 
+          requiresAuth: true,
+          title: '工单状态'
+        }
+      },
+      {
         path: 'settings',
         name: 'Settings',
-        component: () => import('@/views/Settings.vue'),
+        component: () => import('@/views/system/Settings.vue'),
         meta: { 
           requiresAuth: true,
           title: '系统设置'
@@ -76,7 +96,7 @@ const routes = [
       {
         path: 'users',
         name: 'UserManagement',
-        component: () => import('@/views/UserManagement.vue'),
+        component: () => import('@/views/user/UserManagement.vue'),
         meta: { 
           requiresAuth: true,
           title: '用户管理'
