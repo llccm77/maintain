@@ -9,6 +9,7 @@ import DormitoryManagement from '@/views/dormitory/DormitoryManagement.vue'
 import RepairManagement from '@/views/repair/RepairManagement.vue'
 import RepairRecords from '@/views/repair/RepairRecords.vue'
 import WorkOrderStatus from '@/views/repair/WorkOrderStatus.vue'
+import AIAssistant from '@/views/ai/AIAssistant.vue'
 
 // 路由配置
 const routes = [
@@ -100,6 +101,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           title: '用户管理'
+        }
+      },
+      {
+        path: 'ai-assistant',
+        name: 'AIAssistant',
+        component: AIAssistant,
+        meta: { 
+          requiresAuth: true,
+          title: 'AI维修小助手'
         }
       }
     ]

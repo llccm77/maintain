@@ -1,20 +1,6 @@
 <template>
   <div class="create-repair-order">
     <!-- 页面头部 -->
-    <div class="page-header">
-      <div class="header-content">
-        <div class="header-left">
-          <h1 class="page-title">
-            <el-icon><Plus /></el-icon>
-            新建报修工单
-          </h1>
-          <p class="page-subtitle">请填写详细的报修信息，我们将尽快为您处理</p>
-        </div>
-        <div class="header-actions">
-          <el-button @click="goBack" icon="ArrowLeft">返回列表</el-button>
-        </div>
-      </div>
-    </div>
 
     <!-- 表单内容 -->
     <div class="form-container">
@@ -198,44 +184,6 @@
         </el-form>
       </el-card>
     </div>
-
-    <!-- 温馨提示 -->
-    <el-card class="tips-card" shadow="hover">
-      <template #header>
-        <div class="card-header">
-          <span class="card-title">
-            <el-icon><InfoFilled /></el-icon>
-            温馨提示
-          </span>
-        </div>
-      </template>
-      
-      <div class="tips-content">
-        <div class="tip-item">
-          <el-icon class="tip-icon"><Clock /></el-icon>
-          <div class="tip-text">
-            <strong>处理时效：</strong>
-            <span>一般故障24小时内响应，紧急故障2小时内响应</span>
-          </div>
-        </div>
-        
-        <div class="tip-item">
-          <el-icon class="tip-icon"><Phone /></el-icon>
-          <div class="tip-text">
-            <strong>紧急联系：</strong>
-            <span>如遇紧急情况，请拨打24小时服务热线：400-123-4567</span>
-          </div>
-        </div>
-        
-        <div class="tip-item">
-          <el-icon class="tip-icon"><ChatDotRound /></el-icon>
-          <div class="tip-text">
-            <strong>进度查询：</strong>
-            <span>您可以在"报修工单管理"页面实时查看工单处理进度</span>
-          </div>
-        </div>
-      </div>
-    </el-card>
   </div>
 </template>
 
@@ -573,22 +521,18 @@ onMounted(() => {
 
 <style scoped>
 .create-repair-order {
-  padding: 20px;
+  padding: 10px;
   background-color: #f5f7fa;
   min-height: calc(100vh - 60px);
 }
 
-/* 页面头部 */
-.page-header {
-  margin-bottom: 20px;
-}
 
 .header-content {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   background: white;
-  padding: 24px;
+  padding: 12px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }

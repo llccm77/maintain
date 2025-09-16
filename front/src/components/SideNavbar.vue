@@ -74,12 +74,12 @@
           </el-tooltip>
         </el-menu-item>
 
-        <!-- AI问答 -->
-        <el-menu-item index="/ai-chat">
-          <el-tooltip :content="isCollapsed ? 'AI问答助手' : ''" placement="right" :disabled="!isCollapsed">
+        <!-- AI维修小助手 -->
+        <el-menu-item index="/ai-assistant">
+          <el-tooltip :content="isCollapsed ? 'AI维修小助手' : ''" placement="right" :disabled="!isCollapsed">
             <el-icon><ChatDotRound /></el-icon>
           </el-tooltip>
-          <template #title v-if="!isCollapsed">AI问答助手</template>
+          <template #title v-if="!isCollapsed">AI维修小助手</template>
         </el-menu-item>
       </el-menu>
     </div>

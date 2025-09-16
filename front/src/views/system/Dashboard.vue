@@ -265,7 +265,7 @@
         </div>
       </div>
 
-      <!-- 模块三：智能问答助手 - 动态表格 -->
+      <!-- 模块三：AI维修小助手 - 动态表格 -->
       <div class="hub-module ai-assistant-table-module">
         <div class="module-header">
           <div class="module-title">
@@ -275,7 +275,7 @@
               <circle cx="7" cy="8" r="1" fill="currentColor"/>
               <circle cx="13" cy="8" r="1" fill="currentColor"/>
             </svg>
-            智能问答助手
+            AI维修小助手
           </div>
           <div class="module-actions">
             <button @click="showAllQuestions" class="view-all-btn">

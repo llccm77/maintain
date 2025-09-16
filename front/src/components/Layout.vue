@@ -185,7 +185,7 @@ onUnmounted(() => {
   flex: 1;
   margin-top: 64px; /* 顶部导航栏高度 */
   margin-left: 240px; /* 侧边栏宽度 */
-  transition: margin-left 0.3s ease;
+  transition: margin-left 0.3s ease, margin-top 0.3s ease;
 }
 
 /* 页面内容 */

@@ -189,17 +189,38 @@
       </button>
     </div>
 
-    <!-- 工单详情弹窗 -->
+    <!-- 工单详情弹窗 - AI小助手风格 -->
     <el-dialog 
       v-model="detailDialogVisible" 
-      title="工单详情" 
       width="800px"
       :before-close="handleDetailClose"
+      class="ai-dialog"
     >
-      <div v-if="currentRepair" class="repair-detail">
+      <template #header>
+        <div class="ai-dialog-header">
+          <div class="ai-avatar">
+            <i class="el-icon-chat-dot-square" style="font-size: 24px; color: #409eff;"></i>
+          </div>
+          <div class="ai-title">
+            <h3>🤖 AI维修小助手</h3>
+            <p>让我来帮您查看这个工单的详细信息</p>
+          </div>
+        </div>
+      </template>
+      <div v-if="currentRepair" class="ai-chat-content">
+        <!-- AI助手介绍 -->
+        <div class="ai-message">
+          <div class="ai-bubble">
+            <p>您好！我是AI维修小助手，这是工单 <strong>{{ currentRepair.order_number }}</strong> 的详细信息：</p>
+          </div>
+        </div>
+        
         <!-- 工单基本信息 -->
         <div class="detail-section">
-          <h3 class="section-title">📋 基本信息</h3>
+          <div class="ai-message">
+            <div class="ai-bubble">
+              <h4>📋 基本信息</h4>
+              <div class="info-grid">
           <el-row :gutter="20">
             <el-col :span="12">
               <div class="info-item">
@@ -243,68 +264,65 @@
             <label>详细描述：</label>
             <div class="repair-description">{{ currentRepair.description }}</div>
           </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 报修人和宿舍信息 -->
         <div class="detail-section">
-          <h3 class="section-title">👤 报修信息</h3>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <div class="info-item">
-                <label>报修人：</label>
-                <span>{{ currentRepair.user?.username || '未知' }}</span>
+          <div class="ai-message">
+            <div class="ai-bubble">
+              <h4>👤 报修信息</h4>
+              <div class="info-grid">
+                <p><strong>报修人：</strong>{{ currentRepair.user?.username || '未知' }}</p>
+                <p><strong>宿舍：</strong>{{ currentRepair.dormitory?.building_name }}-{{ currentRepair.dormitory?.room_number }}</p>
               </div>
-            </el-col>
-            <el-col :span="12">
-              <div class="info-item">
-                <label>宿舍：</label>
-                <span>{{ currentRepair.dormitory?.building_name }}-{{ currentRepair.dormitory?.room_number }}</span>
-              </div>
-            </el-col>
-          </el-row>
+            </div>
+          </div>
         </div>
 
         <!-- 维修信息 -->
         <div class="detail-section">
-          <h3 class="section-title">🔧 维修信息</h3>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <div class="info-item">
-                <label>当前状态：</label>
-                <el-tag :type="getStatusColor(currentRepair.status)">
-                  {{ getStatusText(currentRepair.status) }}
-                </el-tag>
+          <div class="ai-message">
+            <div class="ai-bubble">
+              <h4>🔧 维修信息</h4>
+              <div class="info-grid">
+                <p><strong>当前状态：</strong>
+                  <el-tag :type="getStatusColor(currentRepair.status)" size="small">
+                    {{ getStatusText(currentRepair.status) }}
+                  </el-tag>
+                </p>
+                <p><strong>维修员：</strong>{{ currentRepair.repair_worker?.username || '未分配' }}</p>
+                <div v-if="currentRepair.repair_notes" style="grid-column: 1 / -1;">
+                  <p><strong>维修说明：</strong></p>
+                  <div class="repair-notes" style="background: #f5f7fa; padding: 10px; border-radius: 8px; margin-top: 5px;">
+                    {{ currentRepair.repair_notes }}
+                  </div>
+                </div>
+                <p v-if="currentRepair.completed_at"><strong>完成时间：</strong>{{ formatDateTime(currentRepair.completed_at) }}</p>
               </div>
-            </el-col>
-            <el-col :span="12">
-              <div class="info-item">
-                <label>维修员：</label>
-                <span>{{ currentRepair.repair_worker?.username || '未分配' }}</span>
-              </div>
-            </el-col>
-          </el-row>
-          
-          <div v-if="currentRepair.repair_notes" class="info-item">
-            <label>维修说明：</label>
-            <div class="repair-notes">{{ currentRepair.repair_notes }}</div>
-          </div>
-          
-          <div v-if="currentRepair.completed_at" class="info-item">
-            <label>完成时间：</label>
-            <span>{{ formatDateTime(currentRepair.completed_at) }}</span>
+            </div>
           </div>
         </div>
 
         <!-- 评价信息 -->
         <div v-if="currentRepair.rating" class="detail-section">
-          <h3 class="section-title">⭐ 评价信息</h3>
-          <div class="info-item">
-            <label>评分：</label>
-            <el-rate v-model="currentRepair.rating" disabled show-score />
-          </div>
-          <div v-if="currentRepair.comment" class="info-item">
-            <label>评价内容：</label>
-            <div class="repair-comment">{{ currentRepair.comment }}</div>
+          <div class="ai-message">
+            <div class="ai-bubble">
+              <h4>⭐ 用户评价</h4>
+              <div class="info-grid">
+                <p><strong>评分：</strong>
+                  <el-rate v-model="currentRepair.rating" disabled show-score size="small" />
+                </p>
+                <div v-if="currentRepair.comment" style="grid-column: 1 / -1;">
+                  <p><strong>评价内容：</strong></p>
+                  <div class="repair-comment" style="background: #f0f9ff; padding: 10px; border-radius: 8px; margin-top: 5px; border-left: 3px solid #409eff;">
+                    {{ currentRepair.comment }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -331,20 +349,37 @@
       </template>
     </el-dialog>
 
-    <!-- 编辑工单弹窗 -->
+    <!-- 编辑工单弹窗 - AI小助手风格 -->
     <el-dialog 
       v-model="editDialogVisible" 
-      title="编辑工单" 
       width="600px"
       :before-close="handleEditClose"
+      class="ai-dialog"
     >
-      <el-form 
-        v-if="editForm" 
-        ref="editFormRef" 
-        :model="editForm" 
-        :rules="editRules" 
-        label-width="100px"
-      >
+      <template #header>
+        <div class="ai-dialog-header">
+          <div class="ai-avatar">
+            <i class="el-icon-edit" style="font-size: 24px; color: #e6a23c;"></i>
+          </div>
+          <div class="ai-title">
+            <h3>✏️ AI维修小助手</h3>
+            <p>让我来帮您编辑这个工单信息</p>
+          </div>
+        </div>
+      </template>
+      <div v-if="editForm" class="ai-chat-content">
+        <div class="ai-message">
+          <div class="ai-bubble">
+            <p>请修改以下工单信息，我会帮您保存更新：</p>
+          </div>
+        </div>
+        
+        <el-form 
+          ref="editFormRef" 
+          :model="editForm" 
+          :rules="editRules" 
+          label-width="100px"
+        >
         <el-form-item label="故障标题" prop="title">
           <el-input v-model="editForm.title" maxlength="100" show-word-limit />
         </el-form-item>
@@ -386,7 +421,8 @@
             placeholder="请输入维修说明..."
           />
         </el-form-item>
-      </el-form>
+        </el-form>
+      </div>
       
       <template #footer>
         <div class="dialog-footer">
@@ -396,20 +432,36 @@
       </template>
     </el-dialog>
 
-    <!-- 状态更新弹窗 -->
+    <!-- 状态更新弹窗 - AI小助手风格 -->
     <el-dialog 
       v-model="statusDialogVisible" 
-      :title="getStatusDialogTitle()" 
       width="500px"
+      class="ai-dialog"
     >
-      <div v-if="statusForm">
+      <template #header>
+        <div class="ai-dialog-header">
+          <div class="ai-avatar">
+            <i class="el-icon-setting" style="font-size: 24px; color: #67c23a;"></i>
+          </div>
+          <div class="ai-title">
+            <h3>🔧 AI维修小助手</h3>
+            <p>{{ getStatusDialogSubtitle() }}</p>
+          </div>
+        </div>
+      </template>
+      <div v-if="statusForm" class="ai-chat-content">
+        <div class="ai-message">
+          <div class="ai-bubble">
+            <p>当前工单状态是：
+              <el-tag :type="getStatusColor(statusForm.currentStatus)" size="small">
+                {{ getStatusText(statusForm.currentStatus) }}
+              </el-tag>
+            </p>
+            <p>请选择要更新的状态：</p>
+          </div>
+        </div>
+        
         <el-form :model="statusForm" label-width="100px">
-          <el-form-item label="当前状态">
-            <el-tag :type="getStatusColor(statusForm.currentStatus)">
-              {{ getStatusText(statusForm.currentStatus) }}
-            </el-tag>
-          </el-form-item>
-          
           <el-form-item label="目标状态">
             <el-select v-model="statusForm.newStatus" style="width: 100%">
               <el-option 
@@ -806,6 +858,18 @@ const getStatusDialogTitle = () => {
     'cancelled': '🔄 重新启动工单'
   }
   return titleMap[statusForm.value.currentStatus] || '更新工单状态'
+}
+
+// 获取状态弹窗副标题
+const getStatusDialogSubtitle = () => {
+  if (!statusForm.value) return '让我来帮您更新工单状态'
+  
+  const subtitleMap = {
+    'pending': '让我来帮您开始维修这个工单',
+    'processing': '工单维修完成了吗？让我来更新状态',
+    'cancelled': '需要重新启动这个工单吗？'
+  }
+  return subtitleMap[statusForm.value.currentStatus] || '让我来帮您更新工单状态'
 }
 
 // 获取下一个状态
@@ -1506,6 +1570,93 @@ onMounted(() => {
     flex-direction: column;
   }
 }
+/* AI对话框样式 */
+.ai-dialog .el-dialog__header {
+  padding: 0;
+  border-bottom: 1px solid #ebeef5;
+}
+
+.ai-dialog-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+.ai-avatar {
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.ai-title h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ai-title p {
+  margin: 5px 0 0 0;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.ai-chat-content {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 20px;
+  background: #f8f9fa;
+}
+
+.ai-message {
+  margin-bottom: 20px;
+}
+
+.ai-bubble {
+  background: white;
+  border-radius: 18px;
+  padding: 15px 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #409eff;
+  position: relative;
+}
+
+.ai-bubble::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 20px;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 8px solid white;
+}
+
+.ai-bubble h4 {
+  margin: 0 0 15px 0;
+  color: #409eff;
+  font-size: 16px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.info-grid p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
 /* 弹窗样式 */
 .repair-detail {
   max-height: 70vh;
