@@ -30,31 +30,19 @@
           
           <el-divider style="margin: 8px 0;" />
           
-          <el-dropdown-item command="profile" class="dropdown-item">
-            <el-icon class="item-icon"><User /></el-icon>
-            <span>个人资料</span>
-          </el-dropdown-item>
-          
-          <el-dropdown-item command="settings" class="dropdown-item">
-            <el-icon class="item-icon"><Setting /></el-icon>
-            <span>账户设置</span>
-          </el-dropdown-item>
-          
-          <el-dropdown-item command="preferences" class="dropdown-item">
-            <el-icon class="item-icon"><Tools /></el-icon>
-            <span>偏好设置</span>
-          </el-dropdown-item>
-          
           <el-dropdown-item command="help" class="dropdown-item">
             <el-icon class="item-icon"><QuestionFilled /></el-icon>
             <span>帮助中心</span>
           </el-dropdown-item>
           
-          <el-divider style="margin: 8px 0;" />
-          
           <el-dropdown-item command="logout" class="dropdown-item logout-item">
             <el-icon class="item-icon"><SwitchButton /></el-icon>
             <span>退出登录</span>
+          </el-dropdown-item>
+          
+          <el-dropdown-item command="deactivate" class="dropdown-item logout-item">
+            <el-icon class="item-icon"><Delete /></el-icon>
+            <span>注销账号</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </template>
@@ -67,7 +55,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
-  User, ArrowDown, Setting, Tools, QuestionFilled, SwitchButton
+  User, ArrowDown, QuestionFilled, SwitchButton, Delete
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -83,28 +71,17 @@ const userInfo = reactive({
 // 处理下拉菜单命令
 const handleCommand = async (command) => {
   switch (command) {
-    case 'profile':
-      router.push('/profile')
-      ElMessage.info('跳转到个人资料页面')
-      break
-      
-    case 'settings':
-      router.push('/account-settings')
-      ElMessage.info('跳转到账户设置页面')
-      break
-      
-    case 'preferences':
-      router.push('/preferences')
-      ElMessage.info('跳转到偏好设置页面')
-      break
-      
     case 'help':
-      router.push('/help')
+      router.push('/contact')
       ElMessage.info('跳转到帮助中心')
       break
       
     case 'logout':
       await handleLogout()
+      break
+      
+    case 'deactivate':
+      await handleDeactivate()
       break
       
     default:
@@ -128,7 +105,7 @@ const handleLogout = async () => {
     
     // 清除用户数据
     localStorage.removeItem('token')
-    localStorage.removeItem('userInfo')
+    localStorage.removeItem('user')
     
     // 跳转到登录页
     router.push('/login')
@@ -137,6 +114,34 @@ const handleLogout = async () => {
   } catch {
     // 用户取消退出
     ElMessage.info('已取消退出')
+  }
+}
+
+// 处理注销账号
+const handleDeactivate = async () => {
+  try {
+    await ElMessageBox.confirm(
+      '确定要注销账号吗？此操作不可逆，您的所有数据将被删除。',
+      '注销确认',
+      {
+        confirmButtonText: '确定注销',
+        cancelButtonText: '取消',
+        type: 'danger',
+        center: true
+      }
+    )
+    
+    // 清除用户数据
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    
+    // 跳转到登录页
+    router.push('/login')
+    ElMessage.success('账号已注销，感谢您的使用')
+    
+  } catch {
+    // 用户取消注销
+    ElMessage.info('已取消注销操作')
   }
 }
 </script>

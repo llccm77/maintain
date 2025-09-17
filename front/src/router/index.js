@@ -10,6 +10,7 @@ import RepairManagement from '@/views/repair/RepairManagement.vue'
 import RepairRecords from '@/views/repair/RepairRecords.vue'
 import WorkOrderStatus from '@/views/repair/WorkOrderStatus.vue'
 import AIAssistant from '@/views/ai/AIAssistant.vue'
+import Contact from '@/views/system/Contact.vue'
 
 // 路由配置
 const routes = [
@@ -110,6 +111,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           title: 'AI维修小助手'
+        }
+      },
+      {
+        path: 'contact',
+        name: 'Contact',
+        component: Contact,
+        meta: { 
+          requiresAuth: true,
+          title: '联系我们'
         }
       }
     ]

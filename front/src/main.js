@@ -8,6 +8,8 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import './styles/global.css'
+// 引入阿里巴巴矢量图标库
+import './assets/iconfont/iconfont.css'
 
 // 创建Vue应用实例
 const app = createApp(App)

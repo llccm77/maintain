@@ -1,0 +1,85 @@
+/* 本地图标定义 - 极简风格 */
+@font-face {
+  font-family: "iconfont";
+  src: local('Segoe UI Symbol'), local('Apple Color Emoji'), local('Noto Sans Symbols'), local('Noto Sans Symbols2');
+}
+
+.iconfont {
+  font-family: "iconfont", "Segoe UI Symbol", "Apple Color Emoji", "Noto Sans Symbols", sans-serif !important;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 使用简约风格的Unicode字符作为图标 */
+
+/* 搜索图标 - 极简放大镜 */
+.icon-search-alt:before,
+.icon-search:before {
+  content: "\26B2";
+}
+
+/* 建筑图标 - 极简建筑 */
+.icon-building:before {
+  content: "\25A1";
+}
+
+/* 楼层图标 - 极简图表 */
+.icon-floor:before {
+  content: "\25EB";
+}
+
+/* 房间图标 - 极简房子 */
+.icon-home:before,
+.icon-building-room:before {
+  content: "\2302";
+}
+
+/* 用户图标 - 极简人形 */
+.icon-user-alt:before,
+.icon-user:before {
+  content: "\25EF";
+}
+
+/* 维修图标 - 极简扳手 */
+.icon-repair:before {
+  content: "\2692";
+}
+
+/* 状态图标 - 极简图表 */
+.icon-status:before {
+  content: "\25A3";
+}
+
+/* 编辑图标 - 极简铅笔 */
+.icon-edit:before {
+  content: "\270E";
+}
+
+/* 删除图标 - 极简垃圾桶 */
+.icon-delete:before {
+  content: "\2715";
+}
+
+/* 加载图标 - 极简刷新 */
+.icon-loading:before {
+  content: "\21BA";
+}
+
+/* 空图标 - 极简文档 */
+.icon-empty:before {
+  content: "\25AF";
+}
+
+/* 添加房屋图标 - 极简加号 */
+.icon-add-home:before {
+  content: "\271A";
+}
+
+/* 设置图标 - 极简齿轮 */
+.icon-setting:before {
+  content: "\2699";
+}
