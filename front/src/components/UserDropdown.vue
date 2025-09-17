@@ -35,14 +35,11 @@
             <span>帮助中心</span>
           </el-dropdown-item>
           
+          <el-divider style="margin: 8px 0;" />
+          
           <el-dropdown-item command="logout" class="dropdown-item logout-item">
             <el-icon class="item-icon"><SwitchButton /></el-icon>
             <span>退出登录</span>
-          </el-dropdown-item>
-          
-          <el-dropdown-item command="deactivate" class="dropdown-item logout-item">
-            <el-icon class="item-icon"><Delete /></el-icon>
-            <span>注销账号</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </template>
@@ -55,7 +52,7 @@ import { ref, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
-  User, ArrowDown, QuestionFilled, SwitchButton, Delete
+  User, ArrowDown, Setting, Tools, QuestionFilled, SwitchButton
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
@@ -80,10 +77,6 @@ const handleCommand = async (command) => {
       await handleLogout()
       break
       
-    case 'deactivate':
-      await handleDeactivate()
-      break
-      
     default:
       console.log('未知命令:', command)
   }
@@ -105,7 +98,7 @@ const handleLogout = async () => {
     
     // 清除用户数据
     localStorage.removeItem('token')
-    localStorage.removeItem('user')
+    localStorage.removeItem('userInfo')
     
     // 跳转到登录页
     router.push('/login')
@@ -114,34 +107,6 @@ const handleLogout = async () => {
   } catch {
     // 用户取消退出
     ElMessage.info('已取消退出')
-  }
-}
-
-// 处理注销账号
-const handleDeactivate = async () => {
-  try {
-    await ElMessageBox.confirm(
-      '确定要注销账号吗？此操作不可逆，您的所有数据将被删除。',
-      '注销确认',
-      {
-        confirmButtonText: '确定注销',
-        cancelButtonText: '取消',
-        type: 'danger',
-        center: true
-      }
-    )
-    
-    // 清除用户数据
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    
-    // 跳转到登录页
-    router.push('/login')
-    ElMessage.success('账号已注销，感谢您的使用')
-    
-  } catch {
-    // 用户取消注销
-    ElMessage.info('已取消注销操作')
   }
 }
 </script>

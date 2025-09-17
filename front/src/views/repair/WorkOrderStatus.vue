@@ -6,62 +6,57 @@
       <p class="page-description">实时查看和跟踪工单处理状态</p>
     </div>
 
-    <!-- 统计卡片 -->
+    <!-- 工单状态统计 -->
     <div class="stats-section">
-      <el-row :gutter="20">
-        <el-col :span="6">
-          <el-card class="stats-card pending">
-            <div class="stats-content">
-              <div class="stats-icon">
-                <el-icon><Clock /></el-icon>
-              </div>
-              <div class="stats-info">
-                <div class="stats-number">{{ stats.pending }}</div>
-                <div class="stats-label">待处理</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="6">
-          <el-card class="stats-card processing">
-            <div class="stats-content">
-              <div class="stats-icon">
-                <el-icon><Loading /></el-icon>
-              </div>
-              <div class="stats-info">
-                <div class="stats-number">{{ stats.processing }}</div>
-                <div class="stats-label">处理中</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="6">
-          <el-card class="stats-card completed">
-            <div class="stats-content">
-              <div class="stats-icon">
-                <el-icon><CircleCheck /></el-icon>
-              </div>
-              <div class="stats-info">
-                <div class="stats-number">{{ stats.completed }}</div>
-                <div class="stats-label">已完成</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-        <el-col :span="6">
-          <el-card class="stats-card total">
-            <div class="stats-content">
-              <div class="stats-icon">
-                <el-icon><Document /></el-icon>
-              </div>
-              <div class="stats-info">
-                <div class="stats-number">{{ stats.total }}</div>
-                <div class="stats-label">总工单</div>
-              </div>
-            </div>
-          </el-card>
-        </el-col>
-      </el-row>
+      <div class="stats-grid">
+        <div class="stat-card total">
+          <div class="stat-icon">
+            <el-icon size="24"><Document /></el-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ stats.total }}</div>
+            <div class="stat-label">总工单</div>
+            <div class="stat-note">小管家收到的任务</div>
+          </div>
+          <i class="stat-decoration iconfont icon-wendang"></i>
+        </div>
+        
+        <div class="stat-card pending">
+          <div class="stat-icon">
+            <el-icon size="24"><Clock /></el-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ stats.pending }}</div>
+            <div class="stat-label">待处理</div>
+            <div class="stat-note">等待小管家分配</div>
+          </div>
+          <i class="stat-decoration iconfont icon-shijian"></i>
+        </div>
+        
+        <div class="stat-card processing">
+          <div class="stat-icon">
+            <el-icon size="24"><Tools /></el-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ stats.processing }}</div>
+            <div class="stat-label">处理中</div>
+            <div class="stat-note">小管家正在努力</div>
+          </div>
+          <i class="stat-decoration iconfont icon-gongju"></i>
+        </div>
+        
+        <div class="stat-card completed">
+          <div class="stat-icon">
+            <el-icon size="24"><CircleCheck /></el-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ stats.completed }}</div>
+            <div class="stat-label">已完成</div>
+            <div class="stat-note">小管家的成就</div>
+          </div>
+          <i class="stat-decoration iconfont icon-wancheng"></i>
+        </div>
+      </div>
     </div>
 
     <!-- 筛选和搜索 -->
@@ -253,7 +248,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import {
   Clock, Loading, CircleCheck, Document, Search, Refresh, RefreshRight,
-  View, Edit
+  View, Edit, Tools
 } from '@element-plus/icons-vue'
 
 // 响应式数据
@@ -459,6 +454,15 @@ const loadData = () => {
   }, 500)
 }
 
+// 微交互处理
+const handleStatHover = (type) => {
+  // 可以在这里添加更多的悬停效果逻辑
+}
+
+const handleStatLeave = () => {
+  // 可以在这里添加离开悬停的逻辑
+}
+
 // 组件挂载时加载数据
 onMounted(() => {
   loadData()
@@ -467,113 +471,206 @@ onMounted(() => {
 
 <style scoped>
 .work-order-status {
-  padding: 20px;
-  background: #f5f7fa;
+  padding: 32px;
+  background: #f8fafc;
   min-height: 100vh;
 }
 
 .page-header {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
+  text-align: center;
 }
 
 .page-header h2 {
-  margin: 0 0 8px 0;
-  color: #303133;
-  font-size: 24px;
+  margin: 0 0 12px 0;
+  color: #1f2937;
+  font-size: 28px;
   font-weight: 600;
+  letter-spacing: -0.025em;
 }
 
 .page-description {
   margin: 0;
-  color: #909399;
-  font-size: 14px;
+  color: #6b7280;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .stats-section {
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 }
 
-.stats-card {
-  border-radius: 12px;
-  border: none;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.stats-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-}
+.stat-card {
+    background: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .stat-card::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    right: -10px;
+    width: 40px;
+    height: 40px;
+    background: radial-gradient(circle, currentColor 2px, transparent 2px);
+    background-size: 8px 8px;
+    opacity: 0.1;
+    transform: rotate(45deg);
+  }
+ 
+ .stat-card:hover {
+   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+   transform: translateY(-4px) scale(1.02);
+ }
+ 
+ .stat-card.total {
+   color: #6b7280;
+   background: linear-gradient(135deg, #ffffff 0%, #f9fafb 100%);
+ }
+ 
+ .stat-card.pending {
+   color: #f59e0b;
+   background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+ }
+ 
+ .stat-card.processing {
+   color: #3b82f6;
+   background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+ }
+ 
+ .stat-card.completed {
+   color: #10b981;
+   background: linear-gradient(135deg, #ffffff 0%, #ecfdf5 100%);
+ }
 
-.stats-content {
-  display: flex;
-  align-items: center;
-  padding: 10px 0;
-}
-
-.stats-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+.stat-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-right: 15px;
-  font-size: 24px;
-  color: white;
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: #f9fafb;
+  color: #6b7280;
 }
 
-.stats-card.pending .stats-icon {
-  background: linear-gradient(135deg, #f39c12, #e67e22);
+.stat-card.total .stat-icon {
+  background: #f3f4f6;
+  color: #6b7280;
 }
 
-.stats-card.processing .stats-icon {
-  background: linear-gradient(135deg, #3498db, #2980b9);
+.stat-card.pending .stat-icon {
+  background: #fef3c7;
+  color: #f59e0b;
 }
 
-.stats-card.completed .stats-icon {
-  background: linear-gradient(135deg, #27ae60, #229954);
+.stat-card.processing .stat-icon {
+  background: #dbeafe;
+  color: #3b82f6;
 }
 
-.stats-card.total .stats-icon {
-  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+.stat-card.completed .stat-icon {
+  background: #d1fae5;
+  color: #10b981;
 }
 
-.stats-info {
-  flex: 1;
-}
+.stat-content {
+   flex: 1;
+ }
+ 
+ .stat-number {
+   font-size: 32px;
+   font-weight: 700;
+   color: #111827;
+   margin: 0 0 4px 0;
+   line-height: 1;
+ }
+ 
+ .stat-label {
+   font-size: 14px;
+   font-weight: 500;
+   color: #6b7280;
+   margin: 0 0 2px 0;
+ }
+ 
+ .stat-note {
+   font-size: 12px;
+   color: #9ca3af;
+   font-style: italic;
+   margin: 0;
+ }
+ 
+ .stat-decoration {
+     font-size: 20px;
+     opacity: 0.7;
+     position: absolute;
+     top: 14px;
+     right: 14px;
+     transform: rotate(8deg);
+     transition: all 0.3s ease;
+     color: inherit;
+   }
+   
+   .stat-card:hover .stat-decoration {
+     transform: rotate(-3deg) scale(1.1);
+     opacity: 0.9;
+   }
+   
+   .stat-card.total .stat-decoration {
+     color: #409eff;
+   }
+   
+   .stat-card.pending .stat-decoration {
+     color: #e6a23c;
+   }
+   
+   .stat-card.processing .stat-decoration {
+     color: #67c23a;
+   }
+   
+   .stat-card.completed .stat-decoration {
+     color: #f56c6c;
+   }
+  
 
-.stats-number {
-  font-size: 28px;
-  font-weight: 700;
-  color: #303133;
-  line-height: 1;
-}
-
-.stats-label {
-  font-size: 14px;
-  color: #909399;
-  margin-top: 5px;
-}
 
 .filter-section {
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 }
 
 .order-list-section {
-  margin-bottom: 20px;
+  margin-bottom: 32px;
 }
 
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 0 16px 0;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .card-view {
@@ -581,12 +678,16 @@ onMounted(() => {
 }
 
 .order-card {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   border-radius: 12px;
+  border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
+  background: #ffffff;
 }
 
 .order-card:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
 
@@ -597,8 +698,10 @@ onMounted(() => {
 }
 
 .order-id {
-  font-weight: 600;
-  color: #303133;
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+  letter-spacing: 0.025em;
 }
 
 .order-card-content {
@@ -606,14 +709,14 @@ onMounted(() => {
 }
 
 .order-title {
-  margin: 0 0 15px 0;
-  color: #303133;
+  margin: 0 0 16px 0;
+  color: #111827;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .order-info {
-  margin-bottom: 15px;
+  margin-bottom: 16px;
 }
 
 .info-item {
@@ -624,9 +727,10 @@ onMounted(() => {
 }
 
 .info-item .label {
-  color: #909399;
+  color: #6b7280;
   margin-right: 8px;
   min-width: 60px;
+  font-weight: 400;
 }
 
 .order-actions {
@@ -637,27 +741,74 @@ onMounted(() => {
 .pagination-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin-top: 32px;
+}
+
+:deep(.el-card) {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: #ffffff;
 }
 
 :deep(.el-card__body) {
-  padding: 20px;
+  padding: 24px;
 }
 
 :deep(.el-form--inline .el-form-item) {
-  margin-right: 20px;
-  margin-bottom: 15px;
+  margin-right: 16px;
+  margin-bottom: 16px;
+}
+
+:deep(.el-input__wrapper) {
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  box-shadow: none;
+  transition: all 0.2s ease;
+}
+
+:deep(.el-input__wrapper:hover) {
+  border-color: #9ca3af;
+}
+
+:deep(.el-input__wrapper.is-focus) {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+:deep(.el-button) {
+  border-radius: 8px;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+  transition: all 0.2s ease;
+}
+
+:deep(.el-button--primary) {
+  background-color: #3b82f6;
+  border-color: #3b82f6;
+}
+
+:deep(.el-button--primary:hover) {
+  background-color: #2563eb;
+  border-color: #2563eb;
+  transform: translateY(-1px);
 }
 
 :deep(.el-table) {
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
+  border: 1px solid #e5e7eb;
 }
 
 :deep(.el-table th) {
-  background-color: #fafafa;
-  color: #606266;
-  font-weight: 600;
+  background-color: #f9fafb;
+  color: #374151;
+  font-weight: 500;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:deep(.el-table td) {
+  border-bottom: 1px solid #f3f4f6;
 }
 
 :deep(.el-button + .el-button) {
@@ -665,6 +816,31 @@ onMounted(() => {
 }
 
 :deep(.el-progress-bar__outer) {
-  border-radius: 3px;
+  border-radius: 4px;
+  background-color: #f3f4f6;
+}
+
+:deep(.el-progress-bar__inner) {
+  border-radius: 4px;
+}
+
+:deep(.el-tag) {
+  border-radius: 6px;
+  font-weight: 500;
+  letter-spacing: 0.025em;
+}
+
+:deep(.el-pagination) {
+  justify-content: center;
+}
+
+:deep(.el-pagination .el-pager li) {
+  border-radius: 6px;
+  font-weight: 500;
+}
+
+:deep(.el-radio-button__inner) {
+  border-radius: 8px;
+  font-weight: 500;
 }
 </style>
