@@ -28,6 +28,25 @@
             <el-button @click="sendQuickQuestion('门锁坏了打不开或关不上')" size="small">🚪 门锁问题</el-button>
             <el-button @click="sendQuickQuestion('空调不制冷或不工作')" size="small">❄️ 空调故障</el-button>
           </div>
+          
+          <!-- 语音识别模式选择 -->
+          <div v-if="speechSupport.supported" class="speech-mode-selector">
+            <span class="mode-label">🎤 语音识别模式:</span>
+            <el-radio-group v-model="speechMode" size="small">
+              <el-radio-button 
+                v-if="speechSupport.webSpeech"
+                label="browser"
+              >
+                🌐 浏览器内置
+              </el-radio-button>
+              <el-radio-button 
+                v-if="speechSupport.mediaRecorder"
+                label="qwen"
+              >
+                🧠 通义千问API
+              </el-radio-button>
+            </el-radio-group>
+          </div>
         </div>
         
         <template v-else>
@@ -75,7 +94,7 @@
       </div>
     </div>
 
-    <!-- 输入区域 -->
+    <!-- 输入区域 - 固定在屏幕底部 -->
     <div class="chat-input-area">
       <div class="input-container">
         <div class="input-wrapper">
@@ -166,9 +185,10 @@
 import { ref, reactive, onMounted, computed, nextTick, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 import { 
-  ChatDotRound, UserFilled, Picture, Microphone, Delete, Loading
+  ChatDotRound, UserFilled, Picture, Microphone, Delete, Loading, VideoPlay, ArrowDown
 } from '@element-plus/icons-vue'
 import { aiService } from '@/services/aiService.js'
+import { speechService } from '@/services/speechService.js'
 
 // 聊天消息
 const chatMessages = ref([])
@@ -186,39 +206,28 @@ const selectedImageUrl = ref('')
 // 语音输入相关
 const isRecording = ref(false)
 const recordingTime = ref(0)
+const speechMode = ref('browser') // 'browser' | 'qwen'
+const speechSupport = ref({})
+const interimTranscript = ref('')
 const recordingTimer = ref(null)
-const recognition = ref(null)
 
-// 初始化语音识别
-onMounted(() => {
-  // 检查浏览器是否支持语音识别API
-  if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-    recognition.value = new SpeechRecognition()
-    recognition.value.continuous = true
-    recognition.value.interimResults = true
-    recognition.value.lang = 'zh-CN'
-    
-    recognition.value.onresult = (event) => {
-      const transcript = Array.from(event.results)
-        .map(result => result[0])
-        .map(result => result.transcript)
-        .join('')
-      
-      userInput.value = transcript
-    }
-    
-    recognition.value.onerror = (event) => {
-      console.error('语音识别错误:', event.error)
-      stopRecording()
-      ElMessage.error('语音识别出错，请重试')
-    }
-  }
+// 初始化语音识别和欢迎消息
+onMounted(async () => {
+  // 检查语音识别支持情况
+  speechSupport.value = speechService.checkBrowserSupport()
+  console.log('语音识别支持情况:', speechSupport.value)
   
+  // 根据支持情况选择默认模式
+  if (speechSupport.value.webSpeech) {
+    speechMode.value = 'browser'
+  } else if (speechSupport.value.mediaRecorder && speechSupport.value.getUserMedia) {
+    speechMode.value = 'qwen'
+  }
+
   // 添加欢迎消息
   chatMessages.value.push({
     role: 'assistant',
-    content: '您好！我是小维，您的专业宿舍维修AI助手！🔧\n\n我可以帮您：\n• 诊断各种宿舍维修问题\n• 提供详细的维修指导\n• 评估问题紧急程度\n• 建议是否需要报修\n\n有什么维修问题需要我帮助吗？您也可以上传故障照片，我会给出更精准的建议！',
+    content: '你好！我是小维，您的专属宿舍维修AI助手 🔧\n\n我可以帮助您：\n• 🔍 诊断各种宿舍设备故障\n• 💡 提供专业的维修建议\n• 📝 指导您提交维修申请\n• 🎯 判断问题的紧急程度\n\n您可以通过文字、图片或语音与我交流。有什么维修问题需要帮助吗？\n\n💬 **语音识别模式**: ' + (speechMode.value === 'browser' ? '浏览器内置识别' : speechMode.value === 'qwen' ? '通义千问API' : '不支持'),
     time: new Date()
   })
   
@@ -432,25 +441,25 @@ const removeSelectedImage = () => {
 }
 
 // 切换语音输入
-const toggleVoiceInput = () => {
+const toggleVoiceInput = async () => {
   if (isRecording.value) {
-    stopRecording()
+    await stopRecording()
   } else {
-    startRecording()
+    await startRecording()
   }
 }
 
 // 开始录音
-const startRecording = () => {
-  if (!recognition.value) {
+const startRecording = async () => {
+  if (!speechSupport.value.supported) {
     ElMessage.warning('您的浏览器不支持语音识别功能')
     return
   }
   
   try {
-    recognition.value.start()
     isRecording.value = true
     recordingTime.value = 0
+    interimTranscript.value = ''
     
     // 开始计时
     recordingTimer.value = setInterval(() => {
@@ -461,32 +470,84 @@ const startRecording = () => {
         stopRecording()
       }
     }, 1000)
+    
+    if (speechMode.value === 'browser') {
+      // 使用浏览器内置语音识别
+      speechService.startWebSpeechRecognition(
+        (result) => {
+          if (result.isFinal) {
+            userInput.value = result.final
+            interimTranscript.value = ''
+          } else {
+            interimTranscript.value = result.interim
+          }
+        },
+        (error) => {
+          console.error('语音识别错误:', error)
+          stopRecording()
+          ElMessage.error('语音识别出错，请重试')
+        },
+        () => {
+          stopRecording()
+        }
+      )
+    } else if (speechMode.value === 'qwen') {
+      // 使用通义千问语音识别API
+      await speechService.startRecording()
+    }
+    
   } catch (error) {
     console.error('开始录音出错:', error)
     ElMessage.error('开始录音失败，请重试')
+    isRecording.value = false
   }
 }
 
 // 停止录音
-const stopRecording = () => {
-  if (!recognition.value) return
+const stopRecording = async () => {
+  if (!isRecording.value) return
   
   try {
-    recognition.value.stop()
+    if (speechMode.value === 'browser') {
+      speechService.stopWebSpeechRecognition()
+    } else if (speechMode.value === 'qwen') {
+      // 停止录音并获取音频数据
+      const audioBlob = await speechService.stopRecording()
+      
+      // 显示识别中状态
+      ElMessage.info('正在识别语音内容...')
+      
+      try {
+        // 使用通义千问进行语音识别
+        const transcript = await speechService.recognizeWithQwen(audioBlob)
+        if (transcript) {
+          userInput.value = transcript
+          ElMessage.success('语音识别成功')
+        } else {
+          ElMessage.warning('未识别到语音内容')
+        }
+      } catch (error) {
+        console.error('语音识别失败:', error)
+        ElMessage.error('语音识别失败：' + error.message)
+      }
+    }
   } catch (error) {
     console.error('停止录音出错:', error)
+    ElMessage.error('停止录音失败')
+  } finally {
+    isRecording.value = false
+    interimTranscript.value = ''
+    clearInterval(recordingTimer.value)
+    recordingTimer.value = null
   }
-  
-  isRecording.value = false
-  clearInterval(recordingTimer.value)
-  recordingTimer.value = null
 }
 </script>
 
 <style scoped>
 .ai-assistant-container {
   padding: 10px;
-  height: 100vh;
+  height: calc(100vh - 60px); /* 减去顶部导航栏高度 */
+  min-height: 600px; /* 确保最小高度 */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -498,6 +559,10 @@ const stopRecording = () => {
   border-radius: 12px;
   margin-bottom: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0; /* 防止头部被压缩 */
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .header-content {
@@ -535,9 +600,9 @@ const stopRecording = () => {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow: hidden;
-  margin-bottom: 140px; /* 为输入框预留空间 */
   position: relative;
-  height: calc(100vh - 200px); /* 限制最大高度 */
+  margin-bottom: 140px; /* 为固定输入框预留空间 */
+  min-height: 0; /* 允许flex子元素收缩 */
 }
 
 .chat-messages {
@@ -604,6 +669,29 @@ const stopRecording = () => {
   gap: 8px;
   justify-content: center;
   margin-top: 16px;
+}
+
+.speech-mode-selector {
+  margin-top: 16px;
+  padding: 12px;
+  background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%);
+  border-radius: 8px;
+  border: 1px solid #d0e7ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.mode-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.speech-mode-selector .el-radio-group {
+  margin-left: 8px;
 }
 
 .message-item {
@@ -738,13 +826,15 @@ const stopRecording = () => {
 .chat-input-area {
   position: fixed;
   bottom: 0;
-  left: 220px; /* 侧边栏宽度 */
+  left: 0;
   right: 0;
   padding: 20px;
   background: linear-gradient(to top, #f8f9fa 0%, rgba(248, 249, 250, 0.95) 100%);
   backdrop-filter: blur(10px);
   border-top: 1px solid rgba(0, 0, 0, 0.06);
-  z-index: 10;
+  z-index: 1000; /* 提高层级确保在最上层 */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .input-container {
@@ -965,7 +1055,6 @@ const stopRecording = () => {
   }
   
   .chat-input-area {
-    left: 0; /* 移动端无侧边栏 */
     padding: 16px 12px;
   }
   

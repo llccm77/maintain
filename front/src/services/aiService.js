@@ -8,6 +8,11 @@ export class AIService {
     this.apiKey = AI_CONFIG.DEEPSEEK_API_KEY
     this.apiUrl = AI_CONFIG.DEEPSEEK_API_URL
     this.model = AI_CONFIG.MODEL
+    
+    // 检查API密钥是否配置
+    if (!this.apiKey) {
+      console.warn('DeepSeek API密钥未配置，请在环境变量中设置 VITE_DEEPSEEK_API_KEY')
+    }
   }
 
   /**
@@ -37,6 +42,11 @@ export class AIService {
    * @returns {Promise<string>} AI回复完整内容
    */
   async sendMessageStream(messages, onChunk, options = {}) {
+    // 检查API密钥是否配置
+    if (!this.apiKey) {
+      throw new Error('DeepSeek API密钥未配置，请在.env.local文件中设置 VITE_DEEPSEEK_API_KEY')
+    }
+    
     try {
       const requestBody = {
         model: this.model,
@@ -57,7 +67,7 @@ export class AIService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.apiKey.substring(0, 20)}...`
+          'Authorization': `Bearer ${this.apiKey ? this.apiKey.substring(0, 20) + '...' : 'API密钥未配置'}`
         },
         bodyPreview: {
           model: requestBody.model,
@@ -146,6 +156,11 @@ export class AIService {
    * @returns {Promise<string>} AI回复内容
    */
   async sendMessage(messages, options = {}) {
+    // 检查API密钥是否配置
+    if (!this.apiKey) {
+      throw new Error('DeepSeek API密钥未配置，请在.env.local文件中设置 VITE_DEEPSEEK_API_KEY')
+    }
+    
     try {
       const requestBody = {
         model: this.model,

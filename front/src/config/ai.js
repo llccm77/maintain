@@ -1,11 +1,16 @@
 // AI配置文件
 export const AI_CONFIG = {
   // DeepSeek API配置
-  DEEPSEEK_API_KEY: 'sk-1f289e79ee94440abd4cef2c2709729f',
+  DEEPSEEK_API_KEY: import.meta.env.VITE_DEEPSEEK_API_KEY,
   DEEPSEEK_API_URL: 'https://api.deepseek.com/v1/chat/completions',
+  
+  // 通义千问语音识别配置
+  QWEN_API_KEY: import.meta.env.VITE_TONGYI_API_KEY || '',
+  QWEN_ASR_URL: 'https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation',
   
   // 模型配置
   MODEL: 'deepseek-chat',
+  QWEN_ASR_MODEL: 'paraformer-realtime-8k-v2',
   MAX_TOKENS: 2000,
   TEMPERATURE: 0.7,
   
