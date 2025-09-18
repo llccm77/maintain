@@ -67,8 +67,8 @@
               <div class="message-text" v-html="formatMessage(message.content)"></div>
               <div v-if="message.image" class="message-image">
                 <el-image 
-                  :src="message.image" 
-                  :preview-src-list="[message.image]"
+                  :src="getImageSrc(message.image)" 
+                  :preview-src-list="[getImageSrc(message.image)]"
                   fit="cover"
                   style="width: 200px; height: 150px; border-radius: 8px;"
                 />
@@ -145,10 +145,12 @@
       </div>
       
       <div v-if="selectedImage" class="selected-image-preview">
-        <el-image 
+        <img 
           :src="selectedImageUrl" 
-          fit="cover"
-          style="width: 100px; height: 80px; border-radius: 4px;"
+          alt="选择的图片"
+          style="width: 100px; height: 80px; border-radius: 4px; object-fit: cover; border: 1px solid #ddd;"
+          @error="handleImageError"
+          @load="handleImageLoad"
         />
         <el-button 
           type="danger" 
@@ -286,9 +288,22 @@ const sendMessage = async () => {
     time: new Date()
   }
   
-  // 如果有图片，添加到消息中
-  if (selectedImage.value) {
-    userMessage.image = selectedImageUrl.value
+  // 保存图片文件引用（在清空之前）
+  const imageFile = selectedImage.value
+  let imageBase64 = null
+  
+  // 如果有图片，转换为base64保存
+  if (imageFile) {
+    try {
+      imageBase64 = await convertFileToBase64(imageFile)
+      userMessage.image = imageBase64
+      console.log('图片已转换为base64并保存到消息中')
+    } catch (error) {
+      console.error('转换图片为base64失败:', error)
+      ElMessage.error('图片处理失败')
+      isLoading.value = false
+      return
+    }
   }
   
   chatMessages.value.push(userMessage)
@@ -308,16 +323,36 @@ const sendMessage = async () => {
   isLoading.value = true
   
   try {
-    if (userMessage.image) {
+    if (userMessage.image && imageFile) {
       // 处理图片消息 (暂时使用非流式)
-      const aiResponse = await aiService.analyzeImage(userMessage.image, userMessage.content || '请帮我分析这个维修问题')
-      
-      // 添加AI回复
-      chatMessages.value.push({
-        role: 'assistant',
-        content: aiResponse,
-        time: new Date()
-      })
+      console.log('开始处理图片消息:', { imageFile, userMessage })
+      try {
+        // 将图片文件转换为base64格式
+        console.log('开始转换图片为base64...')
+        const imageBase64 = await convertFileToBase64(imageFile)
+        console.log('图片转换成功，base64长度:', imageBase64.length)
+        
+        console.log('调用AI分析图片...')
+        const aiResponse = await aiService.analyzeImage(imageBase64, userMessage.content || '请帮我分析这个维修问题')
+        console.log('AI分析完成:', aiResponse)
+        
+        // 添加AI回复
+        chatMessages.value.push({
+          role: 'assistant',
+          content: aiResponse,
+          time: new Date()
+        })
+        console.log('图片消息处理完成')
+      } catch (imageError) {
+        console.error('图片处理失败:', imageError)
+        ElMessage.error('图片处理失败，请重试')
+        chatMessages.value.push({
+          role: 'assistant',
+          content: '抱歉，图片处理失败了。请确保上传的是有效的图片文件，然后重试。',
+          time: new Date(),
+          isError: true
+        })
+      }
     } else {
       // 处理文本消息 (使用流式输出)
       const messageHistory = aiService.formatMessages(chatMessages.value)
@@ -412,6 +447,8 @@ const handleImageSelected = (event) => {
   const file = event.target.files[0]
   if (!file) return
   
+  console.log('开始处理图片选择:', file.name, file.type, file.size)
+  
   // 检查文件类型
   if (!file.type.startsWith('image/')) {
     ElMessage.error('请选择图片文件')
@@ -424,8 +461,32 @@ const handleImageSelected = (event) => {
     return
   }
   
-  selectedImage.value = file
-  selectedImageUrl.value = URL.createObjectURL(file)
+  try {
+    // 清理之前的blob URL
+    if (selectedImageUrl.value) {
+      URL.revokeObjectURL(selectedImageUrl.value)
+      console.log('已清理旧的图片预览URL')
+    }
+    
+    // 重置状态
+    selectedImage.value = null
+    selectedImageUrl.value = ''
+    
+    // 创建新的blob URL
+    const newUrl = URL.createObjectURL(file)
+    console.log('创建新的图片预览URL:', newUrl)
+    
+    // 设置新的状态
+    selectedImage.value = file
+    selectedImageUrl.value = newUrl
+    
+    console.log('图片选择处理完成')
+  } catch (error) {
+    console.error('图片选择处理失败:', error)
+    ElMessage.error('图片选择失败: ' + error.message)
+    selectedImage.value = null
+    selectedImageUrl.value = ''
+  }
   
   // 清空文件输入，以便再次选择同一文件
   event.target.value = ''
@@ -433,11 +494,54 @@ const handleImageSelected = (event) => {
 
 // 移除已选择的图片
 const removeSelectedImage = () => {
-  if (selectedImageUrl.value) {
-    URL.revokeObjectURL(selectedImageUrl.value)
+  try {
+    if (selectedImageUrl.value) {
+      URL.revokeObjectURL(selectedImageUrl.value)
+      console.log('已清理图片预览URL')
+    }
+  } catch (error) {
+    console.error('清理图片预览URL失败:', error)
   }
   selectedImage.value = null
   selectedImageUrl.value = ''
+}
+
+// 图片加载成功处理
+const handleImageLoad = () => {
+  console.log('图片预览加载成功')
+}
+
+// 图片加载错误处理
+const handleImageError = (event) => {
+  console.error('图片预览加载失败:', event)
+  ElMessage.error('图片预览加载失败')
+}
+
+// 获取图片源地址
+const getImageSrc = (imageData) => {
+  if (!imageData) return ''
+  
+  // 如果已经是完整的data URL，直接返回
+  if (imageData.startsWith('data:')) {
+    return imageData
+  }
+  
+  // 如果是base64数据，添加data URL前缀
+  return `data:image/jpeg;base64,${imageData}`
+}
+
+// 将文件转换为base64格式
+const convertFileToBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => {
+      // 移除data:image/jpeg;base64,前缀，只保留base64数据
+      const base64 = reader.result.split(',')[1]
+      resolve(base64)
+    }
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
 }
 
 // 切换语音输入

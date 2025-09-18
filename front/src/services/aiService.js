@@ -230,21 +230,28 @@ export class AIService {
   }
 
   /**
-   * 处理图片分析（如果支持）
+   * 处理图片分析（当前版本暂不支持，提供友好提示）
    * @param {string} imageBase64 - 图片的base64编码
    * @param {string} question - 用户问题
    * @returns {Promise<string>} AI回复内容
    */
   async analyzeImage(imageBase64, question = '请分析这张图片中的维修问题') {
-    // DeepSeek目前主要支持文本，如果需要图片分析可以描述图片内容
-    const messages = [
-      {
-        role: 'user',
-        content: `${question}\n\n用户上传了一张图片，请提供通用的维修建议。`
-      }
-    ]
+    // 当前DeepSeek API暂不支持图片分析，提供友好的回复
+    const response = `我看到您上传了一张图片！😊
 
-    return await this.sendMessage(messages)
+很抱歉，当前版本的AI助手暂时还不能直接分析图片内容，但我可以根据您的文字描述来帮助您解决维修问题！
+
+请您详细描述一下图片中的情况，比如：
+• 🔍 具体是什么设备或物品出现了问题？
+• ⚠️ 问题的具体表现是什么？（比如：不工作、有异响、漏水等）
+• 📍 问题发生在宿舍的哪个位置？
+• 🕐 问题是什么时候开始出现的？
+
+${question ? `关于您提到的"${question}"，` : ''}我会根据您的描述提供专业的维修建议和解决方案！
+
+如果问题比较紧急或复杂，我也可以指导您如何提交维修申请。💪`
+
+    return response
   }
 
   /**

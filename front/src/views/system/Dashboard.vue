@@ -35,19 +35,25 @@
         </svg>
       </div>
       
-      <!-- 水管图标 -->
+      <!-- 水龙头漏水图标 -->
       <div class="floating-icon">
-        <svg width="42" height="42" viewBox="0 0 24 24" fill="none">
-          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z" fill="#20B2AA" opacity="0.6"/>
-          <circle cx="12" cy="15" r="2" fill="#008B8B" opacity="0.8"/>
+        <svg width="42" height="42" viewBox="0 0 1024 1024" fill="none">
+          <path d="M512 512m-501.76 0a501.76 501.76 0 1 0 1003.52 0 501.76 501.76 0 1 0-1003.52 0Z" fill="#8CEEF9" opacity="0.6"/>
+          <path d="M793.3952 821.6576c0 38.912-31.5392 70.4512-70.4512 70.4512s-70.4512-31.5392-70.4512-70.4512c0 38.912-31.5392 70.4512-70.4512 70.4512s-70.4512-31.5392-70.4512-70.4512c0 38.912-31.5392 70.4512-70.4512 70.4512S370.688 860.5696 370.688 821.6576c0 38.912-31.5392 70.4512-70.4512 70.4512s-70.4512-31.5392-70.4512-70.4512c0 31.744-20.8896 58.368-49.7664 67.1744 89.088 77.824 205.0048 124.928 331.9808 124.928s242.8928-47.104 331.1616-124.928c-28.672-8.8064-49.7664-35.4304-49.7664-67.1744z" fill="#508DEF" opacity="0.8"/>
+          <path d="M576.3072 366.592H505.4464c-20.6848 0-40.5504-8.192-55.296-22.528-22.1184-21.504-52.4288-34.816-85.8112-34.816s-63.488 13.312-85.8112 34.816c-14.9504 14.336-34.6112 22.528-55.296 22.528H31.744c-12.0832 39.7312-19.2512 81.7152-20.8896 124.928h205.6192c22.1184 0 43.008 9.216 58.1632 25.3952 22.528 23.9616 54.4768 38.912 89.7024 38.912s67.3792-14.9504 89.7024-38.912c15.1552-15.9744 36.0448-25.3952 58.1632-25.3952h1.024c22.3232 0 40.3456 18.0224 40.3456 40.3456V643.072h131.072v-168.3456c-0.2048-59.8016-48.5376-108.1344-108.3392-108.1344z" fill="#FF8939" opacity="0.7"/>
         </svg>
       </div>
       
-      <!-- 电灯泡图标 -->
+      <!-- 台灯不亮图标 -->
       <div class="floating-icon">
-        <svg width="38" height="38" viewBox="0 0 24 24" fill="none">
-          <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7 0-3.9-3.1-7-7-7z" fill="#FFD700" opacity="0.7"/>
-          <circle cx="12" cy="9" r="3" fill="#FFA500" opacity="0.5"/>
+        <svg width="38" height="38" viewBox="0 0 1024 1024" fill="none">
+          <path d="M769.28 516.96a16 16 0 0 1-13.12-6.88L576 251.52a16 16 0 0 1 1.76-20.48L602.08 208a62.88 62.88 0 0 0 14.72-22.08 16 16 0 0 1 13.12-9.92 16 16 0 0 1 14.88 6.72l190.24 272.64a16 16 0 0 1-16 24.96 10.4 10.4 0 0 0-3.2 0 32 32 0 0 0-32 24.64 16 16 0 0 1-12.48 12z m-158.88-272L768 470.24a64 64 0 0 1 26.4-18.24L632.8 220.8a85.92 85.92 0 0 1-8 9.12z" fill="#56524F" opacity="0.7"/>
+          <path d="M522.56 501.44l-36 36-84.16-84.16-135.52-135.68-88-88 36-36a205.28 205.28 0 0 1 289.92 0l17.76 17.76a205.28 205.28 0 0 1 0 290.08z" fill="#E32728" opacity="0.7"/>
+          <path d="M638.24 158.56a81.28 81.28 0 0 1-6.56 32 81.12 81.12 0 0 1-18.24 27.52l-23.84 23.84-26.56 26.56a206.88 206.88 0 0 0-40.48-57.6l-17.76-17.28a203.2 203.2 0 0 0-64-43.04l52-52a84.8 84.8 0 0 1 144.8 60z" fill="#E32728" opacity="0.7"/>
+          <path d="M402.4 453.28A94.72 94.72 0 0 1 336 480a96 96 0 0 1-96-96 94.08 94.08 0 0 1 26.88-66.4z" fill="#FCAA35" opacity="0.5"/>
+          <path d="M665.44 824.32a16 16 0 0 1-11.52-4.8A64 64 0 0 0 608 800a16 16 0 0 1-16-7.2 16 16 0 0 1 0-17.28l165.12-259.2a16 16 0 0 1 16-7.2 16 16 0 0 1 13.12 11.68A32 32 0 0 0 816 544a22.72 22.72 0 0 0 4.8 0 16 16 0 0 1 16 6.72 16 16 0 0 1 0 17.6l-158.4 248.96a16 16 0 0 1-11.84 7.2z m-33.28-53.28a96 96 0 0 1 29.6 13.28l134.56-211.36a64 64 0 0 1-27.04-17.28z" fill="#56524F" opacity="0.7"/>
+          <path d="M784 960H240a96 96 0 0 1 96-96h352a94.88 94.88 0 0 1 32 5.44A96 96 0 0 1 784 960z" fill="#E32728" opacity="0.7"/>
+          <path d="M688 864H528a80 80 0 0 1 76.8-80h3.2a80 80 0 0 1 80 80zM880 512a64 64 0 0 1-53.6 64 54.88 54.88 0 0 1-10.4 0 64 64 0 0 1-61.44-46.72A57.28 57.28 0 0 1 752 512a62.88 62.88 0 0 1 1.76-14.72A64 64 0 0 1 816 448a43.2 43.2 0 0 1 7.84 0A64 64 0 0 1 880 512z" fill="#7C7874" opacity="0.7"/>
         </svg>
       </div>
     </div>
@@ -110,13 +116,26 @@
     <!-- 您的报修状态 -->
     <div class="status-section">
       <div class="status-content">
-        <div class="status-icon">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="3" fill="#87CEEB"/>
-            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1" stroke="#87CEEB" stroke-width="2"/>
+        <div class="status-icon" :class="getStatusIconClass()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" v-html="getStatusIcon()">
           </svg>
         </div>
-        <span class="status-text">{{ getStatusMessage() }}</span>
+        <div class="status-info">
+          <span class="status-text">{{ getStatusMessage() }}</span>
+          <p class="status-subtitle">{{ getStatusSubtitle() }}</p>
+          <div class="status-actions" v-if="hasActiveRepairs()">
+            <el-button 
+              text 
+              type="primary" 
+              size="small" 
+              class="detail-link"
+              @click="viewRepairDetails"
+            >
+              <el-icon><View /></el-icon>
+              查看详情
+            </el-button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -131,21 +150,33 @@
         </div>
         <div class="repair-float-icon repair-icon-2">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-            <path d="M16.06 10.94L12 15l-1.06-1.06L15 10l1.06.94z" fill="#DDA0DD" opacity="0.5"/>
-            <path d="M8.5 8.5L12 12l7-7-1-1-7 7L8.5 8.5z" stroke="#9370DB" stroke-width="1.5" fill="none" opacity="0.7"/>
+            <!-- 水龙头图标 -->
+            <path d="M6 12c0-3.31 2.69-6 6-6s6 2.69 6 6v2h2v-2c0-4.42-3.58-8-8-8s-8 3.58-8 8v2h2v-2z" fill="#4FC3F7" opacity="0.6"/>
+            <rect x="10" y="14" width="4" height="6" rx="2" fill="#29B6F6" opacity="0.8"/>
+            <circle cx="12" cy="17" r="1" fill="#0277BD" opacity="0.9"/>
+            <path d="M11 20v2c0 0.5 0.5 1 1 1s1-0.5 1-1v-2" stroke="#0277BD" stroke-width="1.5" fill="none"/>
           </svg>
         </div>
         <div class="repair-float-icon repair-icon-3">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-            <rect x="3" y="8" width="18" height="10" rx="2" fill="#F0E68C" opacity="0.5"/>
-            <path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#DAA520" stroke-width="2" fill="none" opacity="0.7"/>
-            <circle cx="12" cy="13" r="1.5" fill="#DAA520" opacity="0.6"/>
+            <!-- 台灯图标 -->
+            <path d="M12 2l-4 6h8l-4-6z" fill="#FFD54F" opacity="0.7"/>
+            <rect x="11" y="8" width="2" height="10" fill="#8D6E63" opacity="0.8"/>
+            <ellipse cx="12" cy="18" rx="6" ry="1" fill="#5D4037" opacity="0.6"/>
+            <circle cx="12" cy="5" r="1" fill="#FFC107" opacity="0.9"/>
+            <path d="M8 8c0-2 1.5-3 4-3s4 1 4 3" stroke="#FFB300" stroke-width="1" fill="none" opacity="0.8"/>
           </svg>
         </div>
         <div class="repair-float-icon repair-icon-4">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2z" fill="#20B2AA" opacity="0.5"/>
-            <circle cx="12" cy="15" r="1.5" fill="#008B8B" opacity="0.7"/>
+            <!-- 椅子图标 -->
+            <rect x="4" y="6" width="16" height="2" rx="1" fill="#8D6E63" opacity="0.8"/>
+            <rect x="4" y="8" width="16" height="8" rx="2" fill="#BCAAA4" opacity="0.6"/>
+            <rect x="5" y="16" width="2" height="6" fill="#6D4C41" opacity="0.8"/>
+            <rect x="17" y="16" width="2" height="6" fill="#6D4C41" opacity="0.8"/>
+            <rect x="4" y="2" width="16" height="4" rx="2" fill="#A1887F" opacity="0.7"/>
+            <circle cx="8" cy="12" r="0.5" fill="#5D4037" opacity="0.6"/>
+            <circle cx="16" cy="12" r="0.5" fill="#5D4037" opacity="0.6"/>
           </svg>
         </div>
       </div>
@@ -162,23 +193,45 @@
           v-for="repair in recentRepairs" 
           :key="repair.id" 
           class="repair-item"
+          @click="viewRepairDetail(repair)"
         >
-          <div class="repair-info">
-            <span class="repair-title">{{ repair.title }}</span>
-            <span class="repair-time">{{ formatTime(repair.createdAt) }}</span>
+          <div class="repair-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" v-html="getRepairIcon(repair.status)">
+            </svg>
           </div>
-          <span class="repair-status" :class="getStatusClass(repair.status)">
-            {{ getStatusText(repair.status) }}
-          </span>
+          <div class="repair-content">
+            <div class="repair-header">
+              <span class="repair-title">{{ repair.title }}</span>
+              <span class="repair-status" :class="getStatusClass(repair.status)">
+                {{ getStatusText(repair.status) }}
+              </span>
+            </div>
+            <div class="repair-meta">
+              <span class="repair-time">
+                <el-icon><Clock /></el-icon>
+                {{ formatTime(repair.createdAt) }}
+              </span>
+              <span class="repair-type" v-if="repair.faultType">
+                <el-icon><Tools /></el-icon>
+                {{ getFaultTypeText(repair.faultType) }}
+              </span>
+            </div>
+          </div>
+          <div class="repair-arrow">
+            <el-icon><ArrowRight /></el-icon>
+          </div>
         </div>
       </div>
       
       <div v-else class="empty-state">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" class="empty-icon">
-          <circle cx="12" cy="12" r="10" stroke="#D3D3D3" stroke-width="2" fill="none"/>
-          <path d="M8 12h8" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round"/>
-        </svg>
+        <div class="empty-icon-wrapper">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" class="empty-icon">
+            <circle cx="12" cy="12" r="10" stroke="#D3D3D3" stroke-width="2" fill="none"/>
+            <path d="M8 12h8" stroke="#D3D3D3" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
         <p class="empty-text">暂无报修记录</p>
+        <p class="empty-subtitle">一切正常，安心享受宿舍生活！</p>
       </div>
     </div>
 
@@ -296,7 +349,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { ElButton, ElIcon } from 'element-plus'
-import { ArrowRight } from '@element-plus/icons-vue'
+import { ArrowRight, View, Clock, Tools, Check, Loading, Warning } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -305,10 +358,32 @@ const router = useRouter()
 const statistics = ref({
   completedOrders: 1,
   pendingOrders: 0,
-  processingOrders: 0
+  processingOrders: 1
 })
 
-const recentRepairs = ref([])
+const recentRepairs = ref([
+  {
+    id: 1,
+    title: '洗手间水龙头漏水',
+    status: 'completed',
+    faultType: 'water_electric',
+    createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000) // 1天前
+  },
+  {
+    id: 2,
+    title: '台灯不亮',
+    status: 'processing',
+    faultType: 'water_electric',
+    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000) // 2天前
+  },
+  {
+    id: 3,
+    title: '椅子松动',
+    status: 'pending',
+    faultType: 'furniture',
+    createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000) // 3天前
+  }
+])
 
 const dormitoryTips = ref([
   {
@@ -416,7 +491,7 @@ const getCurrentUserName = () => {
 
 const getStatusMessage = () => {
   if (statistics.value.processingOrders > 0) {
-    return '您有一条报修正在处理中，耐心等待一下哦！'
+    return '您的报修正在处理中，耐心等待一下哦！'
   }
   if (statistics.value.pendingOrders > 0) {
     return '您有新的报修待处理，我们会尽快安排！'
@@ -424,7 +499,77 @@ const getStatusMessage = () => {
   if (statistics.value.completedOrders > 0) {
     return '恭喜！您的报修已完成，请记得确认并评价！'
   }
-  return '您近期没有待处理的报修，一切正常~'
+  return '一切正常，安心享受宿舍生活！'
+}
+
+const getStatusSubtitle = () => {
+  if (statistics.value.processingOrders > 0) {
+    return '我们的维修师傅正在为您解决问题'
+  }
+  if (statistics.value.pendingOrders > 0) {
+    return '工单已提交，维修师傅即将联系您'
+  }
+  if (statistics.value.completedOrders > 0) {
+    return '感谢您的耐心等待，期待您的评价'
+  }
+  return '我们随时待命，为您提供贴心服务'
+}
+
+const getStatusIcon = () => {
+  if (statistics.value.processingOrders > 0) {
+    return '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#E6A23C"/>'
+  }
+  if (statistics.value.pendingOrders > 0) {
+    return '<circle cx="12" cy="12" r="10" fill="#F56C6C" opacity="0.2" stroke="#F56C6C" stroke-width="2"/>'
+  }
+  if (statistics.value.completedOrders > 0) {
+    return '<path d="M9 12l2 2 4-4" stroke="#67C23A" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+  }
+  return '<circle cx="12" cy="12" r="3" fill="#87CEEB"/>'
+}
+
+const getStatusIconClass = () => {
+  if (statistics.value.processingOrders > 0) {
+    return 'status-processing'
+  }
+  if (statistics.value.pendingOrders > 0) {
+    return 'status-pending'
+  }
+  if (statistics.value.completedOrders > 0) {
+    return 'status-completed'
+  }
+  return 'status-normal'
+}
+
+const hasActiveRepairs = () => {
+  return statistics.value.processingOrders > 0 || statistics.value.pendingOrders > 0 || statistics.value.completedOrders > 0
+}
+
+const viewRepairDetails = () => {
+  router.push('/repair/list')
+}
+
+const getRepairIcon = (status) => {
+  const iconMap = {
+    'pending': '<circle cx="12" cy="12" r="8" fill="#F56C6C" opacity="0.2" stroke="#F56C6C" stroke-width="2"/>',
+    'processing': '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#E6A23C"/>',
+    'completed': '<path d="M9 12l2 2 4-4" stroke="#67C23A" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+  }
+  return iconMap[status] || iconMap['pending']
+}
+
+const getFaultTypeText = (faultType) => {
+  const typeMap = {
+    'water_electric': '水电维修',
+    'furniture': '家具维修',
+    'network': '网络问题',
+    'other': '其他'
+  }
+  return typeMap[faultType] || '其他'
+}
+
+const viewRepairDetail = (repair) => {
+  router.push(`/repair/detail/${repair.id}`)
 }
 
 const startRepair = () => {
@@ -715,28 +860,90 @@ onMounted(() => {
 
 /* 报修状态区 */
 .status-section {
-  background: rgba(255, 255, 255, 0.8);
-  border-radius: 16px;
-  padding: 20px 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 24px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
 }
 
 .status-content {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  align-items: flex-start;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
 }
 
 .status-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.status-icon.status-normal {
+  background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+}
+
+.status-icon.status-pending {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+}
+
+.status-icon.status-processing {
+  background: linear-gradient(135deg, #fff8e1 0%, #ffecb3 100%);
+  animation: pulse 2s infinite;
+}
+
+.status-icon.status-completed {
+  background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.status-info {
+  flex: 1;
 }
 
 .status-text {
-  font-size: 16px;
-  color: #34495e;
-  font-weight: 500;
-  line-height: 1.5;
+  font-size: 18px;
+  color: #2c3e50;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.status-subtitle {
+  font-size: 14px;
+  color: #7f8c8d;
+  margin: 0 0 12px 0;
+  line-height: 1.4;
+}
+
+.status-actions {
+  margin-top: 8px;
+}
+
+.detail-link {
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.detail-link:hover {
+  background: rgba(64, 158, 255, 0.1);
+  transform: translateY(-1px);
 }
 
 /* 最近报修记录 */
@@ -898,77 +1105,152 @@ onMounted(() => {
 .repairs-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
 .repair-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 16px;
-  background: #f8f9fa;
-  border-radius: 12px;
-  transition: all 0.2s ease;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  gap: 12px;
 }
 
 .repair-item:hover {
-  background: #e9ecef;
-  transform: translateX(4px);
+  background: rgba(255, 255, 255, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
 }
 
-.repair-info {
+.repair-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(64, 158, 255, 0.1);
+}
+
+.repair-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.repair-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
 }
 
 .repair-title {
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
   color: #2c3e50;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+  margin-right: 8px;
 }
 
-.repair-time {
-  font-size: 14px;
+.repair-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 13px;
   color: #7f8c8d;
 }
 
+.repair-time,
+.repair-type {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.repair-time .el-icon,
+.repair-type .el-icon {
+  font-size: 12px;
+}
+
 .repair-status {
-  padding: 6px 12px;
-  border-radius: 20px;
+  padding: 4px 10px;
+  border-radius: 10px;
   font-size: 12px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .status-pending {
-  background: #fff3cd;
-  color: #856404;
+  background: #fef0f0;
+  color: #f56c6c;
+  border: 1px solid #fbc4c4;
 }
 
 .status-processing {
-  background: #d1ecf1;
-  color: #0c5460;
+  background: #fdf6ec;
+  color: #e6a23c;
+  border: 1px solid #f5dab1;
 }
 
 .status-completed {
-  background: #d4edda;
-  color: #155724;
+  background: #f0f9ff;
+  color: #67c23a;
+  border: 1px solid #b3d8ff;
+}
+
+.repair-arrow {
+  color: #c0c4cc;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.repair-item:hover .repair-arrow {
+  color: #409eff;
+  transform: translateX(2px);
 }
 
 .empty-state {
   text-align: center;
-  padding: 40px 20px;
+  padding: 48px 20px;
+  color: #7f8c8d;
+}
+
+.empty-icon-wrapper {
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
 }
 
 .empty-icon {
-  margin-bottom: 16px;
   opacity: 0.6;
+  transition: all 0.3s ease;
+}
+
+.empty-state:hover .empty-icon {
+  opacity: 0.8;
+  transform: scale(1.05);
 }
 
 .empty-text {
   font-size: 16px;
+  font-weight: 500;
   color: #95a5a6;
+  margin: 0 0 8px 0;
+}
+
+.empty-subtitle {
+  font-size: 14px;
+  color: #bdc3c7;
   margin: 0;
+  font-weight: 400;
 }
 
 /* 环境信息区域 */
