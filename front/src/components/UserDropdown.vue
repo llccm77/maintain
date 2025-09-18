@@ -7,7 +7,10 @@
           :src="userInfo.avatar" 
           class="user-avatar"
         >
-          <el-icon><User /></el-icon>
+          <svg class="admin-avatar-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+            <path d="M516.4 517.4c125 0 226.7-101.7 226.7-226.7 0-18.5-15-33.4-33.4-33.4s-33.4 15-33.4 33.4c0 88.2-71.7 159.9-159.9 159.9s-159.9-71.7-159.9-159.9 71.7-159.9 159.9-159.9c22.7 0 44.6 4.6 65.1 13.8 16.8 7.5 36.6 0 44.1-16.9 7.5-16.8 0-36.6-16.9-44.1-29.2-13-60.2-19.6-92.4-19.6-125 0-226.7 101.7-226.7 226.7s101.8 226.7 226.8 226.7zM619.8 556.8H413c-155.8 0-282.5 126.7-282.5 282.5v55.5c0 18.5 15 33.4 33.4 33.4s33.4-15 33.4-33.4v-55.5c0-118.9 96.8-215.7 215.7-215.7h206.7c118.9 0 215.7 96.8 215.7 215.7v55.5c0 18.5 15 33.4 33.4 33.4 18.5 0 33.4-15 33.4-33.4v-55.5c0.1-155.8-126.6-282.5-282.4-282.5z" fill="#409EFF"/>
+            <path d="M674.7 190.9m-33.4 0a33.4 33.4 0 1 0 66.8 0 33.4 33.4 0 1 0-66.8 0Z" fill="#409EFF"/>
+          </svg>
         </el-avatar>
         <div class="user-details">
           <span class="username">{{ userInfo.name }}</span>
@@ -20,7 +23,10 @@
         <el-dropdown-menu class="user-dropdown-menu">
           <div class="dropdown-header">
             <el-avatar :size="48" :src="userInfo.avatar">
-              <el-icon><User /></el-icon>
+              <svg class="admin-avatar-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+                <path d="M516.4 517.4c125 0 226.7-101.7 226.7-226.7 0-18.5-15-33.4-33.4-33.4s-33.4 15-33.4 33.4c0 88.2-71.7 159.9-159.9 159.9s-159.9-71.7-159.9-159.9 71.7-159.9 159.9-159.9c22.7 0 44.6 4.6 65.1 13.8 16.8 7.5 36.6 0 44.1-16.9 7.5-16.8 0-36.6-16.9-44.1-29.2-13-60.2-19.6-92.4-19.6-125 0-226.7 101.7-226.7 226.7s101.8 226.7 226.8 226.7zM619.8 556.8H413c-155.8 0-282.5 126.7-282.5 282.5v55.5c0 18.5 15 33.4 33.4 33.4s33.4-15 33.4-33.4v-55.5c0-118.9 96.8-215.7 215.7-215.7h206.7c118.9 0 215.7 96.8 215.7 215.7v55.5c0 18.5 15 33.4 33.4 33.4 18.5 0 33.4-15 33.4-33.4v-55.5c0.1-155.8-126.6-282.5-282.4-282.5z" fill="#409EFF"/>
+                <path d="M674.7 190.9m-33.4 0a33.4 33.4 0 1 0 66.8 0 33.4 33.4 0 1 0-66.8 0Z" fill="#409EFF"/>
+              </svg>
             </el-avatar>
             <div class="header-info">
               <div class="header-name">{{ userInfo.name }}</div>
@@ -135,6 +141,24 @@ const handleLogout = async () => {
 .user-avatar {
   border: 2px solid rgba(255, 255, 255, 0.8);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-avatar-icon {
+  width: 100%;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.user-avatar:hover .admin-avatar-icon {
+  transform: scale(1.05);
+}
+
+.admin-avatar-icon path {
+  transition: fill 0.3s ease;
+}
+
+.user-info:hover .admin-avatar-icon path {
+  fill: #67C23A;
 }
 
 .user-details {
