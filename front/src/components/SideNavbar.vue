@@ -123,9 +123,9 @@
         </svg>
         
         <div class="illustration-text">
-           <h4>宿舍报修</h4>
-           <p>快速便捷的维修服务</p>
-         </div>
+          <h4>专业维修</h4>
+          <p>随时为您服务</p>
+        </div>
       </div>
     </div>
 
