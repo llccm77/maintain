@@ -107,7 +107,7 @@
       <div class="greeting-content">
         <!-- 主要宿舍维修主题图标 -->
         <div class="main-illustration">
-          <svg width="120" height="120" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+          <svg width="160" height="160" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
             <!-- 背景圆形装饰 -->
             <circle cx="200" cy="200" r="180" fill="#E8F5E8" opacity="0.3"/>
             <circle cx="200" cy="200" r="150" fill="#D4EDDA" opacity="0.4"/>
@@ -179,6 +179,23 @@
         </div>
       </div>
       
+      <!-- 流动公告栏 -->
+      <div class="announcement-banner">
+        <div class="announcement-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 1L13.5 2.5L16.17 5.17L10.58 10.76C10.22 11.12 10 11.6 10 12.1V15H8V22H10V17H12V15.5L16.5 11H17V9H21Z" fill="#3b82f6"/>
+          </svg>
+        </div>
+        <div class="announcement-content">
+          <div class="announcement-text">
+            <span class="announcement-item">🔧 本周末将进行A栋热水系统维护，请提前储水</span>
+            <span class="announcement-item">📢 新学期宿舍安全检查将于下周开始，请保持宿舍整洁</span>
+            <span class="announcement-item">⚡ 电费充值系统已升级，支持微信、支付宝在线缴费</span>
+            <span class="announcement-item">🏠 宿舍评比活动开始啦！优秀宿舍将获得奖励</span>
+          </div>
+        </div>
+      </div>
+      
       <!-- 学生聊天区域 -->
       <div class="student-chat">
         <div class="chat-header">
@@ -223,7 +240,7 @@
           </div>
         </div>
         <div class="chat-footer">
-          <span class="chat-hint">💬 点击查看更多聊天记录</span>
+          <span class="chat-hint" @click="goToDormChat">💬 点击查看更多聊天记录</span>
         </div>
       </div>
       
@@ -235,7 +252,7 @@
           class="repair-button"
           @click="startRepair"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="repair-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" class="repair-icon">
             <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.77 3.77z" fill="currentColor"/>
           </svg>
           发起报修
@@ -666,7 +683,11 @@ const hasActiveRepairs = () => {
 }
 
 const viewRepairDetails = () => {
-  router.push('/repair/list')
+  router.push('/repair/status')
+}
+
+const goToDormChat = () => {
+  router.push('/dorm-chat')
 }
 
 const getRepairIcon = (status) => {
@@ -697,7 +718,7 @@ const startRepair = () => {
 }
 
 const viewAllRepairs = () => {
-  router.push('/repair/list')
+  router.push('/repair/records')
 }
 
 const viewMoreTips = () => {
@@ -1044,42 +1065,49 @@ onMounted(() => {
 }
 
 .greeting-content {
-  margin-bottom: 32px;
-  display: flex;
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
-  gap: 32px;
-  flex-wrap: wrap;
-  justify-content: center;
+  gap: 20px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%);
+  border-radius: 12px;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 
 /* 主要插画样式 */
 .main-illustration {
   flex-shrink: 0;
   animation: gentleFloat 6s ease-in-out infinite;
-  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.08));
 }
 
 .main-illustration svg {
+  width: 120px;
+  height: 120px;
   transition: transform 0.3s ease;
 }
 
 .main-illustration:hover svg {
-  transform: scale(1.05);
+  transform: scale(1.1);
 }
 
 /* 文字内容区域 */
 .greeting-text-area {
   flex: 1;
-  min-width: 300px;
+  min-width: 200px;
   text-align: left;
 }
 
 .greeting-title {
-  font-size: 32px;
+  font-size: 26px;
   font-weight: 700;
   color: #2c3e50;
-  margin: 0 0 12px 0;
-  letter-spacing: 0.5px;
+  margin: 0 0 6px 0;
+  letter-spacing: 0.3px;
   background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1087,62 +1115,72 @@ onMounted(() => {
 }
 
 .greeting-subtitle {
-  font-size: 18px;
+  font-size: 16px;
   color: #7f8c8d;
-  margin: 0 0 20px 0;
+  margin: 0;
   font-weight: 400;
-  line-height: 1.6;
+  line-height: 1.4;
 }
 
 /* 学生聊天区域 */
 .student-chat {
-  margin: 24px 0;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin: 12px 0;
+  max-width: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%);
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   overflow: hidden;
   position: relative;
   z-index: 3;
 }
 
 .chat-header {
-  padding: 16px 20px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 10px 16px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.06) 0%, rgba(168, 85, 247, 0.04) 100%);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .chat-title {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
-  color: #2c3e50;
+  color: #4c1d95;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chat-title::before {
+  content: '💬';
+  font-size: 12px;
 }
 
 .online-count {
-  font-size: 13px;
-  color: #27ae60;
-  font-weight: 500;
+  font-size: 11px;
+  color: #059669;
+  font-weight: 600;
+  background: rgba(16, 185, 129, 0.08);
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid rgba(16, 185, 129, 0.15);
 }
 
 .chat-messages {
-  padding: 20px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  max-height: 280px;
+  gap: 8px;
+  max-height: 200px;
   overflow-y: auto;
 }
 
 .message-item {
   display: flex;
-  gap: 12px;
+  gap: 8px;
   align-items: flex-start;
 }
 
@@ -1156,33 +1194,33 @@ onMounted(() => {
 }
 
 .message-avatar {
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 600;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 1px 4px rgba(102, 126, 234, 0.2);
 }
 
 .message-content {
-  max-width: 70%;
+  max-width: 80%;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
 }
 
 .message-info {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
-  font-size: 12px;
-  margin-bottom: 4px;
+  font-size: 10px;
+  margin-bottom: 2px;
 }
 
 .message-left .message-info {
@@ -1196,32 +1234,32 @@ onMounted(() => {
 
 .username {
   font-weight: 600;
-  color: #2c3e50;
+  color: #4c1d95;
 }
 
 .room-info {
-  background: rgba(52, 152, 219, 0.1);
-  color: #3498db;
-  padding: 2px 6px;
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 500;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.12), rgba(168, 85, 247, 0.08));
+  color: #6366f1;
+  padding: 1px 4px;
+  border-radius: 6px;
+  font-size: 9px;
+  font-weight: 600;
 }
 
 .time {
-  color: #7f8c8d;
-  font-size: 11px;
+  color: #94a3b8;
+  font-size: 9px;
 }
 
 .message-text {
-  background: #f8f9fa;
-  padding: 10px 14px;
-  border-radius: 16px;
-  font-size: 14px;
-  line-height: 1.4;
-  color: #2c3e50;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%);
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #334155;
   position: relative;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .message-left .message-text {
@@ -1285,8 +1323,8 @@ onMounted(() => {
   }
   
   .main-illustration svg {
-    width: 100px;
-    height: 100px;
+    width: 110px;
+    height: 110px;
   }
   
   .greeting-title {
@@ -1331,24 +1369,26 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
+  margin-top: 8px;
 }
 
 .repair-button {
-  background: #f8f4e6;
-  border: 2px solid #d4b896;
-  border-radius: 12px;
-  padding: 14px 28px;
-  font-size: 16px;
-  font-weight: 500;
-  color: #8b6914;
-  box-shadow: 0 2px 8px rgba(212, 184, 150, 0.2);
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  border: 2px solid rgba(251, 191, 36, 0.3);
+  border-radius: 10px;
+  padding: 10px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.2);
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
   gap: 8px;
   position: relative;
   overflow: hidden;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
 
 .repair-button::before {
@@ -1359,7 +1399,7 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.5s ease;
+  transition: left 0.4s ease;
 }
 
 .repair-button:hover::before {
@@ -1367,27 +1407,28 @@ onMounted(() => {
 }
 
 .repair-button:hover {
-  background: #f5f0e1;
-  border-color: #c9a876;
+  background: linear-gradient(135deg, #fcd34d 0%, #fbbf24 100%);
+  border-color: rgba(252, 211, 77, 0.4);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(212, 184, 150, 0.3);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
 }
 
 .repair-button:active {
   transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(212, 184, 150, 0.2);
+  box-shadow: 0 2px 6px rgba(251, 191, 36, 0.2);
 }
 
 .repair-icon {
-  color: #8b6914;
+  color: #ffffff;
   filter: none;
 }
 
 .action-tip {
-  font-size: 14px;
-  color: #95a5a6;
+  font-size: 11px;
+  color: #64748b;
   margin: 0;
   font-style: italic;
+  font-weight: 500;
 }
 
 /* 报修状态区 */
@@ -2136,6 +2177,66 @@ onMounted(() => {
   transform: translateY(-1px);
 }
 
+/* 流动公告栏样式 */
+.announcement-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 12px 0;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  position: relative;
+}
+
+
+
+.announcement-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.15));
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.announcement-content {
+  flex: 1;
+  overflow: hidden;
+  height: 22px;
+  position: relative;
+}
+
+.announcement-text {
+  display: flex;
+  animation: scroll-announcement 25s linear infinite;
+  white-space: nowrap;
+}
+
+.announcement-item {
+  font-size: 13px;
+  color: #374151;
+  margin-right: 80px;
+  display: inline-block;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+@keyframes scroll-announcement {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .dashboard {
@@ -2159,6 +2260,21 @@ onMounted(() => {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+  
+  .announcement-banner {
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  
+  .announcement-icon {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .announcement-item {
+    font-size: 12px;
+    margin-right: 60px;
   }
 }
 </style>

@@ -11,6 +11,7 @@ import RepairRecords from '@/views/repair/RepairRecords.vue'
 import WorkOrderStatus from '@/views/repair/WorkOrderStatus.vue'
 import AIAssistant from '@/views/ai/AIAssistant.vue'
 import Contact from '@/views/system/Contact.vue'
+import DormChat from '@/views/system/DormChat.vue'
 
 // 路由配置
 const routes = [
@@ -120,6 +121,15 @@ const routes = [
         meta: { 
           requiresAuth: true,
           title: '联系我们'
+        }
+      },
+      {
+        path: 'dorm-chat',
+        name: 'DormChat',
+        component: DormChat,
+        meta: { 
+          requiresAuth: true,
+          title: '宿舍群聊'
         }
       }
     ]

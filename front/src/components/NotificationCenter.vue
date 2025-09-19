@@ -58,11 +58,7 @@
           </div>
         </div>
         
-        <div class="notification-footer">
-          <el-button text size="small" @click="viewAllNotifications">
-            查看全部通知
-          </el-button>
-        </div>
+
       </div>
     </transition>
   </div>
@@ -132,11 +128,7 @@ const markAllAsRead = () => {
   notifications.value.forEach(n => n.read = true)
 }
 
-const viewAllNotifications = () => {
-  showNotifications.value = false
-  // 跳转到通知页面
-  console.log('查看全部通知')
-}
+
 
 // 点击外部关闭
 const handleClickOutside = (event) => {
@@ -275,12 +267,7 @@ onUnmounted(() => {
   flex-shrink: 0;
 }
 
-.notification-footer {
-  padding: 12px 20px;
-  text-align: center;
-  border-top: 1px solid #f3f4f6;
-  background: #fafbfc;
-}
+
 
 /* 动画 */
 .slide-down-enter-active,

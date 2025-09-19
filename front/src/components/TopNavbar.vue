@@ -3,10 +3,40 @@
     <!-- 左侧：Logo和系统名称 -->
     <div class="navbar-left">
       <div class="logo-section" @click="navigateToHome">
-        <el-icon size="28" color="#ffffff">
-          <House />
-        </el-icon>
-        <span class="system-name">智能维修系统</span>
+        <div class="custom-logo-icon">
+          <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- 房屋主体 -->
+            <path d="M20 35 L50 15 L80 35 L80 75 L20 75 Z" fill="#87CEEB" stroke="#5B9BD5" stroke-width="2"/>
+            <!-- 屋顶 -->
+            <path d="M15 35 L50 10 L85 35 L80 35 L50 15 L20 35 Z" fill="#5B9BD5"/>
+            <!-- 窗户 -->
+            <rect x="30" y="25" width="8" height="8" fill="#ffffff" stroke="#5B9BD5" stroke-width="1"/>
+            <rect x="42" y="25" width="8" height="8" fill="#ffffff" stroke="#5B9BD5" stroke-width="1"/>
+            <rect x="54" y="25" width="8" height="8" fill="#ffffff" stroke="#5B9BD5" stroke-width="1"/>
+            <!-- 门 -->
+            <rect x="45" y="55" width="10" height="20" fill="#ffffff" stroke="#5B9BD5" stroke-width="1"/>
+            <circle cx="52" cy="65" r="1" fill="#5B9BD5"/>
+            <!-- 草地 -->
+            <ellipse cx="50" cy="80" rx="35" ry="8" fill="#90EE90"/>
+            <!-- 维修工具 -->
+            <!-- 扳手 -->
+            <path d="M25 60 L35 50 L37 52 L27 62 Z" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+            <circle cx="26" cy="61" r="2" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+            <!-- 螺丝刀 -->
+            <path d="M65 50 L75 60 L73 62 L63 52 Z" fill="#90EE90" stroke="#32CD32" stroke-width="1"/>
+            <rect x="74" y="59" width="3" height="3" fill="#FFD700"/>
+            <!-- 笑脸 -->
+            <circle cx="85" cy="25" r="8" fill="#FFD700" stroke="#FFA500" stroke-width="1"/>
+            <circle cx="82" cy="22" r="1.5" fill="#5B9BD5"/>
+            <circle cx="88" cy="22" r="1.5" fill="#5B9BD5"/>
+            <path d="M82 27 Q85 30 88 27" stroke="#5B9BD5" stroke-width="1.5" fill="none"/>
+            <!-- 爱心 -->
+            <path d="M75 35 C75 32 77 30 80 30 C83 30 85 32 85 35 C85 38 80 43 80 43 C80 43 75 38 75 35 Z" fill="#90EE90" stroke="#32CD32" stroke-width="1"/>
+            <!-- 加号 -->
+            <path d="M15 45 L25 45 M20 40 L20 50" stroke="#87CEEB" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span class="system-name">宿舍报修系统</span>
       </div>
     </div>
 
@@ -132,6 +162,21 @@ const handleSearch = () => {
 
 .logo-section:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+.custom-logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.custom-logo-icon:hover {
+  transform: scale(1.1);
+}
+
+.custom-logo-icon svg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .system-name {
