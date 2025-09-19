@@ -84,6 +84,50 @@
       </el-menu>
     </div>
 
+    <!-- 维修工人插画区域 -->
+    <div class="sidebar-illustration" v-if="!isCollapsed">
+      <div class="illustration-container">
+        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- 宿舍楼轮廓 -->
+          <rect x="20" y="30" width="60" height="50" stroke="#6c757d" stroke-width="2" fill="none" rx="2"/>
+          <rect x="25" y="35" width="8" height="8" stroke="#6c757d" stroke-width="1.5" fill="none"/>
+          <rect x="37" y="35" width="8" height="8" stroke="#6c757d" stroke-width="1.5" fill="none"/>
+          <rect x="55" y="35" width="8" height="8" stroke="#6c757d" stroke-width="1.5" fill="none"/>
+          <rect x="67" y="35" width="8" height="8" stroke="#6c757d" stroke-width="1.5" fill="none"/>
+          
+          <!-- 宿舍门 -->
+          <rect x="45" y="60" width="10" height="20" stroke="#6c757d" stroke-width="2" fill="none"/>
+          <circle cx="52" cy="68" r="1" fill="#6c757d"/>
+          
+          <!-- 维修工具图标 -->
+          <!-- 扳手 -->
+          <g transform="translate(15,15)">
+            <path d="M2 8 L8 2 L10 4 L4 10 Z" stroke="#4a90e2" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="3" cy="9" r="1.5" stroke="#4a90e2" stroke-width="1.5" fill="none"/>
+          </g>
+          
+          <!-- 螺丝刀 -->
+          <g transform="translate(75,15)">
+            <line x1="2" y1="8" x2="8" y2="2" stroke="#f39c12" stroke-width="2" stroke-linecap="round"/>
+            <rect x="7" y="1" width="3" height="3" stroke="#95a5a6" stroke-width="1.5" fill="none"/>
+          </g>
+          
+          <!-- 维修状态指示 -->
+          <circle cx="50" cy="20" r="8" stroke="#27ae60" stroke-width="2" fill="none"/>
+          <path d="M46 20 L49 23 L54 18" stroke="#27ae60" stroke-width="2" fill="none" stroke-linecap="round"/>
+          
+          <!-- 简单装饰线条 -->
+          <line x1="10" y1="85" x2="90" y2="85" stroke="#e9ecef" stroke-width="1"/>
+          <circle cx="30" cy="85" r="2" fill="#e9ecef"/>
+          <circle cx="70" cy="85" r="2" fill="#e9ecef"/>
+        </svg>
+        
+        <div class="illustration-text">
+           <h4>宿舍报修</h4>
+           <p>快速便捷的维修服务</p>
+         </div>
+      </div>
+    </div>
 
   </div>
 </template>
@@ -283,6 +327,72 @@ const handleMenuSelect = (index) => {
   background: #adb5bd;
 }
 
+/* 插画区域样式 */
+.sidebar-illustration {
+  margin-top: auto;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.illustration-container {
+  text-align: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.illustration-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.illustration-container svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+.illustration-text {
+  margin-top: 8px;
+}
+
+.illustration-text h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.illustration-text p {
+  margin: 0;
+  font-size: 12px;
+  color: #6c757d;
+  line-height: 1.4;
+}
+
+.illustration-text {
+  color: #495057;
+}
+
+.illustration-text h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.illustration-text p {
+  margin: 0;
+  font-size: 12px;
+  color: #6c757d;
+  line-height: 1.4;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   .side-navbar {
@@ -291,6 +401,22 @@ const handleMenuSelect = (index) => {
   
   .side-navbar.mobile-open {
     transform: translateX(0);
+  }
+  
+  .sidebar-illustration {
+    padding: 12px;
+  }
+  
+  .illustration-container svg {
+    width: 120px;
+  }
+  
+  .illustration-text h4 {
+    font-size: 13px;
+  }
+  
+  .illustration-text p {
+    font-size: 11px;
   }
 }
 </style>

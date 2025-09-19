@@ -59,41 +59,172 @@
     </div>
     <!-- 温馨问候与核心功能区 -->
     <div class="greeting-section">
-      <!-- 中午好模块的悬浮装饰图标 -->
-      <div class="greeting-floating-icons">
-        <div class="greeting-float-icon greeting-icon-1">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="#FFB6C1" opacity="0.5"/>
-            <circle cx="8" cy="16" r="1" fill="#FF69B4" opacity="0.7"/>
-            <circle cx="16" cy="16" r="1" fill="#FF69B4" opacity="0.7"/>
-          </svg>
+      <!-- 增强的装饰元素 -->
+      <div class="greeting-decorations">
+        <!-- 浮动粒子效果 -->
+        <div class="floating-particles">
+          <div class="particle particle-1">✨</div>
+          <div class="particle particle-2">🌟</div>
+          <div class="particle particle-3">💫</div>
+          <div class="particle particle-4">⭐</div>
+          <div class="particle particle-5">🔧</div>
+          <div class="particle particle-6">🏠</div>
         </div>
-        <div class="greeting-float-icon greeting-icon-2">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7 0-3.9-3.1-7-7-7z" fill="#FFD700" opacity="0.6"/>
-            <circle cx="12" cy="9" r="2" fill="#FFA500" opacity="0.4"/>
-          </svg>
+        
+        <!-- 装饰性图形 -->
+        <div class="decorative-shapes">
+          <div class="shape shape-circle-1"></div>
+          <div class="shape shape-circle-2"></div>
+          <div class="shape shape-triangle-1"></div>
+          <div class="shape shape-triangle-2"></div>
         </div>
-        <div class="greeting-float-icon greeting-icon-3">
-          <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="8" fill="#FFE4B5" opacity="0.5"/>
-            <circle cx="9" cy="9" r="1" fill="#F4A460" opacity="0.8"/>
-            <circle cx="15" cy="9" r="1" fill="#F4A460" opacity="0.8"/>
-            <path d="M8 15s1.5 2 4 2 4-2 4-2" stroke="#F4A460" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8"/>
-          </svg>
+        
+        <!-- 原有的悬浮装饰图标 -->
+        <div class="greeting-floating-icons">
+          <div class="greeting-float-icon greeting-icon-1">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+              <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="#FFB6C1" opacity="0.5"/>
+              <circle cx="8" cy="16" r="1" fill="#FF69B4" opacity="0.7"/>
+              <circle cx="16" cy="16" r="1" fill="#FF69B4" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="greeting-float-icon greeting-icon-2">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+              <path d="M9 21c0 .5.4 1 1 1h4c.6 0 1-.5 1-1v-1H9v1zm3-19C8.1 2 5 5.1 5 9c0 2.4 1.2 4.5 3 5.7V17h8v-2.3c1.8-1.2 3-3.3 3-5.7 0-3.9-3.1-7-7-7z" fill="#FFD700" opacity="0.6"/>
+              <circle cx="12" cy="9" r="2" fill="#FFA500" opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="greeting-float-icon greeting-icon-3">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="8" fill="#FFE4B5" opacity="0.5"/>
+              <circle cx="9" cy="9" r="1" fill="#F4A460" opacity="0.8"/>
+              <circle cx="15" cy="9" r="1" fill="#F4A460" opacity="0.8"/>
+              <path d="M8 15s1.5 2 4 2 4-2 4-2" stroke="#F4A460" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8"/>
+            </svg>
+          </div>
         </div>
       </div>
       <div class="greeting-content">
-        <div class="greeting-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" fill="#FFE4B5" stroke="#F4A460" stroke-width="2"/>
-            <circle cx="9" cy="9" r="1.5" fill="#F4A460"/>
-            <circle cx="15" cy="9" r="1.5" fill="#F4A460"/>
-            <path d="M8 15s1.5 2 4 2 4-2 4-2" stroke="#F4A460" stroke-width="2" stroke-linecap="round"/>
+        <!-- 主要宿舍维修主题图标 -->
+        <div class="main-illustration">
+          <svg width="120" height="120" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+            <!-- 背景圆形装饰 -->
+            <circle cx="200" cy="200" r="180" fill="#E8F5E8" opacity="0.3"/>
+            <circle cx="200" cy="200" r="150" fill="#D4EDDA" opacity="0.4"/>
+            
+            <!-- 宿舍楼主体 -->
+            <rect x="120" y="160" width="160" height="140" rx="12" fill="#87CEEB" stroke="#5DADE2" stroke-width="3"/>
+            
+            <!-- 屋顶 -->
+            <path d="M100 160 L200 120 L300 160 Z" fill="#5DADE2" stroke="#3498DB" stroke-width="2"/>
+            
+            <!-- 宿舍门 -->
+            <rect x="180" y="240" width="40" height="60" rx="6" fill="#F39C12" stroke="#E67E22" stroke-width="2"/>
+            <circle cx="210" cy="270" r="3" fill="#E67E22"/>
+            
+            <!-- 窗户 -->
+            <rect x="140" y="180" width="25" height="25" rx="4" fill="#FFE4B5" stroke="#F4A460" stroke-width="2"/>
+            <rect x="235" y="180" width="25" height="25" rx="4" fill="#FFE4B5" stroke="#F4A460" stroke-width="2"/>
+            <rect x="140" y="210" width="25" height="25" rx="4" fill="#FFE4B5" stroke="#F4A460" stroke-width="2"/>
+            <rect x="235" y="210" width="25" height="25" rx="4" fill="#FFE4B5" stroke="#F4A460" stroke-width="2"/>
+            
+            <!-- 维修工具 -->
+            <!-- 扳手 -->
+            <g transform="translate(320, 180) rotate(45)">
+              <rect x="-3" y="-15" width="6" height="30" rx="3" fill="#34495E"/>
+              <circle cx="0" cy="-12" r="5" fill="#34495E" opacity="0.8"/>
+              <circle cx="0" cy="12" r="5" fill="#34495E" opacity="0.8"/>
+            </g>
+            
+            <!-- 螺丝刀 -->
+            <g transform="translate(340, 200) rotate(-30)">
+              <rect x="-2" y="-20" width="4" height="25" fill="#E74C3C"/>
+              <rect x="-3" y="5" width="6" height="8" rx="3" fill="#2C3E50"/>
+            </g>
+            
+            <!-- 维修状态指示 -->
+            <circle cx="80" cy="120" r="8" fill="#2ECC71"/>
+            <path d="M76 120 L79 123 L84 117" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+            
+            <!-- 装饰性元素 -->
+            <!-- 爱心 -->
+            <g transform="translate(320, 120)">
+              <path d="M0,6 C0,2 4,0 8,4 C12,0 16,2 16,6 C16,12 8,20 8,20 C8,20 0,12 0,6 Z" fill="#E91E63" opacity="0.6"/>
+            </g>
+            
+            <!-- 笑脸 -->
+            <g transform="translate(60, 180)">
+              <circle cx="0" cy="0" r="15" fill="#FFD700" opacity="0.7"/>
+              <circle cx="-5" cy="-3" r="2" fill="#F39C12"/>
+              <circle cx="5" cy="-3" r="2" fill="#F39C12"/>
+              <path d="M-8,5 Q0,12 8,5" stroke="#F39C12" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </g>
+            
+            <!-- 加号装饰 -->
+            <g transform="translate(70, 280)" fill="#A8E6CF" opacity="0.6">
+              <rect x="-8" y="-2" width="16" height="4" rx="2"/>
+              <rect x="-2" y="-8" width="4" height="16" rx="2"/>
+            </g>
+            
+            <!-- 草地装饰 -->
+            <ellipse cx="200" cy="320" rx="120" ry="20" fill="#A8E6CF" opacity="0.5"/>
+            <ellipse cx="200" cy="315" rx="100" ry="15" fill="#7FB069" opacity="0.6"/>
           </svg>
         </div>
-        <h1 class="greeting-title">{{ getGreeting() }}，{{ getCurrentUserName() }}！</h1>
-        <p class="greeting-subtitle">{{ getGreetingMessage() }}</p>
+        
+        <!-- 文字内容区域 -->
+        <div class="greeting-text-area">
+          <h1 class="greeting-title">{{ getGreeting() }}，{{ getCurrentUserName() }}！</h1>
+          <p class="greeting-subtitle">{{ getGreetingMessage() }}</p>
+        </div>
+      </div>
+      
+      <!-- 学生聊天区域 -->
+      <div class="student-chat">
+        <div class="chat-header">
+          <span class="chat-title">宿舍生活圈</span>
+          <span class="online-count">🟢 126人在线</span>
+        </div>
+        <div class="chat-messages">
+          <div class="message-item message-left">
+            <div class="message-avatar">小</div>
+            <div class="message-content">
+              <div class="message-info">
+                <span class="username">小雨</span>
+                <span class="room-info">A栋302</span>
+                <span class="time">2分钟前</span>
+              </div>
+              <div class="message-text">今天食堂的红烧肉超好吃！推荐大家去试试～</div>
+            </div>
+          </div>
+          
+          <div class="message-item message-right">
+            <div class="message-content">
+              <div class="message-info">
+                <span class="time">1分钟前</span>
+                <span class="room-info">B栋205</span>
+                <span class="username">阿明</span>
+              </div>
+              <div class="message-text">哈哈，我也去吃了！阿姨给我多打了一勺</div>
+            </div>
+            <div class="message-avatar">明</div>
+          </div>
+          
+          <div class="message-item message-left">
+            <div class="message-avatar">晓</div>
+            <div class="message-content">
+              <div class="message-info">
+                <span class="username">晓琳</span>
+                <span class="room-info">C栋108</span>
+                <span class="time">刚刚</span>
+              </div>
+              <div class="message-text">有人知道图书馆今天几点关门吗？想去复习一下</div>
+            </div>
+          </div>
+        </div>
+        <div class="chat-footer">
+          <span class="chat-hint">💬 点击查看更多聊天记录</span>
+        </div>
       </div>
       
       <!-- 核心功能按钮 -->
@@ -150,33 +281,22 @@
         </div>
         <div class="repair-float-icon repair-icon-2">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
-            <!-- 水龙头图标 -->
-            <path d="M6 12c0-3.31 2.69-6 6-6s6 2.69 6 6v2h2v-2c0-4.42-3.58-8-8-8s-8 3.58-8 8v2h2v-2z" fill="#4FC3F7" opacity="0.6"/>
-            <rect x="10" y="14" width="4" height="6" rx="2" fill="#29B6F6" opacity="0.8"/>
-            <circle cx="12" cy="17" r="1" fill="#0277BD" opacity="0.9"/>
-            <path d="M11 20v2c0 0.5 0.5 1 1 1s1-0.5 1-1v-2" stroke="#0277BD" stroke-width="1.5" fill="none"/>
+            <path d="M16.06 10.94L12 15l-1.06-1.06L15 10l1.06.94z" fill="#DDA0DD" opacity="0.5"/>
+            <path d="M8.5 8.5L12 12l7-7-1-1-7 7L8.5 8.5z" stroke="#9370DB" stroke-width="1.5" fill="none" opacity="0.7"/>
           </svg>
         </div>
         <div class="repair-float-icon repair-icon-3">
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-            <!-- 台灯图标 -->
-            <path d="M12 2l-4 6h8l-4-6z" fill="#FFD54F" opacity="0.7"/>
-            <rect x="11" y="8" width="2" height="10" fill="#8D6E63" opacity="0.8"/>
-            <ellipse cx="12" cy="18" rx="6" ry="1" fill="#5D4037" opacity="0.6"/>
-            <circle cx="12" cy="5" r="1" fill="#FFC107" opacity="0.9"/>
-            <path d="M8 8c0-2 1.5-3 4-3s4 1 4 3" stroke="#FFB300" stroke-width="1" fill="none" opacity="0.8"/>
+            <rect x="3" y="8" width="18" height="10" rx="2" fill="#F0E68C" opacity="0.5"/>
+            <path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="#DAA520" stroke-width="2" fill="none" opacity="0.7"/>
+            <circle cx="12" cy="13" r="1.5" fill="#DAA520" opacity="0.6"/>
           </svg>
         </div>
         <div class="repair-float-icon repair-icon-4">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
-            <!-- 椅子图标 -->
-            <rect x="4" y="6" width="16" height="2" rx="1" fill="#8D6E63" opacity="0.8"/>
-            <rect x="4" y="8" width="16" height="8" rx="2" fill="#BCAAA4" opacity="0.6"/>
-            <rect x="5" y="16" width="2" height="6" fill="#6D4C41" opacity="0.8"/>
-            <rect x="17" y="16" width="2" height="6" fill="#6D4C41" opacity="0.8"/>
-            <rect x="4" y="2" width="16" height="4" rx="2" fill="#A1887F" opacity="0.7"/>
-            <circle cx="8" cy="12" r="0.5" fill="#5D4037" opacity="0.6"/>
-            <circle cx="16" cy="12" r="0.5" fill="#5D4037" opacity="0.6"/>
+          <svg width="28" height="28" viewBox="0 0 1024 1024" fill="none">
+            <path d="M512 512m-501.76 0a501.76 501.76 0 1 0 1003.52 0 501.76 501.76 0 1 0-1003.52 0Z" fill="#8CEEF9" opacity="0.5"/>
+            <path d="M793.3952 821.6576c0 38.912-31.5392 70.4512-70.4512 70.4512s-70.4512-31.5392-70.4512-70.4512c0 38.912-31.5392 70.4512-70.4512 70.4512s-70.4512-31.5392-70.4512-70.4512c0 38.912-31.5392 70.4512-70.4512 70.4512S370.688 860.5696 370.688 821.6576c0 38.912-31.5392 70.4512-70.4512 70.4512s-70.4512-31.5392-70.4512-70.4512c0 31.744-20.8896 58.368-49.7664 67.1744 89.088 77.824 205.0048 124.928 331.9808 124.928s242.8928-47.104 331.1616-124.928c-28.672-8.8064-49.7664-35.4304-49.7664-67.1744z" fill="#508DEF" opacity="0.7"/>
+            <path d="M576.3072 366.592H505.4464c-20.6848 0-40.5504-8.192-55.296-22.528-22.1184-21.504-52.4288-34.816-85.8112-34.816s-63.488 13.312-85.8112 34.816c-14.9504 14.336-34.6112 22.528-55.296 22.528H31.744c-12.0832 39.7312-19.2512 81.7152-20.8896 124.928h205.6192c22.1184 0 43.008 9.216 58.1632 25.3952 22.528 23.9616 54.4768 38.912 89.7024 38.912s67.3792-14.9504 89.7024-38.912c15.1552-15.9744 36.0448-25.3952 58.1632-25.3952h1.024c22.3232 0 40.3456 18.0224 40.3456 40.3456V643.072h131.072v-168.3456c-0.2048-59.8016-48.5376-108.1344-108.3392-108.1344z" fill="#FF8939" opacity="0.6"/>
           </svg>
         </div>
       </div>
@@ -772,27 +892,439 @@ onMounted(() => {
   z-index: 2;
 }
 
-.greeting-content {
-  margin-bottom: 32px;
+/* 装饰元素容器 */
+.greeting-decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.greeting-icon {
-  margin-bottom: 16px;
+/* 浮动粒子效果 */
+.floating-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.particle {
+  position: absolute;
+  font-size: 16px;
+  opacity: 0.6;
+  animation: particleFloat 8s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.particle-1 {
+  top: 15%;
+  left: 10%;
+  animation-delay: 0s;
+}
+
+.particle-2 {
+  top: 25%;
+  right: 15%;
+  animation-delay: 1.5s;
+}
+
+.particle-3 {
+  top: 60%;
+  left: 8%;
+  animation-delay: 3s;
+}
+
+.particle-4 {
+  bottom: 25%;
+  right: 12%;
+  animation-delay: 4.5s;
+}
+
+.particle-5 {
+  top: 40%;
+  left: 85%;
+  animation-delay: 2s;
+}
+
+.particle-6 {
+  bottom: 40%;
+  left: 20%;
+  animation-delay: 6s;
+}
+
+@keyframes particleFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translateY(-15px) rotate(90deg) scale(1.1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-25px) rotate(180deg) scale(0.9);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translateY(-10px) rotate(270deg) scale(1.05);
+    opacity: 0.7;
+  }
+}
+
+/* 装饰性图形 */
+.decorative-shapes {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.shape {
+  position: absolute;
+  opacity: 0.1;
+  animation: shapeFloat 10s ease-in-out infinite;
+}
+
+.shape-circle-1 {
+  top: 20%;
+  right: 25%;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FFB6C1, #FF69B4);
+  animation-delay: 0s;
+}
+
+.shape-circle-2 {
+  bottom: 30%;
+  left: 15%;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #87CEEB, #5DADE2);
+  animation-delay: 3s;
+}
+
+.shape-triangle-1 {
+  top: 50%;
+  right: 10%;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 35px solid rgba(168, 230, 207, 0.3);
+  animation-delay: 1.5s;
+}
+
+.shape-triangle-2 {
+  bottom: 15%;
+  left: 75%;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 15px solid transparent;
+  border-bottom: 25px solid rgba(255, 215, 0, 0.3);
+  animation-delay: 4.5s;
+}
+
+@keyframes shapeFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translateY(-30px) rotate(180deg);
+    opacity: 0.2;
+  }
+}
+
+.greeting-content {
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* 主要插画样式 */
+.main-illustration {
+  flex-shrink: 0;
+  animation: gentleFloat 6s ease-in-out infinite;
+  filter: drop-shadow(0 4px 16px rgba(0, 0, 0, 0.1));
+}
+
+.main-illustration svg {
+  transition: transform 0.3s ease;
+}
+
+.main-illustration:hover svg {
+  transform: scale(1.05);
+}
+
+/* 文字内容区域 */
+.greeting-text-area {
+  flex: 1;
+  min-width: 300px;
+  text-align: left;
 }
 
 .greeting-title {
-  font-size: 28px;
-  font-weight: 600;
+  font-size: 32px;
+  font-weight: 700;
   color: #2c3e50;
-  margin: 0 0 8px 0;
+  margin: 0 0 12px 0;
   letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .greeting-subtitle {
-  font-size: 16px;
+  font-size: 18px;
   color: #7f8c8d;
-  margin: 0;
+  margin: 0 0 20px 0;
   font-weight: 400;
+  line-height: 1.6;
+}
+
+/* 学生聊天区域 */
+.student-chat {
+  margin: 24px 0;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
+}
+
+.chat-header {
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chat-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.online-count {
+  font-size: 13px;
+  color: #27ae60;
+  font-weight: 500;
+}
+
+.chat-messages {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.message-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.message-left {
+  justify-content: flex-start;
+}
+
+.message-right {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.message-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+}
+
+.message-content {
+  max-width: 70%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.message-info {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.message-left .message-info {
+  justify-content: flex-start;
+}
+
+.message-right .message-info {
+  justify-content: flex-end;
+  flex-direction: row-reverse;
+}
+
+.username {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.room-info {
+  background: rgba(52, 152, 219, 0.1);
+  color: #3498db;
+  padding: 2px 6px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.time {
+  color: #7f8c8d;
+  font-size: 11px;
+}
+
+.message-text {
+  background: #f8f9fa;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #2c3e50;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.message-left .message-text {
+  background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+  border-bottom-left-radius: 6px;
+}
+
+.message-right .message-text {
+  background: linear-gradient(135deg, #e3f2fd 0%, #f1f8ff 100%);
+  border-bottom-right-radius: 6px;
+}
+
+.chat-footer {
+  padding: 12px 20px;
+  background: rgba(248, 249, 250, 0.8);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.chat-hint {
+  font-size: 13px;
+  color: #6c757d;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.chat-hint:hover {
+  color: #495057;
+}
+
+/* 聊天消息滚动条样式 */
+.chat-messages::-webkit-scrollbar {
+  width: 4px;
+}
+
+.chat-messages::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .greeting-content {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+  
+  .greeting-text-area {
+    text-align: center;
+    min-width: auto;
+  }
+  
+  .main-illustration svg {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .greeting-title {
+    font-size: 28px;
+  }
+  
+  .greeting-subtitle {
+    font-size: 16px;
+  }
+  
+  .warm-notices {
+    margin: 20px 0;
+  }
+  
+  .notices-container {
+    gap: 12px;
+    flex-direction: column;
+    align-items: center;
+    max-width: 100%;
+  }
+  
+  .notice-card {
+    min-width: auto;
+    max-width: 100%;
+    width: 100%;
+    padding: 14px 18px;
+  }
+  
+  .notice-text {
+    font-size: 13px;
+    text-align: center;
+  }
+  
+  .notice-time {
+    font-size: 11px;
+    text-align: center;
+    align-self: center;
+  }
 }
 
 .main-action {
